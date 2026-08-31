@@ -1,0 +1,1 @@
+# smart_management_web
