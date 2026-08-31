@@ -11,20 +11,21 @@
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
+                <div class="auth-brand-badge">✨</div>
                 <h1>SmartTask</h1>
-                <p>Create your account</p>
+                <p>Create your account to get started.</p>
             </div>
 
             <form id="registerForm">
                 <div class="form-group">
                     <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" placeholder="Enter your full name" required>
+                    <input type="text" id="fullName" placeholder="John Doe" required>
                     <div class="error-message" id="nameError">Name is required</div>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="email@example.com" required>
+                    <input type="email" id="email" placeholder="name@company.com" required>
                     <div class="error-message" id="emailError">Invalid email format</div>
                 </div>
 
@@ -40,7 +41,7 @@
                     <div class="error-message" id="confirmError">Passwords do not match</div>
                 </div>
 
-                <button type="submit" class="btn btn-primary auth-btn">Create Account</button>
+                <button type="submit" class="btn btn-primary auth-btn">Create Account →</button>
             </form>
 
             <div class="auth-footer">

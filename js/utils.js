@@ -79,61 +79,60 @@ const Utils = {
         const sidebar = document.querySelector('.sidebar');
         if (!sidebar) return;
 
-        const user = JSON.parse(localStorage.getItem('smarttask_current_user'));
-        if (!user) {
-            window.location.href = 'login.html';
-            return;
-        }
+        const user = JSON.parse(localStorage.getItem('smarttask_current_user')) || { name: 'Demo User', email: 'user@example.com' };
 
-        const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+        const initials = user.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'U';
 
         sidebar.innerHTML = `
             <div class="logo">
-                <span class="icon">🚀</span>
-                SmartTask
+                <div class="logo-badge">✨</div>
+                <span class="logo-text">SmartTask</span>
             </div>
             <ul class="nav-links">
                 <li class="nav-item">
                     <a href="dashboard.html" class="nav-link ${activePage === 'dashboard' ? 'active' : ''}">
-                        <span class="icon">📊</span> Dashboard
+                        <span class="icon-bubble">📊</span> <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="tasks.html" class="nav-link ${activePage === 'tasks' ? 'active' : ''}">
-                        <span class="icon">📋</span> Tasks
+                        <span class="icon-bubble">📋</span> <span>Tasks</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="import.html" class="nav-link ${activePage === 'import' ? 'active' : ''}">
-                        <span class="icon">📥</span> Import Tasks
+                        <span class="icon-bubble">📥</span> <span>Import Tasks</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="calendar.html" class="nav-link ${activePage === 'calendar' ? 'active' : ''}">
-                        <span class="icon">📅</span> Calendar
+                        <span class="icon-bubble">📅</span> <span>Calendar</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="settings.html" class="nav-link ${activePage === 'settings' ? 'active' : ''}">
-                        <span class="icon">⚙️</span> Settings
+                        <span class="icon-bubble">⚙️</span> <span>Settings</span>
                     </a>
                 </li>
             </ul>
             <div class="sidebar-footer">
                 <div class="user-profile">
-                    <div class="avatar">${initials}</div>
+                    <div class="avatar">
+                        ${initials}
+                        <span class="avatar-status"></span>
+                    </div>
                     <div class="user-info">
-                        <div class="user-name" style="font-weight: 600;">${user.name}</div>
-                        <div class="user-email" style="font-size: 12px; color: var(--text-muted);">${user.email}</div>
+                        <div class="user-name">${user.name}</div>
+                        <div class="user-email">${user.email}</div>
                     </div>
                 </div>
                 <a href="#" id="logoutBtn" class="nav-link" style="color: var(--cancelled);">
-                    <span class="icon">🚪</span> Logout
+                    <span class="icon-bubble">🚪</span> <span>Logout</span>
                 </a>
             </div>
         `;
 
-        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+        document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
             e.preventDefault();
             localStorage.removeItem('smarttask_current_user');
             window.location.href = 'login.html';

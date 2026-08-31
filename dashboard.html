@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Sidebar will be injected here -->
+        <!-- Sidebar injected by JS -->
         <aside class="sidebar"></aside>
 
         <main class="main-content">
@@ -20,7 +20,7 @@
                 </div>
                 <div class="header-actions">
                     <button class="btn btn-primary" id="quickAddTask">
-                        <span>+</span> Add Task
+                        <span>⚡</span> Quick Add Task
                     </button>
                 </div>
             </header>
@@ -28,22 +28,30 @@
             <!-- Stats Grid -->
             <div class="stats-grid">
                 <div class="card stat-card">
-                    <div class="stat-icon" style="background: rgba(79, 70, 229, 0.1); color: var(--primary-color);">Total</div>
+                    <div class="stat-card-header">
+                        <div class="stat-icon" style="background: rgba(99, 102, 241, 0.12); color: var(--primary-color);">📊</div>
+                    </div>
                     <div class="stat-value" id="totalTasks">0</div>
                     <div class="stat-label">Total Tasks</div>
                 </div>
                 <div class="card stat-card">
-                    <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--pending);">🕒</div>
+                    <div class="stat-card-header">
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.12); color: var(--pending);">⏳</div>
+                    </div>
                     <div class="stat-value" id="pendingTasks">0</div>
                     <div class="stat-label">Pending</div>
                 </div>
                 <div class="card stat-card">
-                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">✅</div>
+                    <div class="stat-card-header">
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.12); color: var(--success);">✅</div>
+                    </div>
                     <div class="stat-value" id="completedTasks">0</div>
                     <div class="stat-label">Completed</div>
                 </div>
                 <div class="card stat-card">
-                    <div class="stat-icon" style="background: rgba(220, 38, 38, 0.1); color: var(--overdue);">⚠️</div>
+                    <div class="stat-card-header">
+                        <div class="stat-icon" style="background: rgba(239, 68, 68, 0.12); color: var(--overdue);">⚠️</div>
+                    </div>
                     <div class="stat-value" id="overdueTasks">0</div>
                     <div class="stat-label">Overdue</div>
                 </div>
@@ -52,32 +60,37 @@
             <div class="dashboard-grid">
                 <!-- Recent Tasks -->
                 <section class="card recent-tasks">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h2 style="font-size: 18px;">Recent Tasks</h2>
-                        <a href="tasks.html" style="color: var(--primary-color); text-decoration: none; font-size: 14px;">View All</a>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                        <h2 style="font-size: 18px; font-weight: 700;">Recent Tasks</h2>
+                        <a href="tasks.html" class="btn btn-outline btn-sm" style="text-decoration: none;">View All →</a>
                     </div>
                     <div id="recentTasksList" class="task-mini-list">
-                        <!-- Tasks will be injected here -->
                         <div class="empty-state">No recent tasks found.</div>
                     </div>
                 </section>
 
                 <!-- Progress & Quick Actions -->
-                <section class="card progress-overview">
-                    <h2 style="font-size: 18px; margin-bottom: 20px;">Completion Progress</h2>
+                <section class="card progress-card">
+                    <h2 style="font-size: 18px; font-weight: 700; width: 100%; text-align: left; margin-bottom: 8px;">Completion Rate</h2>
                     <div class="progress-container">
-                        <svg class="progress-ring" width="120" height="120">
-                            <circle class="progress-ring__circle-bg" stroke="#e5e7eb" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
-                            <circle class="progress-ring__circle" stroke="var(--primary-color)" stroke-width="8" stroke-linecap="round" fill="transparent" r="52" cx="60" cy="60" id="progressCircle"/>
+                        <svg class="progress-ring" width="140" height="140">
+                            <defs>
+                                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#6366f1" />
+                                    <stop offset="100%" stop-color="#8b5cf6" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="progress-ring__circle-bg" stroke-width="10" fill="transparent" r="58" cx="70" cy="70"/>
+                            <circle class="progress-ring__circle" stroke="url(#progressGradient)" stroke-width="10" stroke-linecap="round" fill="transparent" r="58" cx="70" cy="70" id="progressCircle"/>
                         </svg>
                         <div class="progress-text" id="progressPercentage">0%</div>
                     </div>
 
-                    <div class="quick-actions" style="margin-top: 32px;">
-                        <h3 style="font-size: 14px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;">Quick Actions</h3>
+                    <div class="quick-actions" style="width: 100%; margin-top: 16px;">
+                        <h3 style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 12px;">Quick Actions</h3>
                         <div style="display: grid; gap: 10px;">
-                            <a href="import.html" class="btn btn-outline" style="width: 100%;">Import Tasks</a>
-                            <a href="calendar.html" class="btn btn-outline" style="width: 100%;">View Calendar</a>
+                            <a href="import.html" class="btn btn-outline" style="width: 100%; justify-content: center;">📥 Import Tasks</a>
+                            <a href="calendar.html" class="btn btn-outline" style="width: 100%; justify-content: center;">📅 View Calendar</a>
                         </div>
                     </div>
                 </section>

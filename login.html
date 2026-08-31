@@ -11,14 +11,15 @@
     <div class="auth-container">
         <div class="auth-card">
             <div class="auth-header">
+                <div class="auth-brand-badge">✨</div>
                 <h1>SmartTask</h1>
-                <p>Welcome back! Please login.</p>
+                <p>Welcome back! Sign in to access your tasks.</p>
             </div>
 
             <form id="loginForm">
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="email@example.com" required>
+                    <input type="email" id="email" placeholder="name@company.com" required>
                 </div>
 
                 <div class="form-group">
@@ -27,11 +28,11 @@
                 </div>
 
                 <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
-                    <input type="checkbox" id="rememberMe" style="width: auto;">
-                    <label for="rememberMe" style="margin-bottom: 0; font-size: 14px;">Remember Me</label>
+                    <input type="checkbox" id="rememberMe" style="width: auto; cursor: pointer;">
+                    <label for="rememberMe" style="margin-bottom: 0; font-size: 13px; cursor: pointer;">Remember Me</label>
                 </div>
 
-                <button type="submit" class="btn btn-primary auth-btn">Sign In</button>
+                <button type="submit" class="btn btn-primary auth-btn">Sign In to Dashboard →</button>
             </form>
 
             <div class="auth-footer">

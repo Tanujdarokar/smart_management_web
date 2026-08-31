@@ -6,25 +6,27 @@
     <title>Calendar | SmartTask Manager</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/calendar.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
     <div class="app-container">
+        <!-- Sidebar injected by JS -->
         <aside class="sidebar"></aside>
 
         <main class="main-content">
             <header class="header">
                 <div>
                     <h1>Task Calendar</h1>
-                    <p style="color: var(--text-muted);">Visualize your schedule and deadlines.</p>
+                    <p style="color: var(--text-muted);">Visualize your schedule, events, and task deadlines.</p>
                 </div>
                 <div class="calendar-nav">
-                    <button class="btn btn-outline" id="prevMonth">&lt;</button>
-                    <h2 id="currentMonthYear">September 2026</h2>
-                    <button class="btn btn-outline" id="nextMonth">&gt;</button>
+                    <button class="btn btn-outline btn-sm" id="prevMonth">← Prev</button>
+                    <h2 id="currentMonthYear" style="font-size: 20px; font-weight: 800; min-width: 180px; text-align: center;">September 2026</h2>
+                    <button class="btn btn-outline btn-sm" id="nextMonth">Next →</button>
                 </div>
             </header>
 
-            <div class="card calendar-container">
+            <div class="calendar-container">
                 <div class="calendar-weekdays">
                     <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
                 </div>
@@ -39,11 +41,11 @@
                         <h2 id="selectedDateTitle">Tasks for Sep 5</h2>
                         <span class="close-modal" id="closeCalendarModal">&times;</span>
                     </div>
-                    <div id="dayTasksList" class="task-mini-list">
+                    <div id="dayTasksList" class="task-mini-list" style="margin: 20px 0;">
                         <!-- Injected by JS -->
                     </div>
                     <div class="modal-footer">
-                        <button class="btn btn-primary" id="addFromCalendar">Add Task</button>
+                        <button class="btn btn-primary" id="addFromCalendar">➕ Add Task for This Date</button>
                     </div>
                 </div>
             </div>

@@ -9,33 +9,34 @@
 </head>
 <body>
     <div class="app-container">
+        <!-- Sidebar injected by JS -->
         <aside class="sidebar"></aside>
 
         <main class="main-content">
             <header class="header">
                 <div>
                     <h1>Import Tasks</h1>
-                    <p style="color: var(--text-muted);">Automatically convert files into structured tasks.</p>
+                    <p style="color: var(--text-muted);">Batch import tasks automatically from files or plain text formats.</p>
                 </div>
             </header>
 
-            <div class="card import-area" id="dropZone">
+            <div class="import-area" id="dropZone">
                 <div class="import-icon">📥</div>
-                <h2>Drop your files here</h2>
-                <p>Supports .txt, .csv, and .json</p>
+                <h2>Drag & Drop your files here</h2>
+                <p>Supports <code>.txt</code>, <code>.csv</code>, and <code>.json</code> document formats</p>
                 <input type="file" id="fileInput" hidden accept=".txt,.csv,.json">
-                <button class="btn btn-primary" id="browseBtn">Browse Files</button>
+                <button class="btn btn-primary" id="browseBtn">📂 Browse Computer Files</button>
             </div>
 
             <section id="previewSection" class="card" style="display: none; margin-top: 32px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
                     <div>
-                        <h2 id="fileNameDisplay">File: tasks.txt</h2>
+                        <h2 id="fileNameDisplay" style="font-size: 20px; font-weight: 800;">File: tasks.txt</h2>
                         <p id="taskCountDisplay" style="font-size: 14px; color: var(--text-muted);">Detected 5 tasks</p>
                     </div>
                     <div class="preview-actions">
                         <button class="btn btn-outline" id="cancelImport">Cancel</button>
-                        <button class="btn btn-primary" id="confirmImport">Import Selected Tasks</button>
+                        <button class="btn btn-primary" id="confirmImport">✨ Import Selected Tasks</button>
                     </div>
                 </div>
 
@@ -58,21 +59,27 @@
                 </div>
             </section>
 
-            <!-- Guide Section -->
+            <!-- Format Guide Section -->
             <div class="guide-grid" style="margin-top: 40px;">
                 <div class="card">
-                    <h3>Smart TXT Format</h3>
-                    <p style="font-size: 14px; color: var(--text-muted); margin-top: 8px;">
-                        "[HIGH] Buy groceries by tomorrow"<br>
-                        "[DONE] Complete project"<br>
-                        "Meeting on 2026-09-10"
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <span style="font-size: 20px;">📄</span>
+                        <h3 style="font-size: 16px; font-weight: 700;">Smart TXT Format</h3>
+                    </div>
+                    <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+                        <code>[HIGH] Buy groceries by tomorrow</code><br>
+                        <code>[DONE] Complete website project</code><br>
+                        <code>Team sync meeting on 2026-09-10</code>
                     </p>
                 </div>
                 <div class="card">
-                    <h3>CSV Structure</h3>
-                    <p style="font-size: 14px; color: var(--text-muted); margin-top: 8px;">
-                        Title, Priority, Status, DueDate<br>
-                        Fix bugs, High, Pending, 2026-09-05
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <span style="font-size: 20px;">📊</span>
+                        <h3 style="font-size: 16px; font-weight: 700;">CSV / JSON Structure</h3>
+                    </div>
+                    <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+                        <code>Title, Priority, Status, DueDate</code><br>
+                        <code>Fix bugs, High, Pending, 2026-09-05</code>
                     </p>
                 </div>
             </div>

@@ -1,54 +1,76 @@
 .import-area {
     border: 2px dashed var(--border-color);
+    border-radius: var(--radius-lg);
     text-align: center;
-    padding: 60px 40px;
-    background-color: rgba(79, 70, 229, 0.02);
-    transition: var(--transition);
+    padding: 64px 40px;
+    background: var(--card-bg);
+    backdrop-filter: var(--glass-backdrop);
+    transition: var(--transition-bounce);
+    cursor: pointer;
 }
 
-.import-area.dragover {
+.import-area:hover, .import-area.dragover {
     border-color: var(--primary-color);
-    background-color: rgba(79, 70, 229, 0.05);
+    background: rgba(99, 102, 241, 0.06);
+    box-shadow: var(--shadow-glow);
+    transform: scale(1.01);
 }
 
 .import-icon {
     font-size: 64px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    display: inline-block;
+    transition: var(--transition-bounce);
+}
+
+.import-area:hover .import-icon {
+    transform: translateY(-8px) scale(1.1);
 }
 
 .import-area h2 {
+    font-size: 22px;
+    font-weight: 800;
     margin-bottom: 8px;
+    color: var(--text-main);
+    letter-spacing: -0.02em;
 }
 
 .import-area p {
     color: var(--text-muted);
-    margin-bottom: 24px;
+    font-size: 14px;
+    margin-bottom: 28px;
 }
 
 .table-container {
     overflow-x: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--border-color);
 }
 
 .preview-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
+    background: var(--card-bg-solid);
 }
 
 .preview-table th, .preview-table td {
     text-align: left;
     padding: 16px;
     border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
 }
 
 .preview-table th {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--text-muted);
-    font-weight: 600;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: rgba(99, 102, 241, 0.05);
 }
 
 .preview-table tr:hover {
-    background-color: rgba(0,0,0,0.02);
+    background-color: rgba(99, 102, 241, 0.03);
 }
 
 .preview-actions {

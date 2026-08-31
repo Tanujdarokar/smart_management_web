@@ -1,9 +1,15 @@
+@media (max-width: 992px) {
+    .main-content {
+        padding: 24px 20px;
+    }
+}
+
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
-        transition: transform 0.3s ease;
-        width: 100%;
-        max-width: 280px;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 280px;
+        box-shadow: var(--shadow-lg);
     }
 
     .sidebar.active {
@@ -12,7 +18,7 @@
 
     .main-content {
         margin-left: 0;
-        padding: 20px;
+        padding: 20px 16px;
     }
 
     .header {
@@ -30,27 +36,33 @@
         justify-content: center;
     }
 
-    /* Hamburger Menu */
+    /* Floating Hamburger Button */
     .mobile-nav-toggle {
-        display: block;
+        display: flex;
         position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: var(--primary-color);
+        bottom: 24px;
+        right: 24px;
+        background: var(--primary-gradient);
         color: white;
         width: 56px;
         height: 56px;
-        border-radius: 50%;
-        display: flex;
+        border-radius: 18px;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        font-size: 22px;
+        box-shadow: var(--shadow-glow);
         z-index: 1001;
         cursor: pointer;
+        transition: var(--transition-bounce);
+    }
+
+    .mobile-nav-toggle:active {
+        transform: scale(0.9);
     }
 
     .stats-grid {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
     }
 }
 
