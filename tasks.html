@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks | SmartTask Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tasks.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar"></aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div>
+                    <h1>My Tasks</h1>
+                    <p style="color: var(--text-muted);">Manage and track your productivity.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="addNewTask">
+                        <span>+</span> New Task
+                    </button>
+                </div>
+            </header>
+
+            <!-- Filters & Search -->
+            <div class="card filters-card" style="margin-bottom: 24px;">
+                <div class="filters-grid">
+                    <div class="filter-group">
+                        <input type="text" id="taskSearch" placeholder="Search tasks..." class="form-control">
+                    </div>
+                    <div class="filter-group">
+                        <select id="statusFilter" class="form-control">
+                            <option value="all">All Status</option>
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select id="priorityFilter" class="form-control">
+                            <option value="all">All Priority</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select id="sortBy" class="form-control">
+                            <option value="newest">Newest First</option>
+                            <option value="dueDate">Due Date</option>
+                            <option value="priority">Priority</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Task List -->
+            <div id="taskList" class="task-grid">
+                <!-- Tasks will be injected here -->
+            </div>
+
+            <div id="emptyTasks" class="empty-state" style="display: none;">
+                <div style="font-size: 48px; margin-bottom: 16px;">📂</div>
+                <h3>No tasks found</h3>
+                <p>Try adjusting your filters or create a new task.</p>
+            </div>
+        </main>
+    </div>
+
+    <!-- Task Modal -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add New Task</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <form id="taskForm">
+                <input type="hidden" id="taskId">
+                <div class="form-row">
+                    <label>Task Title</label>
+                    <input type="text" id="title" required placeholder="What needs to be done?">
+                </div>
+                <div class="form-row">
+                    <label>Description</label>
+                    <textarea id="description" rows="3" placeholder="Add more details..."></textarea>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <input type="text" id="category" placeholder="e.g. Work, Personal">
+                    </div>
+                    <div class="form-group">
+                        <label>Due Date</label>
+                        <input type="date" id="dueDate" required>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Priority</label>
+                        <select id="priority">
+                            <option value="Low">Low</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="High">High</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="status">
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Tags (comma separated)</label>
+                    <input type="text" id="tags" placeholder="urgent, client, feature">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close-modal-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Task</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="js/tasks.js"></script>
+</body>
+</html>

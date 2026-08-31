@@ -1,0 +1,69 @@
+.import-area {
+    border: 2px dashed var(--border-color);
+    text-align: center;
+    padding: 60px 40px;
+    background-color: rgba(79, 70, 229, 0.02);
+    transition: var(--transition);
+}
+
+.import-area.dragover {
+    border-color: var(--primary-color);
+    background-color: rgba(79, 70, 229, 0.05);
+}
+
+.import-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.import-area h2 {
+    margin-bottom: 8px;
+}
+
+.import-area p {
+    color: var(--text-muted);
+    margin-bottom: 24px;
+}
+
+.table-container {
+    overflow-x: auto;
+}
+
+.preview-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.preview-table th, .preview-table td {
+    text-align: left;
+    padding: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.preview-table th {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.preview-table tr:hover {
+    background-color: rgba(0,0,0,0.02);
+}
+
+.preview-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.guide-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+@media (max-width: 768px) {
+    .guide-grid {
+        grid-template-columns: 1fr;
+    }
+}

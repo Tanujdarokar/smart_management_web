@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar | SmartTask Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/calendar.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar"></aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div>
+                    <h1>Task Calendar</h1>
+                    <p style="color: var(--text-muted);">Visualize your schedule and deadlines.</p>
+                </div>
+                <div class="calendar-nav">
+                    <button class="btn btn-outline" id="prevMonth">&lt;</button>
+                    <h2 id="currentMonthYear">September 2026</h2>
+                    <button class="btn btn-outline" id="nextMonth">&gt;</button>
+                </div>
+            </header>
+
+            <div class="card calendar-container">
+                <div class="calendar-weekdays">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                </div>
+                <div class="calendar-grid" id="calendarGrid">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+
+            <div id="dayTasksModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 id="selectedDateTitle">Tasks for Sep 5</h2>
+                        <span class="close-modal" id="closeCalendarModal">&times;</span>
+                    </div>
+                    <div id="dayTasksList" class="task-mini-list">
+                        <!-- Injected by JS -->
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="addFromCalendar">Add Task</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="js/calendar.js"></script>
+</body>
+</html>

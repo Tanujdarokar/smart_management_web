@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Tasks | SmartTask Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/import.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar"></aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div>
+                    <h1>Import Tasks</h1>
+                    <p style="color: var(--text-muted);">Automatically convert files into structured tasks.</p>
+                </div>
+            </header>
+
+            <div class="card import-area" id="dropZone">
+                <div class="import-icon">📥</div>
+                <h2>Drop your files here</h2>
+                <p>Supports .txt, .csv, and .json</p>
+                <input type="file" id="fileInput" hidden accept=".txt,.csv,.json">
+                <button class="btn btn-primary" id="browseBtn">Browse Files</button>
+            </div>
+
+            <section id="previewSection" class="card" style="display: none; margin-top: 32px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <div>
+                        <h2 id="fileNameDisplay">File: tasks.txt</h2>
+                        <p id="taskCountDisplay" style="font-size: 14px; color: var(--text-muted);">Detected 5 tasks</p>
+                    </div>
+                    <div class="preview-actions">
+                        <button class="btn btn-outline" id="cancelImport">Cancel</button>
+                        <button class="btn btn-primary" id="confirmImport">Import Selected Tasks</button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="preview-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="selectAll" checked></th>
+                                <th>Task Title</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Due Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="previewBody">
+                            <!-- Injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Guide Section -->
+            <div class="guide-grid" style="margin-top: 40px;">
+                <div class="card">
+                    <h3>Smart TXT Format</h3>
+                    <p style="font-size: 14px; color: var(--text-muted); margin-top: 8px;">
+                        "[HIGH] Buy groceries by tomorrow"<br>
+                        "[DONE] Complete project"<br>
+                        "Meeting on 2026-09-10"
+                    </p>
+                </div>
+                <div class="card">
+                    <h3>CSV Structure</h3>
+                    <p style="font-size: 14px; color: var(--text-muted); margin-top: 8px;">
+                        Title, Priority, Status, DueDate<br>
+                        Fix bugs, High, Pending, 2026-09-05
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="js/import.js"></script>
+</body>
+</html>

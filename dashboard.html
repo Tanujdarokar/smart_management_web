@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | SmartTask Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar will be injected here -->
+        <aside class="sidebar"></aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div>
+                    <h1 id="welcomeMessage">Welcome back, User!</h1>
+                    <p style="color: var(--text-muted);">Here's what's happening with your tasks today.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="quickAddTask">
+                        <span>+</span> Add Task
+                    </button>
+                </div>
+            </header>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="card stat-card">
+                    <div class="stat-icon" style="background: rgba(79, 70, 229, 0.1); color: var(--primary-color);">Total</div>
+                    <div class="stat-value" id="totalTasks">0</div>
+                    <div class="stat-label">Total Tasks</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--pending);">🕒</div>
+                    <div class="stat-value" id="pendingTasks">0</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">✅</div>
+                    <div class="stat-value" id="completedTasks">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon" style="background: rgba(220, 38, 38, 0.1); color: var(--overdue);">⚠️</div>
+                    <div class="stat-value" id="overdueTasks">0</div>
+                    <div class="stat-label">Overdue</div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Recent Tasks -->
+                <section class="card recent-tasks">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 style="font-size: 18px;">Recent Tasks</h2>
+                        <a href="tasks.html" style="color: var(--primary-color); text-decoration: none; font-size: 14px;">View All</a>
+                    </div>
+                    <div id="recentTasksList" class="task-mini-list">
+                        <!-- Tasks will be injected here -->
+                        <div class="empty-state">No recent tasks found.</div>
+                    </div>
+                </section>
+
+                <!-- Progress & Quick Actions -->
+                <section class="card progress-overview">
+                    <h2 style="font-size: 18px; margin-bottom: 20px;">Completion Progress</h2>
+                    <div class="progress-container">
+                        <svg class="progress-ring" width="120" height="120">
+                            <circle class="progress-ring__circle-bg" stroke="#e5e7eb" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+                            <circle class="progress-ring__circle" stroke="var(--primary-color)" stroke-width="8" stroke-linecap="round" fill="transparent" r="52" cx="60" cy="60" id="progressCircle"/>
+                        </svg>
+                        <div class="progress-text" id="progressPercentage">0%</div>
+                    </div>
+
+                    <div class="quick-actions" style="margin-top: 32px;">
+                        <h3 style="font-size: 14px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 12px;">Quick Actions</h3>
+                        <div style="display: grid; gap: 10px;">
+                            <a href="import.html" class="btn btn-outline" style="width: 100%;">Import Tasks</a>
+                            <a href="calendar.html" class="btn btn-outline" style="width: 100%;">View Calendar</a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script type="module" src="js/dashboard.js"></script>
+</body>
+</html>
