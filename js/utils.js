@@ -110,6 +110,11 @@ const Utils = {
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="payments.html" class="nav-link ${activePage === 'payments' ? 'active' : ''}">
+                        <span class="icon-bubble">💳</span> <span>Payments</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="settings.html" class="nav-link ${activePage === 'settings' ? 'active' : ''}">
                         <span class="icon-bubble">⚙️</span> <span>Settings</span>
                     </a>
