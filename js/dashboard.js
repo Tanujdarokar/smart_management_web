@@ -46,7 +46,14 @@ function loadRecentTasks() {
     const recentTasks = tasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
 
     if (recentTasks.length === 0) {
-        container.innerHTML = '<div class="empty-state">No tasks created yet.</div>';
+        container.innerHTML = `
+            <div class="empty-state" style="padding: 24px 0;">
+                <p style="margin-bottom: 12px;">No tasks created yet.</p>
+                <button class="btn btn-outline btn-sm" onclick="window.location.href='tasks.html?action=new'">
+                    ✨ Create Your First Task
+                </button>
+            </div>
+        `;
         return;
     }
 

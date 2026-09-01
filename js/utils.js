@@ -14,35 +14,20 @@ const Utils = {
         if (!toastContainer) {
             const container = document.createElement('div');
             container.id = 'toast-container';
-            container.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                z-index: 9999;
-            `;
             document.body.appendChild(container);
         }
 
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
-        toast.innerText = message;
 
-        // Basic inline styles for toast (should be in CSS later)
-        toast.style.cssText = `
-            background: ${type === 'success' ? '#4caf50' : type === 'error' ? '#f44336' : '#2196f3'};
-            color: white;
-            padding: 12px 24px;
-            margin-bottom: 10px;
-            border-radius: 4px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            animation: slideIn 0.3s ease-out;
-            min-width: 200px;
-        `;
+        // Add icon based on type
+        const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️';
+        toast.innerHTML = `<span>${icon}</span> <span>${message}</span>`;
 
         document.getElementById('toast-container').appendChild(toast);
 
         setTimeout(() => {
-            toast.style.animation = 'fadeOut 0.3s ease-in';
+            toast.style.animation = 'fadeOut 0.3s ease-in forwards';
             setTimeout(() => toast.remove(), 300);
         }, 3000);
     },
@@ -63,6 +48,15 @@ const Utils = {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         return new Date(dueDate) < today;
+    },
+
+    isToday(dateStr) {
+        if (!dateStr) return false;
+        const today = new Date();
+        const date = new Date(dateStr);
+        return date.getDate() === today.getDate() &&
+               date.getMonth() === today.getMonth() &&
+               date.getFullYear() === today.getFullYear();
     },
 
     // DOM Helpers

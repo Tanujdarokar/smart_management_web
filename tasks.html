@@ -29,6 +29,7 @@
             <div class="card filters-card">
                 <div class="filters-grid">
                     <div class="filter-group">
+                        <label for="taskSearch" class="visually-hidden">Search tasks</label>
                         <input type="text" id="taskSearch" placeholder="🔍 Search tasks by title or description..." class="form-control">
                     </div>
                     <div class="filter-group">
@@ -60,14 +61,44 @@
             </div>
 
             <!-- Task Grid -->
-            <div id="taskList" class="task-grid">
-                <!-- Tasks will be injected here -->
+            <div id="activeTasksSection">
+                <div id="overdueTasksContainer" style="display: none; margin-bottom: 32px;">
+                    <h2 style="font-size: 18px; font-weight: 800; color: var(--overdue); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                        ⚠️ Overdue Tasks
+                    </h2>
+                    <div id="overdueTaskList" class="task-grid"></div>
+                </div>
+
+                <div id="todayTasksContainer" style="display: none; margin-bottom: 32px;">
+                    <h2 style="font-size: 18px; font-weight: 800; color: var(--primary-color); margin-bottom: 16px;">
+                        📅 Today's Focus
+                    </h2>
+                    <div id="todayTaskList" class="task-grid"></div>
+                </div>
+
+                <div id="upcomingTasksContainer" style="display: none; margin-bottom: 32px;">
+                    <h2 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 16px;">
+                        🚀 Upcoming Tasks
+                    </h2>
+                    <div id="upcomingTaskList" class="task-grid"></div>
+                </div>
+            </div>
+
+            <div id="historyTasksSection" style="margin-top: 48px; border-top: 2px dashed var(--border-color); padding-top: 32px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="font-size: 18px; font-weight: 800; color: var(--text-muted);">📜 Completed History</h2>
+                    <button id="toggleHistory" class="btn btn-secondary btn-sm">Show History</button>
+                </div>
+                <div id="historyTaskList" class="task-grid" style="display: none; opacity: 0.7;"></div>
             </div>
 
             <div id="emptyTasks" class="empty-state card" style="display: none; margin-top: 24px;">
                 <div style="font-size: 54px; margin-bottom: 12px; opacity: 0.8;">📂</div>
                 <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 6px; color: var(--text-main);">No tasks found</h3>
-                <p style="color: var(--text-muted); font-size: 14px;">Try adjusting your filters or create a new task to get started.</p>
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Try adjusting your filters or create a new task to get started.</p>
+                <button class="btn btn-primary" onclick="document.getElementById('addNewTask').click()">
+                    <span>✨</span> Create Your First Task
+                </button>
             </div>
         </main>
     </div>

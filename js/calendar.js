@@ -112,7 +112,14 @@ function showDayTasks(dateStr, tasks) {
     title.innerText = `Tasks for ${Utils.formatDate(dateStr)}`;
 
     if (tasks.length === 0) {
-        list.innerHTML = '<div class="empty-state">No tasks for this day.</div>';
+        list.innerHTML = `
+            <div class="empty-state" style="padding: 20px 0;">
+                <p style="margin-bottom: 12px;">No tasks for this day.</p>
+                <button class="btn btn-outline btn-sm" onclick="document.getElementById('addFromCalendar').click()">
+                    ✨ Create a Task
+                </button>
+            </div>
+        `;
     } else {
         list.innerHTML = tasks.map(t => `
             <div class="task-mini-item">

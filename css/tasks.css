@@ -54,6 +54,16 @@
     opacity: 1;
 }
 
+.overdue-card {
+    border-color: var(--overdue) !important;
+    background: rgba(239, 68, 68, 0.02);
+}
+
+.overdue-card::before {
+    background: var(--overdue) !important;
+    opacity: 0.7 !important;
+}
+
 .task-header {
     display: flex;
     justify-content: space-between;

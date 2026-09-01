@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Import Tasks | SmartTask Manager</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tasks.css">
     <link rel="stylesheet" href="css/import.css">
 </head>
 <body>
@@ -25,7 +26,10 @@
                 <h2>Drag & Drop your files here</h2>
                 <p>Supports <code>.txt</code>, <code>.csv</code>, and <code>.json</code> document formats</p>
                 <input type="file" id="fileInput" hidden accept=".txt,.csv,.json">
-                <button class="btn btn-primary" id="browseBtn">📂 Browse Computer Files</button>
+                <div style="display: flex; gap: 12px; justify-content: center;">
+                    <button class="btn btn-primary" id="browseBtn">📂 Browse Computer Files</button>
+                    <button class="btn btn-secondary" onclick="addManualPreviewRow()">➕ Add Manual Entry</button>
+                </div>
             </div>
 
             <section id="previewSection" class="card" style="display: none; margin-top: 32px;">
@@ -44,7 +48,10 @@
                     <table class="preview-table">
                         <thead>
                             <tr>
-                                <th><input type="checkbox" id="selectAll" checked></th>
+                                <th>
+                                    <label for="selectAll" class="visually-hidden">Select all tasks</label>
+                                    <input type="checkbox" id="selectAll" checked>
+                                </th>
                                 <th>Task Title</th>
                                 <th>Priority</th>
                                 <th>Status</th>
@@ -115,6 +122,65 @@
             </section>
 
         </main>
+    </div>
+
+    <!-- Task Modal for Editing Imported Tasks -->
+    <div id="taskModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Edit Imported Task</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <form id="taskForm">
+                <input type="hidden" id="taskId">
+                <div class="form-row">
+                    <label for="title">Task Title</label>
+                    <input type="text" id="title" required placeholder="What needs to be done?">
+                </div>
+                <div class="form-row">
+                    <label for="description">Description</label>
+                    <textarea id="description" rows="3" placeholder="Add more context..."></textarea>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <input type="text" id="category" placeholder="e.g. Work, Design">
+                    </div>
+                    <div class="form-group">
+                        <label for="dueDate">Due Date</label>
+                        <input type="date" id="dueDate" required>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="priority">Priority</label>
+                        <select id="priority">
+                            <option value="Low">🟢 Low</option>
+                            <option value="Medium">🔵 Medium</option>
+                            <option value="High">🟠 High</option>
+                            <option value="Critical">🔴 Critical</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status">
+                            <option value="Pending">⏳ Pending</option>
+                            <option value="In Progress">🔄 In Progress</option>
+                            <option value="Completed">✅ Completed</option>
+                            <option value="Cancelled">🚫 Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label for="tags">Tags (comma separated)</label>
+                    <input type="text" id="tags" placeholder="urgent, client, feature">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary close-modal-btn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script type="module" src="js/import.js"></script>
