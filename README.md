@@ -1,30 +1,29 @@
 # SmartTask Manager 🚀
 
-SmartTask Manager is a professional, responsive Task Management web application built with modern vanilla web technologies. It features a sophisticated UI, smart file parsing, and LocalStorage-based persistence, making it a perfect tool for managing daily productivity without the need for a complex backend.
+SmartTask Manager is a professional, high-performance Task Management web application built with modern vanilla web technologies. It combines a sophisticated SaaS-style UI with an intelligent file parsing engine, providing a seamless productivity experience entirely in the browser.
 
 ## ✨ Key Features
 
-- **🔐 Simulated Authentication**: Full registration and login flow with "Remember Me" functionality.
-- **📊 Interactive Dashboard**: Real-time task statistics, completion progress rings, and recent activity overview.
-- **📋 Advanced Task Management**: 
-    - Full CRUD (Create, Read, Update, Delete) operations.
-    - Advanced filtering (Status, Priority, Category).
-    - Instant search and multi-criteria sorting.
-    - Tags and category support.
-- **📥 Smart File Import (Core Engine)**:
-    - **Multi-format Support**: Import `.txt`, `.csv`, and `.json` files.
-    - **NLP-like Parsing**: Automatically detects priorities (e.g., `[HIGH]`), statuses (e.g., `[DONE]`), and deadlines (e.g., `by tomorrow`) from plain text.
-    - **Import Preview**: A staging area to review, edit, and select specific tasks from your files before importing.
-- **📅 Task Calendar**: A Month-view visual schedule to track deadlines and upcoming tasks.
-- **🌓 Modern Theming**: Light, Dark, and System mode support with persistent settings.
-- **📱 Fully Responsive**: Optimized for Desktop, Tablet, and Mobile with a dedicated hamburger navigation.
+- **🔐 Secure-simulated Auth**: Persistent registration and login system with "Remember Me" session handling.
+- **📊 Dynamic Dashboard**: Real-time analytics, visual task completion progress rings, and quick-access activity summaries.
+- **📋 Full-cycle Task Management**: 
+    - Full CRUD (Create, Read, Update, Delete) operations with instant LocalStorage sync.
+    - **Advanced Filtering**: Sort and filter by Status, Priority, Category, or Search terms.
+    - **Smart Tags**: Categorize tasks with custom tags for better organization.
+- **📥 Intelligent Import Engine**:
+    - **Multi-format Support**: Drag-and-drop `.txt`, `.csv`, and `.json` files.
+    - **Enhanced NLP Parser**: Automatically detects Priorities (e.g., `[HIGH]`), Statuses (e.g., `[DONE]`), and Dates (Supports `YYYY-MM-DD`, `DD/MM/YYYY`, and natural language like `tomorrow`).
+    - **Review Staging**: Interactive preview area to edit or selectively import tasks from external files.
+- **📅 Interactive Calendar**: A month-view visual planner with direct task integration—click any date to pre-fill and create tasks.
+- **🌓 Adaptive Theming**: Built-in Light and Dark modes that respect system preferences and persist across sessions.
+- **📱 Mobile-First Architecture**: Responsive design with a custom sidebar navigation and floating action menus for mobile users.
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: HTML5, CSS3 (Custom Variables, Flexbox, Grid)
-- **Logic**: Vanilla JavaScript (ES6+ Modules)
-- **Data Persistence**: LocalStorage API
-- **Design System**: Modern SaaS-style UI with custom animations and glassmorphism effects.
+- **Frontend**: Semantic HTML5, CSS3 (Custom Properties, Flexbox, Grid, Glassmorphism)
+- **Architecture**: Modular Vanilla JavaScript (ES6+ Modules)
+- **Persistence**: LocalStorage Browser API (No backend required)
+- **Icons**: Emoji-based lightweight icons for performance
 
 ## 🚀 Getting Started
 
@@ -32,20 +31,29 @@ SmartTask Manager is a professional, responsive Task Management web application 
    ```bash
    git clone https://github.com/Tanujdarokar/smart_management_web.git
    ```
-2. **Open the project**:
-   Simply open `index.html` in any modern web browser.
-3. **Register/Login**:
-   Create a local account to start managing your tasks.
+2. **Launch**:
+   Simply open `index.html` in your browser.
+3. **Setup**:
+   Register a local account. All data remains private and stored on your device.
 
 ## 💡 Smart Import Guide
 
-One of the most powerful features is the **Smart TXT Parser**. You can upload a simple `.txt` file with lines like:
+The **Smart TXT Parser** is designed to understand how you write. Try uploading a text file with:
 
-- `[CRITICAL] Finish the project report by 2026-09-05`
-- `[DONE] Call the client`
-- `Buy groceries by tomorrow -- Low priority`
+- `[CRITICAL] Finalize Q4 report by 2026-12-31`
+- `[DONE] Client onboarding meeting`
+- `Review documentation by tomorrow -- High priority`
+- `Fix login bug due 15/09/2026`
 
-The application will automatically detect the **Priority**, **Status**, and **Due Date** and present them in a preview table for your confirmation.
+The engine will automatically map these to the correct database fields for you.
+
+## 📈 Recent Updates
+
+- **v1.1.0**: 
+    - Added international date format support (`DD/MM/YYYY`) to the parser.
+    - Integrated Calendar-to-Task creation flow.
+    - Fixed persistence logic to preserve task creation history during edits.
+    - Improved UI color variable consistency for Dark Mode.
 
 ## 📝 License
 
