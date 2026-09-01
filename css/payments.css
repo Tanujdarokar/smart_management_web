@@ -488,7 +488,7 @@
 
     .pay-table th:nth-child(6),
     .pay-table td:nth-child(6) {
-        /* method column hidden on tablet */
+        display: none; /* method column hidden on tablet */
     }
 }
 
