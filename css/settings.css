@@ -70,3 +70,28 @@
     font-size: 14px;
     color: var(--text-main);
 }
+
+/* ─── Responsive ─────────────────────────── */
+@media (max-width: 768px) {
+    /* Settings theme grid stacks to 2 columns */
+    .theme-options {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px;
+    }
+
+    .settings-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .theme-options {
+        grid-template-columns: 1fr !important;
+    }
+
+    .theme-preview {
+        height: 70px;
+    }
+}
+

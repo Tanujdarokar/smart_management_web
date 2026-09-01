@@ -135,8 +135,58 @@
     --completed: var(--success);
 }
 
+/* ─── Responsive ─────────────────────────── */
 @media (max-width: 1024px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .stat-value {
+        font-size: 28px;
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .task-mini-item {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .progress-card {
+        padding: 20px;
+    }
+
+    .dashboard-grid {
+        gap: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-value {
+        font-size: 32px;
+    }
+
+    .dashboard-grid {
+        gap: 12px;
+    }
+
+    .quick-actions .btn {
+        font-size: 13px;
+        padding: 10px 16px;
     }
 }

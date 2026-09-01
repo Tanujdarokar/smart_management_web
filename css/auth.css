@@ -127,3 +127,27 @@
     margin-top: 6px;
     display: none;
 }
+
+/* ─── Responsive ─────────────────────────── */
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 28px 20px;
+        border-radius: var(--radius);
+    }
+
+    .auth-header h1 {
+        font-size: 22px;
+    }
+
+    .auth-container {
+        padding: 16px;
+        align-items: flex-start;
+        padding-top: 40px;
+    }
+}
+
+@media (max-width: 360px) {
+    .auth-card {
+        padding: 22px 14px;
+    }
+}

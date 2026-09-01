@@ -148,18 +148,57 @@ const Utils = {
     },
 
     setupMobileToggle() {
+        // Create overlay
+        let overlay = document.querySelector('.sidebar-overlay');
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.className = 'sidebar-overlay';
+            document.body.appendChild(overlay);
+        }
+
+        // Create FAB toggle button
         let toggle = document.querySelector('.mobile-nav-toggle');
         if (!toggle) {
-            toggle = document.createElement('div');
+            toggle = document.createElement('button');
             toggle.className = 'mobile-nav-toggle';
+            toggle.setAttribute('aria-label', 'Open navigation');
             toggle.innerHTML = '☰';
             document.body.appendChild(toggle);
         }
 
+        const sidebar = document.querySelector('.sidebar');
+
+        const openSidebar = () => {
+            sidebar.classList.add('active');
+            overlay.classList.add('active');
+            toggle.innerHTML = '✕';
+            toggle.setAttribute('aria-label', 'Close navigation');
+        };
+
+        const closeSidebar = () => {
+            sidebar.classList.remove('active');
+            overlay.classList.remove('active');
+            toggle.innerHTML = '☰';
+            toggle.setAttribute('aria-label', 'Open navigation');
+        };
+
         toggle.addEventListener('click', () => {
-            const sidebar = document.querySelector('.sidebar');
-            sidebar.classList.toggle('active');
-            toggle.innerHTML = sidebar.classList.contains('active') ? '✕' : '☰';
+            sidebar.classList.contains('active') ? closeSidebar() : openSidebar();
+        });
+
+        // Tap on overlay closes sidebar
+        overlay.addEventListener('click', closeSidebar);
+
+        // Close sidebar on nav-link tap (mobile)
+        sidebar.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 768) closeSidebar();
+            });
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && sidebar.classList.contains('active')) closeSidebar();
         });
     }
 };

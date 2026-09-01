@@ -474,30 +474,165 @@
     border-top: 1px solid var(--border-color);
 }
 
-/* ─── Responsive ─────────────────────────────── */
-@media (max-width: 1024px) {
+/* ─── Responsive ─────────────────────────── */
+@media (max-width: 1200px) {
     .payment-stats {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 992px) {
+    .pay-stat-value {
+        font-size: 22px;
+    }
+
+    .pay-table th:nth-child(6),
+    .pay-table td:nth-child(6) {
+        /* method column hidden on tablet */
+    }
+}
+
+@media (max-width: 768px) {
     .payment-stats {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .pay-stat-card {
+        padding: 16px 18px;
+        gap: 14px;
+    }
+
+    .pay-stat-icon {
+        font-size: 26px;
+    }
+
+    .pay-stat-value {
+        font-size: 20px;
+    }
+
+    /* Toolbar stacks */
+    .pay-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px 16px 0;
+    }
+
+    .pay-tabs { width: 100%; }
+    .pay-tab  { flex: 1; text-align: center; }
+
+    .pay-filters {
+        width: 100%;
+        padding-bottom: 12px;
+    }
+
+    .pay-search         { width: 100%; }
+    .pay-filter-select  { flex: 1; }
+
+    /* Table: hide less-critical columns */
+    .pay-table th:nth-child(4), /* Category */
+    .pay-table td:nth-child(4),
+    .pay-table th:nth-child(7), /* Note */
+    .pay-table td:nth-child(7) {
+        display: none;
     }
 
     .form-row {
         grid-template-columns: 1fr;
+        gap: 14px;
     }
 
-    .pay-toolbar {
-        flex-direction: column;
-        align-items: flex-start;
+    .modal-box {
+        padding: 24px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .payment-stats {
+        grid-template-columns: 1fr;
     }
 
-    .pay-filters {
+    /* Table becomes card stack on mobile */
+    .pay-table thead {
+        display: none;
+    }
+
+    .pay-table,
+    .pay-table tbody,
+    .pay-table tr,
+    .pay-table td {
+        display: block;
         width: 100%;
     }
 
-    .pay-search { width: 100%; }
+    .pay-table tr {
+        background: var(--card-bg-solid);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius);
+        margin-bottom: 10px;
+        padding: 14px 16px;
+        position: relative;
+    }
+
+    .pay-table tr:last-child {
+        margin-bottom: 0;
+    }
+
+    .pay-table td {
+        border: none;
+        padding: 4px 0;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* Data label pseudo-elements */
+    .pay-table td:nth-child(1)::before { content: ''; }
+    .pay-table td:nth-child(2)::before { content: 'To/From: '; font-weight:700; color:var(--text-muted); font-size:11px; text-transform:uppercase; }
+    .pay-table td:nth-child(3)::before { content: 'Amount: '; font-weight:700; color:var(--text-muted); font-size:11px; text-transform:uppercase; }
+    .pay-table td:nth-child(4) { display: none; } /* Category */
+    .pay-table td:nth-child(5)::before { content: 'Date: '; font-weight:700; color:var(--text-muted); font-size:11px; text-transform:uppercase; }
+    .pay-table td:nth-child(6)::before { content: 'Status: '; font-weight:700; color:var(--text-muted); font-size:11px; text-transform:uppercase; }
+    .pay-table td:nth-child(7) { display: none; } /* Note */
+    .pay-table td:nth-child(8) {
+        border-top: 1px solid var(--border-color);
+        margin-top: 8px;
+        padding-top: 10px;
+        justify-content: flex-end;
+    }
+
+    .modal-overlay.open {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .modal-box {
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        max-height: 93vh;
+        padding: 24px 16px;
+        max-width: 100%;
+    }
+
+    .type-toggle {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .pay-toolbar {
+        padding: 12px 12px 0;
+    }
+}
+
+@media (max-width: 360px) {
+    .pay-stat-value {
+        font-size: 18px;
+    }
+
+    .pay-stat-card {
+        padding: 12px 14px;
+        gap: 10px;
+    }
 }
