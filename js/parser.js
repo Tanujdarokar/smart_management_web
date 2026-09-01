@@ -32,24 +32,114 @@ const Parser = {
     },
 
     parseCSV(text) {
-        const lines = text.split('\n');
+        // Normalize line endings
+        const lines = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
         if (lines.length < 2) return [];
 
-        const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-        const tasks = [];
+        // Parse headers (handle quoted headers too)
+        const rawHeaders = this.splitCSVLine(lines[0]);
+        const headers = rawHeaders.map(h => h.trim().toLowerCase().replace(/[^a-z0-9_\s]/g, ''));
 
+        // Smart column mapping — find best column for each field
+        const fieldAliases = {
+            title:       ['title', 'task', 'name', 'task_name', 'subject', 'topic',
+                          'phase_name', 'phasename', 'task title', 'item', 'work item',
+                          'summary', 'description_short', 'label'],
+            description: ['description', 'desc', 'details', 'notes', 'note',
+                          'detail', 'body', 'content', 'info'],
+            priority:    ['priority', 'prio', 'importance', 'urgency', 'level'],
+            status:      ['status', 'state', 'progress', 'stage', 'phase_status'],
+            dueDate:     ['duedate', 'due_date', 'due', 'deadline', 'end_date',
+                          'enddate', 'target_date', 'targetdate', 'finish_date',
+                          'completion_date', 'due date', 'date'],
+            category:    ['category', 'cat', 'type', 'group', 'section', 'phase',
+                          'module', 'area', 'domain'],
+            tags:        ['tags', 'tag', 'labels', 'keywords', 'skills']
+        };
+
+        // Map each field to the best matching header index
+        const colMap = {};
+        for (const [field, aliases] of Object.entries(fieldAliases)) {
+            let bestIndex = -1;
+            let bestScore = -1;
+            aliases.forEach(alias => {
+                const idx = headers.findIndex(h => h === alias || h.includes(alias) || alias.includes(h));
+                if (idx !== -1 && bestScore < aliases.indexOf(alias)) {
+                    // Earlier in alias list = higher priority
+                    if (bestIndex === -1 || aliases.indexOf(alias) < bestScore) {
+                        bestIndex = idx;
+                        bestScore = aliases.indexOf(alias);
+                    }
+                }
+            });
+            if (bestIndex !== -1) colMap[field] = bestIndex;
+        }
+
+        // If no title column found, use the column with the most unique values (heuristic)
+        if (colMap.title === undefined) {
+            const usedCols = new Set(Object.values(colMap));
+            // Try columns not already assigned — pick first unused text-like column
+            for (let i = 0; i < headers.length; i++) {
+                if (!usedCols.has(i)) {
+                    colMap.title = i;
+                    break;
+                }
+            }
+            // Absolute fallback: first column
+            if (colMap.title === undefined) colMap.title = 0;
+        }
+
+        const tasks = [];
         for (let i = 1; i < lines.length; i++) {
             if (!lines[i].trim()) continue;
-            const values = lines[i].split(',').map(v => v.trim());
-            const taskObj = {};
+            const values = this.splitCSVLine(lines[i]);
 
-            headers.forEach((header, index) => {
-                taskObj[header] = values[index];
-            });
+            const get = (field) => {
+                const idx = colMap[field];
+                return idx !== undefined ? (values[idx] || '').trim() : '';
+            };
 
-            tasks.push(this.standardizeTask(taskObj));
+            // Build description from all unmapped columns
+            const mappedCols = new Set(Object.values(colMap));
+            const extraParts = headers
+                .map((h, idx) => ({ h, idx, val: (values[idx] || '').trim() }))
+                .filter(({ idx, val }) => !mappedCols.has(idx) && val)
+                .map(({ idx, val }) => `${rawHeaders[idx] || headers[idx]}: ${val}`);
+
+            const descBase = get('description');
+            const fullDesc = [descBase, ...extraParts].filter(Boolean).join(' | ');
+
+            tasks.push(this.standardizeTask({
+                title:       get('title'),
+                description: fullDesc,
+                priority:    get('priority'),
+                status:      get('status'),
+                dueDate:     get('dueDate'),
+                category:    get('category'),
+                tags:        get('tags')
+            }));
         }
         return tasks;
+    },
+
+    // Splits a CSV line respecting quoted fields
+    splitCSVLine(line) {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+            const ch = line[i];
+            if (ch === '"') {
+                inQuotes = !inQuotes;
+            } else if (ch === ',' && !inQuotes) {
+                result.push(current);
+                current = '';
+            } else {
+                current += ch;
+            }
+        }
+        result.push(current);
+        return result;
     },
 
     parseTXT(text) {

@@ -83,6 +83,37 @@
                     </p>
                 </div>
             </div>
+
+            <!-- Previously Imported Tasks Section -->
+            <section id="importedTasksSection" style="margin-top: 40px; display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <h2 style="font-size: 20px; font-weight: 800;">📦 Imported Tasks</h2>
+                        <p id="importedCount" style="font-size: 13px; color: var(--text-muted); margin-top: 4px;"></p>
+                    </div>
+                    <button class="btn btn-outline" id="clearImportedBtn" style="border-color: #ef4444; color: #ef4444;">
+                        🗑️ Clear All Imported
+                    </button>
+                </div>
+                <div class="card" style="overflow-x: auto;">
+                    <table class="preview-table" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Task Title</th>
+                                <th>Category</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Due Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="importedTasksBody">
+                            <!-- injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
         </main>
     </div>
 

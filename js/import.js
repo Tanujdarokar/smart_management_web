@@ -131,12 +131,13 @@ function confirmImport() {
                 id: Utils.generateId(),
                 userId: user.id,
                 title: row.querySelector('.edit-title').value,
-                description: detectedTasks[index].description || 'Imported from file',
+                description: detectedTasks[index]?.description || 'Imported from file',
                 priority: row.querySelector('.edit-priority').value,
                 status: row.querySelector('.edit-status').value,
                 dueDate: row.querySelector('.edit-date').value,
-                category: 'Imported',
-                tags: 'imported',
+                category: detectedTasks[index]?.category || 'Imported',
+                tags: detectedTasks[index]?.tags || 'imported',
+                source: 'imported',
                 createdAt: new Date().toISOString()
             };
             Storage.addTask(task);

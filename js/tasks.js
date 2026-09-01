@@ -39,7 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function loadTasks() {
     const user = Storage.getCurrentUser();
-    currentTasks = Storage.getTasks(user.id);
+    // Exclude CSV-imported tasks — they belong in the Import section only
+    currentTasks = Storage.getTasks(user.id).filter(t => t.source !== 'imported');
     renderTasks(currentTasks);
 }
 
