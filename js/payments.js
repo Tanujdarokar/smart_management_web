@@ -87,6 +87,10 @@ function getStatusDot(status) {
 
 function renderTable() {
     const all      = loadPayments();
+
+    // Sort by date descending (newest first)
+    all.sort((a, b) => new Date(b.date) - new Date(a.date));
+
     let filtered   = all;
 
     // Tab filter
