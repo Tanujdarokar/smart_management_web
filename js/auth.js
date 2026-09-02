@@ -2,6 +2,8 @@ import Storage from './storage.js';
 import Utils from './utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    Utils.initTheme();
+
     const registerForm = document.getElementById('registerForm');
     const loginForm = document.getElementById('loginForm');
 

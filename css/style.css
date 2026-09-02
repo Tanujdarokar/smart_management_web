@@ -93,6 +93,31 @@
     --shadow-glow: 0 10px 30px -5px rgba(99, 102, 241, 0.5);
 }
 
+@media (prefers-color-scheme: dark) {
+    [data-theme="system"] {
+        --bg-color: #0b0f19;
+        --bg-gradient: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                        radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 50%),
+                        #0b0f19;
+        --card-bg: rgba(17, 24, 39, 0.75);
+        --card-bg-solid: #111827;
+        --sidebar-bg: rgba(17, 24, 39, 0.85);
+        --text-main: #f8fafc;
+        --text-muted: #94a3b8;
+        --border-color: rgba(51, 65, 85, 0.6);
+        --border-hover: rgba(129, 140, 248, 0.5);
+
+        --glass-backdrop: blur(20px) saturate(200%);
+        --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+
+        --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+        --shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        --shadow-md: 0 12px 28px rgba(0, 0, 0, 0.4);
+        --shadow-lg: 0 24px 48px rgba(0, 0, 0, 0.5);
+        --shadow-glow: 0 10px 30px -5px rgba(99, 102, 241, 0.5);
+    }
+}
+
 * {
     margin: 0;
     padding: 0;

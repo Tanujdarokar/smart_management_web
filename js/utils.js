@@ -2,10 +2,22 @@
  * SmartTask Manager - Utilities
  */
 
+import Storage from './storage.js';
+
 const Utils = {
     // Generate Unique ID
     generateId() {
         return '_' + Math.random().toString(36).substr(2, 9);
+    },
+
+    // Initialize Theme
+    initTheme() {
+        const user = Storage.getCurrentUser();
+        const settings = Storage.getSettings(user ? user.id : null);
+
+        if (settings && settings.theme) {
+            document.documentElement.setAttribute('data-theme', settings.theme);
+        }
     },
 
     // Toast Notifications
@@ -70,6 +82,8 @@ const Utils = {
 
     // Sidebar Injection
     renderSidebar(activePage) {
+        this.initTheme(); // Apply theme globally
+
         const sidebar = document.querySelector('.sidebar');
         if (!sidebar) return;
 
