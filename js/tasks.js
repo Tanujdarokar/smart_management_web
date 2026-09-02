@@ -97,12 +97,12 @@ function renderTasks(tasks) {
                         </span>
                         ${isOverdue ? '<span class="status-badge" style="background: var(--overdue-bg); color: var(--overdue);">⚠️ Overdue</span>' : ''}
                     </div>
-                    <h3 class="task-title">${task.title}</h3>
-                    <p class="task-desc">${task.description || 'No description provided'}</p>
+                    <h3 class="task-title">${Utils.escapeHtml(task.title)}</h3>
+                    <p class="task-desc">${Utils.escapeHtml(task.description) || 'No description provided'}</p>
 
                     <div class="task-tags">
                         ${task.tags ? task.tags.split(',').map(tag => `
-                            <span class="tag-badge">#${tag.trim()}</span>
+                            <span class="tag-badge">#${Utils.escapeHtml(tag.trim())}</span>
                         `).join('') : ''}
                     </div>
                 </div>

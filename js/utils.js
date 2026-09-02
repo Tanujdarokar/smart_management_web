@@ -80,6 +80,16 @@ const Utils = {
         return document.querySelectorAll(selector);
     },
 
+    escapeHtml(str) {
+        if (typeof str !== 'string') return str;
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    },
+
     // Sidebar Injection
     renderSidebar(activePage) {
         this.initTheme(); // Apply theme globally
@@ -131,12 +141,12 @@ const Utils = {
             <div class="sidebar-footer">
                 <div class="user-profile">
                     <div class="avatar">
-                        ${initials}
+                        ${Utils.escapeHtml(initials)}
                         <span class="avatar-status"></span>
                     </div>
                     <div class="user-info">
-                        <div class="user-name">${user.name}</div>
-                        <div class="user-email">${user.email}</div>
+                        <div class="user-name">${Utils.escapeHtml(user.name)}</div>
+                        <div class="user-email">${Utils.escapeHtml(user.email)}</div>
                     </div>
                 </div>
                 <a href="#" id="logoutBtn" class="nav-link" style="color: var(--cancelled);">

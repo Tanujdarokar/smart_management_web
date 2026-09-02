@@ -133,10 +133,10 @@ function loadImportedTasks() {
 
     body.innerHTML = currentImportedTasks.map(t => `
         <tr>
-            <td style="font-weight: 600;">${t.title}</td>
-            <td><span class="tag-badge">${t.category}</span></td>
-            <td><span class="status-badge" style="background: rgba(var(--priority-${t.priority.toLowerCase()}-rgb, 99, 102, 241), 0.1); color: var(--priority-${t.priority.toLowerCase()});">${t.priority}</span></td>
-            <td><span class="status-badge" style="background: rgba(var(--${t.status.toLowerCase().replace(' ', '-')}-rgb, 99, 102, 241), 0.1); color: var(--${t.status.toLowerCase().replace(' ', '-')});">${t.status}</span></td>
+            <td style="font-weight: 600;">${Utils.escapeHtml(t.title)}</td>
+            <td><span class="tag-badge">${Utils.escapeHtml(t.category)}</span></td>
+            <td><span class="status-badge" style="background: rgba(var(--priority-${t.priority.toLowerCase()}-rgb, 99, 102, 241), 0.1); color: var(--priority-${t.priority.toLowerCase()});">${Utils.escapeHtml(t.priority)}</span></td>
+            <td><span class="status-badge" style="background: rgba(var(--${t.status.toLowerCase().replace(' ', '-')}-rgb, 99, 102, 241), 0.1); color: var(--${t.status.toLowerCase().replace(' ', '-')});">${Utils.escapeHtml(t.status)}</span></td>
             <td>${Utils.formatDate(t.dueDate)}</td>
             <td>
                 <button class="btn btn-icon-action" onclick="editImportedTask('${t.id}')" title="Edit">✏️</button>
@@ -248,7 +248,7 @@ function renderPreview(fileName, tasks) {
     previewBody.innerHTML = tasks.map((task, index) => `
         <tr>
             <td><input type="checkbox" class="task-check" data-index="${index}" checked></td>
-            <td><input type="text" value="${task.title}" class="form-control edit-title" data-index="${index}"></td>
+            <td><input type="text" value="${Utils.escapeHtml(task.title)}" class="form-control edit-title" data-index="${index}"></td>
             <td>
                 <select class="form-control edit-priority" data-index="${index}">
                     <option ${task.priority === 'Low' ? 'selected' : ''}>Low</option>

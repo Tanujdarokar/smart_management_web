@@ -61,7 +61,7 @@ function loadRecentTasks() {
         <div class="task-mini-item">
             <div style="width: 12px; height: 12px; border-radius: 50%; background: var(--priority-${task.priority.toLowerCase()});"></div>
             <div style="flex-grow: 1;">
-                <div style="font-weight: 500; font-size: 14px;">${task.title}</div>
+                <div style="font-weight: 500; font-size: 14px;">${Utils.escapeHtml(task.title)}</div>
                 <div style="font-size: 12px; color: var(--text-muted);">${Utils.formatDate(task.dueDate)}</div>
             </div>
             <div style="font-size: 12px; font-weight: 600; color: var(--${task.status.toLowerCase().replace(' ', '-')});">

@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 id: Utils.generateId(),
                 name: fullName,
                 email: email,
-                password: password // In real apps, hash this!
+                password: btoa(password) // SECURITY: In real apps, use proper salted hashing (like bcrypt)!
             };
 
             Storage.saveUser(newUser);
@@ -60,7 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const rememberMe = document.getElementById('rememberMe').checked;
 
             const users = Storage.getUsers();
-            const user = users.find(u => u.email === email && u.password === password);
+            // Compare against obfuscated password
+            const user = users.find(u => u.email === email && u.password === btoa(password));
 
             if (user) {
                 Storage.setCurrentUser(user);

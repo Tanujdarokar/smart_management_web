@@ -137,16 +137,16 @@ function renderTable() {
                     ${p.type === 'sent' ? '📤' : '📥'} ${p.type === 'sent' ? 'Sent' : 'Received'}
                 </span>
             </td>
-            <td style="font-weight:600;">${escapeHtml(p.party)}</td>
+            <td style="font-weight:600;">${Utils.escapeHtml(p.party)}</td>
             <td><span class="amount-cell ${p.type}">${p.type === 'sent' ? '−' : '+'}${formatMoney(p.amount)}</span></td>
-            <td style="color:var(--text-muted);font-size:13px;">${escapeHtml(p.category || 'General')}</td>
+            <td style="color:var(--text-muted);font-size:13px;">${Utils.escapeHtml(p.category || 'General')}</td>
             <td style="color:var(--text-muted);font-size:13px;white-space:nowrap;">${formatDate(p.date)}</td>
             <td>
                 <span class="status-badge ${p.status}">
                     ${getStatusDot(p.status)} ${capitalize(p.status)}
                 </span>
             </td>
-            <td><span class="note-cell" title="${escapeHtml(p.note || '')}">${escapeHtml(p.note || '—')}</span></td>
+            <td><span class="note-cell" title="${Utils.escapeHtml(p.note || '')}">${Utils.escapeHtml(p.note || '—')}</span></td>
             <td>
                 <div class="tbl-actions">
                     <button class="tbl-btn edit-btn" data-id="${p.id}" title="Edit">✏️</button>
@@ -167,14 +167,6 @@ function renderTable() {
     tbody.querySelectorAll('.tbl-delete').forEach(btn => {
         btn.addEventListener('click', () => openDeleteModal(btn.dataset.id));
     });
-}
-
-function escapeHtml(str) {
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
 }
 
 function capitalize(str) {

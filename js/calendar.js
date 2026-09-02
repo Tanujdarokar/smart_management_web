@@ -84,7 +84,7 @@ function createDayElement(day, otherMonth, dayTasks = [], dateStr = '') {
         dayTasks.slice(0, 3).forEach(task => {
             const dot = document.createElement('div');
             dot.className = 'task-dot';
-            dot.innerText = task.title;
+            dot.innerText = task.title; // innerText is safe
             dot.style.color = `var(--priority-${task.priority.toLowerCase()})`;
             dots.appendChild(dot);
         });
@@ -124,8 +124,8 @@ function showDayTasks(dateStr, tasks) {
         list.innerHTML = tasks.map(t => `
             <div class="task-mini-item">
                 <div style="flex-grow: 1;">
-                    <div style="font-weight: 600;">${t.title}</div>
-                    <div style="font-size: 12px; color: var(--text-muted);">${t.status} | ${t.priority}</div>
+                    <div style="font-weight: 600;">${Utils.escapeHtml(t.title)}</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">${Utils.escapeHtml(t.status)} | ${Utils.escapeHtml(t.priority)}</div>
                 </div>
             </div>
         `).join('');
