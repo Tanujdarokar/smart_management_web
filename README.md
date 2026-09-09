@@ -1,65 +1,85 @@
 # SmartTask Manager 🚀
 
-SmartTask Manager is a professional, high-performance Task Management web application built with modern vanilla web technologies. It combines a sophisticated Glassmorphism UI with an intelligent file parsing engine and robust security features, providing a seamless productivity experience entirely in the browser.
+SmartTask Manager is a static single-page style productivity dashboard built with vanilla HTML, CSS, and JavaScript. It helps users create, organize, import, track, and review tasks while keeping all app data in the browser through `localStorage`.
 
-## ✨ Key Features
+The current project includes a login and registration flow, a dashboard, task management, import parsing, calendar planning, payment tracking, and settings with profile/account deletion actions.
 
-- **🔐 Secure-simulated Auth**: Persistent registration and login system with password obfuscation and "Remember Me" session handling.
-- **📊 Dynamic Dashboard**: Real-time analytics, visual task completion progress rings, and quick-access activity summaries.
-- **📋 Advanced Task Management**: 
-    - **Smart Grouping**: Tasks are automatically categorized into **Overdue**, **Today's Focus**, and **Upcoming** for maximum productivity.
-    - **Full-cycle CRUD**: Create, Read, Update, and Delete operations with instant LocalStorage sync.
-    - **Advanced Filtering**: Sort and filter by Status, Priority, Category, or Search terms.
-- **📥 Intelligent Import Engine**:
-    - **Multi-format Support**: Drag-and-drop `.txt`, `.csv`, and `.json` files.
-    - **Staging & CRUD**: Review, edit, manually add, or selectively import tasks from a dedicated preview area.
-    - **Enhanced NLP Parser**: Automatically detects Priorities, Statuses, and international date formats.
-- **📅 Interactive Calendar**: A month-view visual planner—click any date to instantly create pre-filled tasks.
-- **💳 Payment Tracker**: Manage financial transactions with date-wise sorting and status tracking (Sent/Received).
-- **🌓 Global Adaptive Theming**: Built-in Light and Dark modes that respect system preferences and persist across all application pages.
-- **📱 Mobile-First Architecture**: Fully responsive design with an off-canvas sidebar and optimized touch interfaces.
+## ✨ Current Project Features
+
+- **Authentication flow**: Register, login, logout, and remember-me behavior through the browser storage layer.
+- **Guest UI preview behavior**: Users can open the app as a guest and see the website layout, but site clicks and feature actions trigger a login-required warning modal until the user signs in.
+- **Dashboard**: Shows task totals, recent tasks, overdue, pending, completed summaries, and a progress visualization.
+- **Tasks module**: Add, edit, delete, update completion, filter, search, and sort tasks.
+- **Import module**: Drag-and-drop file import, manual preview rows, imported task preview, and review/edit/import workflow.
+- **Calendar module**: Month calendar layout that groups and displays tasks by date.
+- **Payments module**: Track sent and received payments, filters, status tabs, and transaction deletion workflows.
+- **Settings module**: Theme switching, profile update form, and account deletion.
+- **Responsive UI**: Sidebar, mobile navigation toggle, and CSS-driven responsive styling across pages.
+
+## 🧩 Project Structure
+
+```text
+smart-task-manager/
+├── index.html
+├── login.html
+├── register.html
+├── dashboard.html
+├── tasks.html
+├── import.html
+├── calendar.html
+├── payments.html
+├── settings.html
+├── css/
+├── js/
+└── assets/
+```
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: Semantic HTML5, CSS3 (Custom Properties, Flexbox, Grid, Glassmorphism)
-- **Architecture**: Modular Vanilla JavaScript (ES6+ Modules)
-- **Persistence**: LocalStorage Browser API (No backend required)
-- **Security**: Built-in XSS protection and HTML sanitization
+- **Frontend**: HTML5, CSS3, JavaScript ES modules
+- **Architecture**: Static web app using local page files
+- **Storage**: LocalStorage API
+- **Parser**: Custom import parser in the JavaScript parser module
 
-## 🚀 Getting Started
+## 🚀 How to Run
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/Tanujdarokar/smart_management_web.git
-   ```
-2. **Launch**:
-   Simply open `index.html` in your browser.
-3. **Setup**:
-   Register a local account. All data remains private and stored on your device.
+Since this is a static web project, you can run it locally by opening the app in a browser, or by using a VS Code Live Server extension.
 
-## 💡 Smart Import Guide
+Recommended workflow:
 
-The **Smart TXT Parser** is designed to understand how you write. Try uploading a text file with:
+1. Clone or download the repository.
+2. Open the project folder.
+3. Start a local static server or use Live Server.
+4. Open the app from `index.html` or open `login.html` directly.
 
-- `[CRITICAL] Finalize Q4 report by 2026-12-31`
-- `[DONE] Client onboarding meeting`
-- `Review documentation by tomorrow -- High priority`
-- `Fix login bug due 15/09/2026`
+Example using a Python server:
 
-The engine will automatically map these to the correct database fields for you.
+```bash
+python -m http.server 8000
+```
 
-## 📈 Recent Updates
+Then visit:
 
-- **v1.2.0**: 
-    - **Security Patch**: Implemented global XSS protection and HTML escaping for all user inputs.
-    - **Logic Overhaul**: Added automatic task grouping (Overdue/Today/Upcoming) and a dedicated History section.
-    - **Import CRUD**: Enabled full editing and manual entry capabilities within the Import module.
-    - **Global Theming**: Fixed theme persistence issues and ensured Light/Dark mode consistency across all pages.
-    - **Payments**: Improved financial transaction management with chronological sorting.
+```text
+http://localhost:8000
+```
 
-## 📝 License
+## 🔐 Guest / Login Behavior
 
-This project is open-source and available under the MIT License.
+The app now supports a guest mode experience:
+
+- A user can click **Continue as Guest** from the login page.
+- Guest users can view the UI layout.
+- The app shows a login-required modal when a guest tries to use protected features.
+- Full feature access requires creating an account or logging in.
+
+## 📝 Notes
+
+This project is implemented as a local browser-based task manager and does not use a backend server or database. All persistent application data such as users, tasks, settings, and payments are stored in the browser’s `localStorage`.
+
+## 📄 License
+
+This project is available for educational and development use.
 
 ---
-Built with ❤️ by [Tanuj Darokar](https://github.com/Tanujdarokar)
+Built with ❤️ for task and workflow management.
