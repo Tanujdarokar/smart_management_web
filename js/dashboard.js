@@ -2,15 +2,11 @@ import Storage from './storage.js';
 import Utils from './utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const user = Storage.getCurrentUser();
-    if (!user) {
-        window.location.href = 'login.html';
-        return;
-    }
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
 
     // Initialize UI
     Utils.renderSidebar('dashboard');
-    document.getElementById('welcomeMessage').innerText = `Welcome back, ${user.name.split(' ')[0]}!`;
+    document.getElementById('welcomeMessage').innerText = user.isGuest ? 'Welcome, Guest User!' : `Welcome back, ${user.name.split(' ')[0]}!`;
 
     loadDashboardStats();
     loadRecentTasks();
@@ -18,12 +14,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event Listeners
     document.getElementById('quickAddTask').addEventListener('click', () => {
+        if (Storage.isGuestUser(Storage.getCurrentUser())) {
+            Utils.showGuestLoginWarning();
+            return;
+        }
         window.location.href = 'tasks.html?action=new';
     });
 });
 
 function loadDashboardStats() {
-    const user = Storage.getCurrentUser();
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
     const tasks = Storage.getTasks(user.id);
 
     const total = tasks.length;
@@ -38,7 +38,7 @@ function loadDashboardStats() {
 }
 
 function loadRecentTasks() {
-    const user = Storage.getCurrentUser();
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
     const tasks = Storage.getTasks(user.id);
     const container = document.getElementById('recentTasksList');
 
@@ -72,7 +72,7 @@ function loadRecentTasks() {
 }
 
 function updateProgressRing() {
-    const user = Storage.getCurrentUser();
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
     const tasks = Storage.getTasks(user.id);
     const total = tasks.length;
     const completed = tasks.filter(t => t.status === 'Completed').length;

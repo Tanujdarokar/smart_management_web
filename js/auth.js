@@ -6,6 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const registerForm = document.getElementById('registerForm');
     const loginForm = document.getElementById('loginForm');
+    const guestLoginBtn = document.getElementById('guestLoginBtn');
+
+    if (guestLoginBtn) {
+        guestLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            Storage.setCurrentUser(Storage.getGuestUser());
+            Utils.showToast('Guest preview enabled. Login required to use features.', 'info');
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 500);
+        });
+    }
 
     // Handle Registration
     if (registerForm) {

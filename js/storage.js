@@ -42,6 +42,21 @@ const Storage = {
         return this.get(this.KEYS.CURRENT_USER);
     },
 
+    getGuestUser() {
+        return {
+            id: 'guest',
+            name: 'Guest User',
+            email: 'guest@smarttask.local',
+            password: '',
+            guest: true,
+            isGuest: true
+        };
+    },
+
+    isGuestUser(user) {
+        return Boolean(user && ((user.guest === true) || (user.id === 'guest') || (user.email === 'guest@smarttask.local')));
+    },
+
     setCurrentUser(user) {
         this.set(this.KEYS.CURRENT_USER, user);
     },

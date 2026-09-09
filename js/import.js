@@ -5,11 +5,7 @@ import Parser from './parser.js';
 let detectedTasks = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    const user = Storage.getCurrentUser();
-    if (!user) {
-        window.location.href = 'login.html';
-        return;
-    }
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
 
     Utils.renderSidebar('import');
 
@@ -115,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 let currentImportedTasks = [];
 
 function loadImportedTasks() {
-    const user = Storage.getCurrentUser();
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
     const allTasks = Storage.getTasks(user.id);
     currentImportedTasks = allTasks.filter(t => t.source === 'imported');
 

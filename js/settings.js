@@ -2,11 +2,7 @@ import Storage from './storage.js';
 import Utils from './utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const user = Storage.getCurrentUser();
-    if (!user) {
-        window.location.href = 'login.html';
-        return;
-    }
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
 
     Utils.renderSidebar('settings');
 

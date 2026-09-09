@@ -4,11 +4,7 @@ import Utils from './utils.js';
 let currentDate = new Date();
 
 document.addEventListener('DOMContentLoaded', () => {
-    const user = Storage.getCurrentUser();
-    if (!user) {
-        window.location.href = 'login.html';
-        return;
-    }
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
 
     Utils.renderSidebar('calendar');
     renderCalendar();
@@ -43,7 +39,7 @@ function renderCalendar() {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const prevMonthDays = new Date(year, month, 0).getDate();
 
-    const user = Storage.getCurrentUser();
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
     const tasks = Storage.getTasks(user.id);
 
     // Prev month days

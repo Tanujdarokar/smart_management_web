@@ -6,17 +6,19 @@ const modal = document.getElementById('taskModal');
 const taskForm = document.getElementById('taskForm');
 
 document.addEventListener('DOMContentLoaded', () => {
-    const user = Storage.getCurrentUser();
-    if (!user) {
-        window.location.href = 'login.html';
-        return;
-    }
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
 
     Utils.renderSidebar('tasks');
     loadTasks();
 
     // Event Listeners
-    document.getElementById('addNewTask').addEventListener('click', () => openModal());
+    document.getElementById('addNewTask').addEventListener('click', () => {
+        if (Storage.isGuestUser(Storage.getCurrentUser())) {
+            Utils.showGuestLoginWarning();
+            return;
+        }
+        openModal();
+    });
     document.querySelectorAll('.close-modal, .close-modal-btn').forEach(btn => {
         btn.addEventListener('click', closeModal);
     });
@@ -49,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadTasks() {
-    const user = Storage.getCurrentUser();
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
     currentTasks = Storage.getTasks(user.id);
     renderTasks(currentTasks);
 }
@@ -201,6 +203,12 @@ function closeModal() {
 }
 
 function handleTaskSubmit(e) {
+    if (Storage.isGuestUser(Storage.getCurrentUser())) {
+        e.preventDefault();
+        Utils.showGuestLoginWarning();
+        return;
+    }
+
     e.preventDefault();
     const user = Storage.getCurrentUser();
     const taskId = document.getElementById('taskId').value;

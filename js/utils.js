@@ -10,6 +10,102 @@ const Utils = {
         return '_' + Math.random().toString(36).substr(2, 9);
     },
 
+    setupGuestProtection() {
+        const page = window.location.pathname.split('/').pop();
+        if (page === 'login.html' || page === 'register.html') {
+            return;
+        }
+
+        if (document.body.dataset.guestProtectionInstalled === 'true') {
+            return;
+        }
+
+        document.body.dataset.guestProtectionInstalled = 'true';
+
+        document.addEventListener('click', (event) => {
+            const currentUser = Storage.getCurrentUser();
+            const userIsGuest = Storage.isGuestUser(currentUser);
+            const userIsSignedIn = Boolean(currentUser) && !userIsGuest;
+
+            if (userIsSignedIn) {
+                return;
+            }
+
+            if (event.target.closest('#guest-login-modal') || event.target.closest('#guest-login-action') || event.target.closest('#guest-register-action') || event.target.closest('#guest-login-modal-close')) {
+                return;
+            }
+
+            if (event.target.closest('a')) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                event.stopPropagation();
+                Utils.showGuestLoginWarning();
+                return;
+            }
+
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            event.stopPropagation();
+            Utils.showGuestLoginWarning();
+        }, true);
+
+        document.addEventListener('submit', (event) => {
+            const currentUser = Storage.getCurrentUser();
+            const userIsGuest = Storage.isGuestUser(currentUser);
+            const userIsSignedIn = Boolean(currentUser) && !userIsGuest;
+
+            if (userIsSignedIn) {
+                return;
+            }
+
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            event.stopPropagation();
+            Utils.showGuestLoginWarning();
+        }, true);
+    },
+
+    showGuestLoginWarning() {
+        const existing = document.getElementById('guest-login-modal');
+        if (existing) {
+            existing.style.display = 'flex';
+            return;
+        }
+
+        const modal = document.createElement('div');
+        modal.id = 'guest-login-modal';
+        modal.style.position = 'fixed';
+        modal.style.inset = '0';
+        modal.style.background = 'rgba(0, 0, 0, 0.62)';
+        modal.style.display = 'flex';
+        modal.style.alignItems = 'center';
+        modal.style.justifyContent = 'center';
+        modal.style.zIndex = '99999';
+
+        modal.innerHTML = `
+            <div style="width:min(460px, calc(100vw - 40px)); background: var(--card-bg, #fff); border-radius: 14px; padding: 28px; box-shadow: 0 22px 90px rgba(0,0,0,.35); color: var(--text-main, #111827);">
+                <div style="display:flex; justify-content:flex-end;">
+                    <button id="guest-login-modal-close" type="button" style="border:none; background: transparent; font-size: 28px; cursor:pointer; color: var(--text-muted, #667085);">×</button>
+                </div>
+                <div style="text-align:center;">
+                    <div style="font-size:48px; margin-bottom:12px;">🔐</div>
+                    <h2 style="margin:0 0 8px; font-size:24px;">Login required</h2>
+                    <p style="margin:0 0 20px; color: var(--text-muted, #667085); font-size:15px;">Please login or create an account before using SmartTask features.</p>
+                    <div style="display:flex; justify-content:center; gap:12px; flex-wrap: wrap;">
+                        <a href="login.html" class="btn btn-primary" id="guest-login-action">Login</a>
+                        <a href="register.html" class="btn btn-outline" id="guest-register-action">Sign Up</a>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        document.getElementById('guest-login-modal-close')?.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+    },
+
     // Initialize Theme
     initTheme() {
         const user = Storage.getCurrentUser();
@@ -93,11 +189,12 @@ const Utils = {
     // Sidebar Injection
     renderSidebar(activePage) {
         this.initTheme(); // Apply theme globally
+        this.setupGuestProtection();
 
         const sidebar = document.querySelector('.sidebar');
         if (!sidebar) return;
 
-        const user = JSON.parse(localStorage.getItem('smarttask_current_user')) || { name: 'Demo User', email: 'user@example.com' };
+        const user = Storage.getCurrentUser() || Storage.getGuestUser();
 
         const initials = user.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'U';
 
