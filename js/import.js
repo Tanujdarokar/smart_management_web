@@ -6,8 +6,9 @@ let detectedTasks = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     const user = Storage.getCurrentUser() || Storage.getGuestUser();
+    const activePage = window.location.pathname.toLowerCase().endsWith('tracker.html') ? 'tracker' : 'import';
 
-    Utils.renderSidebar('import');
+    Utils.renderSidebar(activePage);
 
     const fileInput = document.getElementById('fileInput');
     const dropZone = document.getElementById('dropZone');

@@ -192,6 +192,11 @@ const Utils = {
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="tracker.html" class="nav-link ${activePage === 'tracker' ? 'active' : ''}">
+                        <span class="icon-bubble">🧭</span> <span>Tracker</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="calendar.html" class="nav-link ${activePage === 'calendar' ? 'active' : ''}">
                         <span class="icon-bubble">📅</span> <span>Calendar</span>
                     </a>

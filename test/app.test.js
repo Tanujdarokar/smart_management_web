@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import * as XLSX from 'xlsx';
 import Storage from '../js/storage.js';
 import Parser from '../js/parser.js';
 
@@ -90,4 +91,81 @@ test('Parser correctly parses CSV strings', () => {
   assert.equal(tasks[0].status, 'In Progress');
   assert.equal(tasks[1].title, 'Write Documentation');
   assert.equal(tasks[1].status, 'Completed');
+});
+
+test('Parser keeps explicit dates and assigns sequential dates when missing', () => {
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+
+  const csvData = [
+    'Title,Priority,Status,DueDate',
+    'Task A,High,Pending,2026-11-10',
+    'Task B,Low,Pending,',
+    'Task C,Medium,Pending,'
+  ].join('\n');
+
+  const tasks = Parser.parseCSV(csvData);
+  assert.equal(tasks[0].dueDate, '2026-11-10');
+  assert.equal(tasks[1].dueDate, today.toISOString().split('T')[0]);
+  assert.equal(tasks[2].dueDate, tomorrow.toISOString().split('T')[0]);
+});
+
+test('Parser handles flexible CSV headers with extra columns and rows', () => {
+  const csvData = [
+    'Task Name;Due Date;Priority;Status;Description;Notes;Owner',
+    'Build landing page;2026-10-10;High;In Progress;Finalize hero section;Needs review;Jane',
+    'Write release notes;2026-10-15;Low;Completed;Prepare summary;Ready to ship;Sam',
+    ''
+  ].join('\n');
+
+  const tasks = Parser.parseCSV(csvData);
+  assert.equal(tasks.length, 2);
+  assert.equal(tasks[0].title, 'Build landing page');
+  assert.equal(tasks[0].priority, 'High');
+  assert.equal(tasks[0].status, 'In Progress');
+  assert.equal(tasks[0].dueDate, '2026-10-10');
+  assert.match(tasks[0].description, /Finalize hero section|Needs review|Jane/);
+  assert.equal(tasks[1].title, 'Write release notes');
+  assert.equal(tasks[1].status, 'Completed');
+});
+
+test('Parser imports .xlsx files and maps sheet rows into tasks', async () => {
+  const workbook = XLSX.utils.book_new();
+  const rows = [
+    ['Task Name', 'Due Date', 'Priority', 'Status', 'Description', 'Notes'],
+    ['Launch campaign', '2026-11-01', 'High', 'In Progress', 'Prepare launch assets', 'Marketing'],
+    ['Follow up with clients', '2026-11-10', 'Low', 'Pending', 'Send recap', 'Sales']
+  ];
+
+  const sheet = XLSX.utils.aoa_to_sheet(rows);
+  XLSX.utils.book_append_sheet(workbook, sheet, 'Tasks');
+  const buffer = XLSX.write(workbook, { type: 'array', bookType: 'xlsx' });
+
+  const file = new File([buffer], 'tasks.xlsx', {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  });
+
+  const tasks = await Parser.parseFile(file);
+  assert.equal(tasks.length, 2);
+  assert.equal(tasks[0].title, 'Launch campaign');
+  assert.equal(tasks[0].priority, 'High');
+  assert.equal(tasks[0].status, 'In Progress');
+  assert.equal(tasks[1].title, 'Follow up with clients');
+  assert.equal(tasks[1].priority, 'Low');
+});
+
+test('Parser selects the tracker sheet instead of the summary sheet when importing the interview workbook', async () => {
+  const fs = await import('node:fs');
+  const file = new File([
+    fs.readFileSync(new URL('../assets/tracker/FAANG_Startup_MNC_Interview_Tracker.xlsx', import.meta.url))
+  ], 'FAANG_Startup_MNC_Interview_Tracker.xlsx', {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  });
+
+  const tasks = await Parser.parseFile(file);
+  assert.ok(tasks.length > 0);
+  assert.ok(tasks.some(task => task.title.includes('Two Sum')));
+  assert.ok(tasks.some(task => task.title.includes('Design a URL Shortener')));
+  assert.ok(tasks.every(task => !task.title.includes('Interview Prep Tracker: Progress Summary')));
 });
