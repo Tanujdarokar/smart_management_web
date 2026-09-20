@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('welcomeMessage').innerText = user.isGuest ? 'Welcome, Guest User!' : `Welcome back, ${displayName}!`;
 
     loadDashboardStats();
+    loadDashboardSummary();
     loadRecentTasks();
     updateProgressRing();
 
@@ -32,6 +33,80 @@ function loadDashboardStats() {
     document.getElementById('completedTasks').innerText = completed;
     document.getElementById('pendingTasks').innerText = pending;
     document.getElementById('overdueTasks').innerText = overdue;
+}
+
+function loadDashboardSummary() {
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
+    const tasks = Storage.getTasks(user.id);
+    const summarySection = document.getElementById('dashboardSummary');
+    const summaryCards = document.getElementById('summaryCards');
+    const categoryBreakdown = document.getElementById('categoryBreakdown');
+    const priorityBreakdown = document.getElementById('priorityBreakdown');
+
+    if (!tasks.length) {
+        summarySection.style.display = 'none';
+        return;
+    }
+
+    const total = tasks.length;
+    const completed = tasks.filter(t => t.status === 'Completed').length;
+    const inProgress = tasks.filter(t => t.status === 'In Progress').length;
+    const pending = tasks.filter(t => t.status === 'Pending').length;
+
+    const statusCards = [
+        { label: 'Active Tasks', value: total, color: '#6366f1' },
+        { label: 'Completed', value: completed, color: '#10b981' },
+        { label: 'In Progress', value: inProgress, color: '#f59e0b' },
+        { label: 'Pending', value: pending, color: '#ef4444' }
+    ];
+
+    summaryCards.innerHTML = statusCards.map(card => `
+        <div class="summary-mini-card" style="--card-color: ${card.color};">
+            <div class="summary-mini-icon">●</div>
+            <div>
+                <strong>${card.value}</strong>
+                <span>${card.label}</span>
+            </div>
+        </div>
+    `).join('');
+
+    const categoryMap = new Map();
+    tasks.forEach(task => {
+        const label = (task.category || 'General').trim() || 'General';
+        categoryMap.set(label, (categoryMap.get(label) || 0) + 1);
+    });
+
+    const categoryEntries = [...categoryMap.entries()].sort((a, b) => b[1] - a[1]);
+    const maxCategoryCount = Math.max(...categoryEntries.map(([, count]) => count), 1);
+    categoryBreakdown.innerHTML = categoryEntries.slice(0, 5).map(([label, count]) => {
+        const percent = Math.round((count / total) * 100);
+        return `
+            <div class="category-row">
+                <div class="category-row-header">
+                    <span>${Utils.escapeHtml(label)}</span>
+                    <span>${count}</span>
+                </div>
+                <div class="category-bar-track">
+                    <div class="category-bar-fill" style="width: ${percent}%;"></div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    const priorityMap = new Map();
+    ['Low', 'Medium', 'High', 'Critical'].forEach(priority => {
+        priorityMap.set(priority, tasks.filter(task => task.priority === priority).length);
+    });
+
+    const priorityEntries = [...priorityMap.entries()].filter(([, count]) => count > 0);
+    priorityBreakdown.innerHTML = priorityEntries.map(([priority, count]) => `
+        <div class="priority-row">
+            <span class="priority-label priority-${priority.toLowerCase()}">${priority}</span>
+            <strong>${count}</strong>
+        </div>
+    `).join('');
+
+    summarySection.style.display = 'block';
 }
 
 function loadRecentTasks() {

@@ -1,20 +1,22 @@
 # SmartTask Manager 🚀
 
-SmartTask Manager is a static single-page style productivity dashboard built with vanilla HTML, CSS, and JavaScript. It helps users create, organize, import, track, and review tasks while keeping all app data in the browser through `localStorage`.
+SmartTask Manager is a browser-based productivity app for managing tasks, imports, payments, schedules, and tracker-style workflow data. It is built with vanilla HTML, CSS, and JavaScript and stores all user data in the browser using `localStorage`.
 
-The current project includes a login and registration flow, a dashboard, task management, import parsing, calendar planning, payment tracking, and settings with profile/account deletion actions.
+The current project includes a complete authentication flow, dashboard analytics, task management, smart import parsing, calendar planning, tracker workflow support, payments management, and settings. It is designed to support both regular task tracking and workbook-style imported data from CSV, TXT, JSON, and Excel files.
 
-## ✨ Current Project Features
+## ✨ Current Features
 
-- **Authentication flow**: Register, login, logout, and remember-me behavior through the browser storage layer.
-- **Guest UI preview behavior**: Users can open the app as a guest and see the website layout, but site clicks and feature actions trigger a login-required warning modal until the user signs in.
-- **Dashboard**: Shows task totals, recent tasks, overdue, pending, completed summaries, and a progress visualization.
-- **Tasks module**: Add, edit, delete, update completion, filter, search, and sort tasks.
-- **Import module**: Drag-and-drop file import, manual preview rows, imported task preview, and review/edit/import workflow.
-- **Calendar module**: Month calendar layout that groups and displays tasks by date.
-- **Payments module**: Track sent and received payments, filters, status tabs, and transaction deletion workflows.
-- **Settings module**: Theme switching, profile update form, and account deletion.
-- **Responsive UI**: Sidebar, mobile navigation toggle, and CSS-driven responsive styling across pages.
+- **Authentication and user flow**: register, login, logout, guest mode, remember-me behavior, and user storage handling.
+- **Dashboard overview**: task totals, pending/completed counts, overdue tracking, progress ring, and summary cards.
+- **Task manager**: create, edit, delete, complete, filter, sort, and search tasks.
+- **Smart import system**: supports CSV, TXT, JSON, XLSX, and tracker-style workbook imports.
+- **Flexible import parsing**: detects matching columns dynamically, handles extra rows/columns, preserves explicit dates, and adds sequential dates when missing.
+- **Tracker support**: dedicated tracker page and import workflow for interview or workflow workbook files.
+- **Workbook summary view**: imported task data can be aggregated into category and priority summaries on the dashboard.
+- **Calendar view**: visual date-based task planning and day grouping.
+- **Payments tracking**: add/manage payment records, status filters, and financial overview.
+- **Settings page**: theme switching, profile data management, and account-level preferences.
+- **Responsive UI**: sidebar navigation, mobile layout support, and modern dashboard styling.
 
 ## 🧩 Project Structure
 
@@ -26,60 +28,93 @@ smart-task-manager/
 ├── dashboard.html
 ├── tasks.html
 ├── import.html
+├── tracker.html
 ├── calendar.html
 ├── payments.html
 ├── settings.html
 ├── css/
 ├── js/
-└── assets/
+├── assets/
+├── test/
+├── package.json
+├── README.md
+└── node_modules/
 ```
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: HTML5, CSS3, JavaScript ES modules
-- **Architecture**: Static web app using local page files
-- **Storage**: LocalStorage API
-- **Parser**: Custom import parser in the JavaScript parser module
+- **Frontend**: HTML5, CSS3, JavaScript ES Modules
+- **Storage**: `localStorage`
+- **Import/Excel support**: `xlsx` package
+- **Testing**: Node.js built-in test runner (`node --test`)
+- **Architecture**: static browser app without a backend
 
 ## 🚀 How to Run
 
-Since this is a static web project, you can run it locally by opening the app in a browser, or by using a VS Code Live Server extension.
+Since this is a static project, you can run it locally with any simple web server.
 
-Recommended workflow:
-
-1. Clone or download the repository.
-2. Open the project folder.
-3. Start a local static server or use Live Server.
-4. Open the app from `index.html` or open `login.html` directly.
-
-Example using a Python server:
+### Option 1: Python local server
 
 ```bash
 python -m http.server 8000
 ```
 
-Then visit:
+Then open:
 
 ```text
 http://localhost:8000
 ```
 
-## 🔐 Guest / Login Behavior
+### Option 2: VS Code Live Server
 
-The app now supports a guest mode experience:
+Open the project in VS Code and run the app with Live Server or another static server extension.
 
-- A user can click **Continue as Guest** from the login page.
-- Guest users can view the UI layout.
-- The app shows a login-required modal when a guest tries to use protected features.
-- Full feature access requires creating an account or logging in.
+## 🔐 Login and Guest Flow
+
+The app supports:
+
+- regular user registration and login
+- guest browsing without a full account
+- protected actions that prompt login when needed
+- data persistence for signed-in users in browser storage
+
+## 📥 Import Support
+
+The app is built to handle:
+
+- CSV files
+- TXT task files
+- JSON task exports
+- XLSX/XLS spreadsheet imports
+- multi-sheet tracker or interview workbook files
+
+The import logic identifies the most relevant sheet, normalizes field names, and manages date behavior automatically when values are missing.
+
+## 🧪 Verification
+
+The project includes regression tests for the main features, including:
+
+- guest behavior
+- storage persistence
+- parser logic
+- CSV and TXT imports
+- Excel import
+- tracker workflow sheet selection
+- date assignment and consistency
+
+Run:
+
+```bash
+npm test
+```
 
 ## 📝 Notes
 
-This project is implemented as a local browser-based task manager and does not use a backend server or database. All persistent application data such as users, tasks, settings, and payments are stored in the browser’s `localStorage`.
+This app is intentionally built as a frontend-only project. It does not require a backend database or server-side API. All data remains local to the browser unless the user explicitly exports or copies it elsewhere.
 
 ## 📄 License
 
 This project is available for educational and development use.
 
 ---
-Built with ❤️ for task and workflow management.
+Built with ❤️ for smart task management and workflow tracking.

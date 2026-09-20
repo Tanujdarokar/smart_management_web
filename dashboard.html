@@ -63,6 +63,27 @@
                 </div>
             </div>
 
+            <section class="card dashboard-summary" id="dashboardSummary" style="display: none; margin-bottom: 28px;">
+                <div class="summary-header">
+                    <div>
+                        <h2>Workbook Summary</h2>
+                        <p>Aggregated view from imported sheets and tracker data.</p>
+                    </div>
+                    <span class="summary-pill" id="summaryPill">Live Overview</span>
+                </div>
+                <div class="summary-cards" id="summaryCards"></div>
+                <div class="summary-panels">
+                    <div class="summary-panel">
+                        <h3>Category Breakdown</h3>
+                        <div id="categoryBreakdown" class="category-breakdown"></div>
+                    </div>
+                    <div class="summary-panel">
+                        <h3>Priority Mix</h3>
+                        <div id="priorityBreakdown" class="priority-breakdown"></div>
+                    </div>
+                </div>
+            </section>
+
             <div class="dashboard-grid">
                 <!-- Recent Tasks -->
                 <section class="card recent-tasks">
