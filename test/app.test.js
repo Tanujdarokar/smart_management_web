@@ -169,3 +169,28 @@ test('Parser selects the tracker sheet instead of the summary sheet when importi
   assert.ok(tasks.some(task => task.title.includes('Design a URL Shortener')));
   assert.ok(tasks.every(task => !task.title.includes('Interview Prep Tracker: Progress Summary')));
 });
+
+test('Storage handles feature feedback persistence and deletion', () => {
+  Storage.remove(Storage.KEYS.FEEDBACK);
+  const sampleFeedback = {
+    id: 'fb_001',
+    userId: 'u1',
+    userName: 'Alice',
+    type: 'Feature Request',
+    rating: 'Love it',
+    title: 'Dark mode auto-sync',
+    moduleArea: 'Dashboard',
+    message: 'Auto-sync dark theme based on system time',
+    status: 'Under Review',
+    createdAt: new Date().toISOString()
+  };
+
+  Storage.saveFeedback(sampleFeedback);
+  const userFeedback = Storage.getFeedback('u1');
+  assert.equal(userFeedback.length, 1);
+  assert.equal(userFeedback[0].title, 'Dark mode auto-sync');
+  assert.equal(userFeedback[0].rating, 'Love it');
+
+  Storage.deleteFeedback('fb_001');
+  assert.equal(Storage.getFeedback('u1').length, 0);
+});

@@ -1,3 +1,7 @@
+/* ══════════════════════════════════════════════
+   auth.css — Modern Authentication Aesthetics
+   ══════════════════════════════════════════════ */
+
 .auth-container {
     display: flex;
     justify-content: center;
@@ -12,26 +16,26 @@
 .auth-container::before {
     content: '';
     position: absolute;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(139, 92, 246, 0) 70%);
-    top: -100px;
-    left: -100px;
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.22) 0%, rgba(139, 92, 246, 0) 70%);
+    top: -120px;
+    left: -120px;
     border-radius: 50%;
-    filter: blur(40px);
+    filter: blur(50px);
     pointer-events: none;
 }
 
 .auth-container::after {
     content: '';
     position: absolute;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, rgba(99, 102, 241, 0) 70%);
-    bottom: -100px;
-    right: -100px;
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.18) 0%, rgba(99, 102, 241, 0) 70%);
+    bottom: -120px;
+    right: -120px;
     border-radius: 50%;
-    filter: blur(40px);
+    filter: blur(50px);
     pointer-events: none;
 }
 
@@ -39,8 +43,8 @@
     background: var(--card-bg);
     backdrop-filter: var(--glass-backdrop);
     -webkit-backdrop-filter: var(--glass-backdrop);
-    padding: 44px;
-    border-radius: var(--radius-lg);
+    padding: 44px 40px;
+    border-radius: var(--radius-xl);
     box-shadow: var(--shadow-lg);
     width: 100%;
     max-width: 460px;
@@ -52,19 +56,19 @@
 
 .auth-header {
     text-align: center;
-    margin-bottom: 36px;
+    margin-bottom: 32px;
 }
 
 .auth-brand-badge {
-    width: 48px;
-    height: 48px;
-    border-radius: 16px;
+    width: 52px;
+    height: 52px;
+    border-radius: 18px;
     background: var(--primary-gradient);
     color: white;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 26px;
     margin-bottom: 16px;
     box-shadow: var(--shadow-glow);
 }
@@ -72,7 +76,7 @@
 .auth-header h1 {
     font-size: 26px;
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
     color: var(--text-main);
     margin-bottom: 6px;
 }
@@ -83,71 +87,53 @@
 }
 
 .form-group {
-    margin-bottom: 22px;
+    margin-bottom: 20px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 7px;
     font-weight: 700;
     font-size: 13px;
     color: var(--text-main);
-}
-
-.auth-btn {
-    width: 100%;
-    padding: 14px;
-    margin-top: 16px;
-    font-size: 15px;
-}
-
-.auth-footer {
-    text-align: center;
-    margin-top: 28px;
-    font-size: 14px;
-    color: var(--text-muted);
-}
-
-.auth-footer a {
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: 700;
-    transition: var(--transition-fast);
-}
-
-.auth-footer a:hover {
-    color: var(--primary-hover);
-    text-decoration: underline;
 }
 
 .error-message {
     color: var(--overdue);
     font-size: 12px;
     font-weight: 600;
-    margin-top: 6px;
+    margin-top: 5px;
     display: none;
 }
 
-/* ─── Responsive ─────────────────────────── */
-@media (max-width: 480px) {
-    .auth-card {
-        padding: 28px 20px;
-        border-radius: var(--radius);
-    }
-
-    .auth-header h1 {
-        font-size: 22px;
-    }
-
-    .auth-container {
-        padding: 16px;
-        align-items: flex-start;
-        padding-top: 40px;
-    }
+.error-message.show {
+    display: block;
 }
 
-@media (max-width: 360px) {
-    .auth-card {
-        padding: 22px 14px;
-    }
+.auth-btn {
+    width: 100%;
+    padding: 13px;
+    margin-top: 14px;
+    font-size: 14.5px;
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+    font-size: 13.5px;
+    color: var(--text-muted);
+}
+
+.auth-footer a {
+    color: var(--primary-color);
+    font-weight: 700;
+    text-decoration: none;
+    transition: var(--transition-fast);
+}
+
+.auth-footer a:hover {
+    text-decoration: underline;
+    color: var(--primary-hover);
 }

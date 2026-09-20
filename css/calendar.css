@@ -1,3 +1,7 @@
+/* ══════════════════════════════════════════════
+   calendar.css — Modern Calendar Aesthetics
+   ══════════════════════════════════════════════ */
+
 .calendar-nav {
     display: flex;
     align-items: center;
@@ -7,9 +11,10 @@
 .calendar-container {
     padding: 0;
     overflow: hidden;
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-xl);
     background: var(--card-bg);
     backdrop-filter: var(--glass-backdrop);
+    -webkit-backdrop-filter: var(--glass-backdrop);
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow);
 }
@@ -21,8 +26,8 @@
     border-bottom: 1px solid var(--border-color);
     text-align: center;
     font-weight: 700;
-    font-size: 13px;
-    letter-spacing: 0.05em;
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--primary-color);
     padding: 16px 0;
@@ -45,6 +50,7 @@
     flex-direction: column;
     gap: 6px;
     position: relative;
+    min-height: 120px;
 }
 
 .calendar-day:nth-child(7n) {
@@ -68,13 +74,13 @@
 
 .day-number {
     font-weight: 700;
-    font-size: 14px;
+    font-size: 13.5px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 28px;
     height: 28px;
-    border-radius: 8px;
+    border-radius: 9px;
     color: var(--text-main);
     transition: var(--transition);
 }
@@ -85,10 +91,15 @@
     box-shadow: var(--shadow-glow);
 }
 
+.calendar-day:hover .day-number:not(.today) {
+    background: rgba(99, 102, 241, 0.12);
+    color: var(--primary-color);
+}
+
 .task-dots {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 5px;
     margin-top: 4px;
 }
 
@@ -100,70 +111,52 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    background: rgba(99, 102, 241, 0.1);
-    color: var(--primary-color);
-    border: 1px solid rgba(99, 102, 241, 0.15);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-left: 3px solid var(--primary-color);
+    background: rgba(99, 102, 241, 0.08);
+    color: var(--text-main);
     transition: var(--transition-fast);
 }
 
 .task-dot:hover {
-    transform: scale(1.02);
+    transform: translateX(2px);
+    background: rgba(99, 102, 241, 0.15);
 }
 
-@media (max-width: 992px) {
-    .calendar-grid {
-        grid-auto-rows: minmax(100px, auto);
-    }
+.task-dot.priority-Low { border-left-color: var(--success); }
+.task-dot.priority-Medium { border-left-color: var(--in-progress); }
+.task-dot.priority-High { border-left-color: var(--pending); }
+.task-dot.priority-Critical { border-left-color: var(--overdue); }
+
+.more-tasks {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--primary-color);
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(99, 102, 241, 0.1);
+    align-self: flex-start;
+    margin-top: 2px;
 }
 
 @media (max-width: 768px) {
-    .calendar-grid {
-        grid-auto-rows: minmax(72px, auto);
-    }
-
-    .calendar-day {
-        padding: 6px;
-    }
-
-    .task-dot {
-        font-size: 10px;
-        padding: 2px 5px;
-    }
-
     .calendar-weekdays {
         font-size: 11px;
         padding: 10px 0;
     }
-
-    .calendar-nav {
-        flex-wrap: wrap;
-        gap: 10px;
+    .calendar-day {
+        min-height: 80px;
+        padding: 6px;
     }
-}
-
-@media (max-width: 480px) {
-    .calendar-grid {
-        grid-auto-rows: minmax(54px, auto);
-    }
-
-    .calendar-weekdays span:nth-child(n) {
-        font-size: 10px;
-    }
-
     .day-number {
-        font-size: 12px;
         width: 22px;
         height: 22px;
-        border-radius: 6px;
+        font-size: 11px;
     }
-
-    /* Hide task dots on very small screens, just show dot indicator */
     .task-dot {
-        font-size: 0;
-        padding: 3px;
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        overflow: hidden;
+        font-size: 9px;
+        padding: 2px 4px;
     }
 }

@@ -13,7 +13,7 @@
     :root { --sidebar-width: 240px; }
 
     .main-content {
-        padding: 28px 28px;
+        padding: 30px 28px 60px;
     }
 }
 
@@ -22,21 +22,20 @@
     :root { --sidebar-width: 220px; }
 
     .main-content {
-        padding: 24px 20px;
+        padding: 24px 20px 60px;
     }
 
     .header h1 {
-        font-size: 22px;
+        font-size: 24px;
     }
 }
 
 /* ─── 768px – Tablet portrait / large phone ─────────────── */
 @media (max-width: 768px) {
-
     /* Sidebar slides off-canvas */
     .sidebar {
         transform: translateX(-100%);
-        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         width: 280px;
         box-shadow: var(--shadow-lg);
         z-index: 200;
@@ -51,9 +50,9 @@
         display: none;
         position: fixed;
         inset: 0;
-        background: rgba(15, 23, 42, 0.45);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
+        background: rgba(15, 23, 42, 0.5);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
         z-index: 150;
     }
 
@@ -62,7 +61,7 @@
     /* Main content fills full width */
     .main-content {
         margin-left: 0;
-        padding: 20px 16px 100px; /* bottom padding clears FAB */
+        padding: 20px 16px 100px;
     }
 
     /* Header stacks vertically */
@@ -99,104 +98,64 @@
 
     /* Cards */
     .card {
-        padding: 20px;
+        padding: 20px 16px;
     }
 
-    /* Floating hamburger FAB */
+    /* Floating Action Button (FAB) for mobile sidebar toggle */
     .mobile-nav-toggle {
         display: flex;
+        align-items: center;
+        justify-content: center;
         position: fixed;
         bottom: 24px;
         right: 24px;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
         background: var(--primary-gradient);
-        color: white;
-        width: 56px;
-        height: 56px;
-        border-radius: 18px;
-        align-items: center;
-        justify-content: center;
+        color: #ffffff;
         font-size: 22px;
-        box-shadow: var(--shadow-glow);
-        z-index: 201;
-        cursor: pointer;
-        transition: var(--transition-bounce);
         border: none;
-        outline: none;
-        user-select: none;
+        box-shadow: var(--shadow-glow);
+        cursor: pointer;
+        z-index: 300;
+        transition: var(--transition-bounce);
+    }
+
+    .mobile-nav-toggle:hover {
+        transform: scale(1.08);
     }
 
     .mobile-nav-toggle:active {
-        transform: scale(0.88);
+        transform: scale(0.94);
     }
 }
 
-/* ─── 480px – Mobile ─────────────────────────────────────── */
+/* ─── 480px – Mobile ────────────────────────────────────── */
 @media (max-width: 480px) {
-
-    /* Stat grids go 1-column */
     .stats-grid {
         grid-template-columns: 1fr;
         gap: 12px;
     }
 
-    .main-content {
-        padding: 16px 12px 100px;
+    .stat-card {
+        padding: 18px 16px;
+    }
+
+    .stat-value {
+        font-size: 30px;
     }
 
     .header h1 {
         font-size: 20px;
     }
 
-    .header-actions .btn {
-        width: 100%;
-        min-width: unset;
-    }
-
-    /* Cards tighter padding */
-    .card {
-        padding: 16px;
-        border-radius: var(--radius);
-    }
-
-    /* Buttons full-width in modal actions on mobile */
-    .modal-actions {
-        flex-direction: column-reverse;
-    }
-
-    .modal-actions .btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-    /* Preview table hide extra columns */
-    .preview-table th:nth-child(3),
-    .preview-table td:nth-child(3),
-    .preview-table th:nth-child(4),
-    .preview-table td:nth-child(4) {
-        display: none;
-    }
-
-    /* Smaller FAB */
-    .mobile-nav-toggle {
-        width: 50px;
-        height: 50px;
-        font-size: 20px;
-        bottom: 20px;
-        right: 16px;
-        border-radius: 14px;
-    }
-}
-
-/* ─── 360px – Small mobile ───────────────────────────────── */
-@media (max-width: 360px) {
-    .main-content {
-        padding: 12px 10px 90px;
-    }
-
-    .header h1 { font-size: 18px; }
-
     .btn {
         padding: 10px 16px;
-        font-size: 13px;
+        font-size: 13.5px;
+    }
+
+    .modal-content {
+        padding: 24px 18px;
     }
 }

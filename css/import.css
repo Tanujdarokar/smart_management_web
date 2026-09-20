@@ -1,30 +1,38 @@
+/* ══════════════════════════════════════════════
+   import.css — Modern Import & Tracker Styles
+   ══════════════════════════════════════════════ */
+
 .import-area {
     border: 2px dashed var(--border-color);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-xl);
     text-align: center;
     padding: 64px 40px;
     background: var(--card-bg);
     backdrop-filter: var(--glass-backdrop);
+    -webkit-backdrop-filter: var(--glass-backdrop);
     transition: var(--transition-bounce);
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
 .import-area:hover, .import-area.dragover {
     border-color: var(--primary-color);
-    background: rgba(99, 102, 241, 0.06);
+    background: rgba(99, 102, 241, 0.05);
     box-shadow: var(--shadow-glow);
-    transform: scale(1.01);
+    transform: scale(1.008);
 }
 
 .import-icon {
-    font-size: 64px;
-    margin-bottom: 16px;
+    font-size: 60px;
+    margin-bottom: 18px;
     display: inline-block;
     transition: var(--transition-bounce);
+    filter: drop-shadow(0 4px 12px rgba(99, 102, 241, 0.25));
 }
 
 .import-area:hover .import-icon {
-    transform: translateY(-8px) scale(1.1);
+    transform: translateY(-8px) scale(1.12);
 }
 
 .import-area h2 {
@@ -41,10 +49,20 @@
     margin-bottom: 28px;
 }
 
+.import-area code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(99, 102, 241, 0.1);
+    color: var(--primary-color);
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 12.5px;
+}
+
 .table-container {
     overflow-x: auto;
-    border-radius: var(--radius);
+    border-radius: var(--radius-lg);
     border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-xs);
 }
 
 .preview-table {
@@ -55,18 +73,18 @@
 
 .preview-table th, .preview-table td {
     text-align: left;
-    padding: 16px;
+    padding: 16px 18px;
     border-bottom: 1px solid var(--border-color);
     vertical-align: middle;
 }
 
 .preview-table th {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-muted);
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    background: rgba(99, 102, 241, 0.05);
+    background: rgba(99, 102, 241, 0.04);
 }
 
 .preview-table tr:hover {
@@ -76,12 +94,26 @@
 .preview-actions {
     display: flex;
     gap: 12px;
+    align-items: center;
 }
 
 .guide-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
+}
+
+.guide-grid .card {
+    border-radius: var(--radius-xl);
+}
+
+.guide-grid code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--primary-color);
+    background: rgba(99, 102, 241, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
 }
 
 @media (max-width: 768px) {
@@ -96,38 +128,5 @@
 
     .import-icon {
         font-size: 48px;
-    }
-
-    .import-area h2 {
-        font-size: 18px;
-    }
-
-    .preview-actions {
-        flex-direction: column;
-    }
-
-    .preview-actions .btn {
-        width: 100%;
-        justify-content: center;
-    }
-}
-
-@media (max-width: 480px) {
-    .import-area {
-        padding: 28px 14px;
-    }
-
-    .preview-table th,
-    .preview-table td {
-        padding: 10px 8px;
-        font-size: 13px;
-    }
-
-    /* hide less important columns on tiny screens */
-    .preview-table th:nth-child(3),
-    .preview-table td:nth-child(3),
-    .preview-table th:nth-child(4),
-    .preview-table td:nth-child(4) {
-        display: none;
     }
 }

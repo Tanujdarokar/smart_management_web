@@ -10,7 +10,8 @@ const Storage = {
         CURRENT_USER: 'smarttask_current_user',
         TASKS: 'smarttask_tasks',
         SETTINGS: 'smarttask_settings',
-        NOTIFICATIONS: 'smarttask_notifications'
+        NOTIFICATIONS: 'smarttask_notifications',
+        FEEDBACK: 'smarttask_feedback'
     },
 
     // Generic get/set
@@ -186,6 +187,28 @@ const Storage = {
             notificationsEnabled: true,
             view: 'grid'
         };
+    },
+
+    // Feedback Methods
+    getFeedback(userId = null) {
+        const feedbackList = this.get(this.KEYS.FEEDBACK) || [];
+        if (userId) {
+            return feedbackList.filter(f => f.userId === userId);
+        }
+        return feedbackList;
+    },
+
+    saveFeedback(feedbackItem) {
+        const feedbackList = this.get(this.KEYS.FEEDBACK) || [];
+        feedbackList.unshift(feedbackItem);
+        this.set(this.KEYS.FEEDBACK, feedbackList);
+        return feedbackItem;
+    },
+
+    deleteFeedback(feedbackId) {
+        let feedbackList = this.get(this.KEYS.FEEDBACK) || [];
+        feedbackList = feedbackList.filter(f => f.id !== feedbackId);
+        this.set(this.KEYS.FEEDBACK, feedbackList);
     }
 };
 

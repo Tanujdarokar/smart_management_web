@@ -47,7 +47,7 @@
                 <!-- Appearance Section -->
                 <section class="card">
                     <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 24px;">🎨 Appearance & Theme</h2>
-                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                    <div class="theme-options">
                         <div class="theme-option" data-theme="light">
                             <div class="theme-preview light"></div>
                             <p style="font-weight: 700; font-size: 14px;">☀️ Light Theme</p>
@@ -59,6 +59,103 @@
                         <div class="theme-option" data-theme="system">
                             <div class="theme-preview system"></div>
                             <p style="font-weight: 700; font-size: 14px;">💻 System Mode</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Feature Request & Feedback Section -->
+                <section class="card feedback-card" id="feedbackSection">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 20px;">
+                        <div>
+                            <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">💡 Feature Request & Feedback</h2>
+                            <p style="color: var(--text-muted); font-size: 13.5px; margin: 0;">Have an idea or need an enhancement? Help us make SmartTask even better!</p>
+                        </div>
+                        <span class="feedback-badge-pill">Community Driven</span>
+                    </div>
+
+                    <form id="feedbackForm">
+                        <!-- Feedback Type -->
+                        <div class="form-group">
+                            <label>Feedback Category</label>
+                            <div class="feedback-types">
+                                <button type="button" class="feedback-type-btn active" data-type="Feature Request">
+                                    <span>✨</span> Feature Request
+                                </button>
+                                <button type="button" class="feedback-type-btn" data-type="Bug Report">
+                                    <span>🐞</span> Bug Report
+                                </button>
+                                <button type="button" class="feedback-type-btn" data-type="Improvement">
+                                    <span>🚀</span> Improvement
+                                </button>
+                                <button type="button" class="feedback-type-btn" data-type="General">
+                                    <span>💬</span> General Note
+                                </button>
+                            </div>
+                            <input type="hidden" id="feedbackType" value="Feature Request">
+                        </div>
+
+                        <!-- Rating / Mood -->
+                        <div class="form-group">
+                            <label>How is your experience with SmartTask?</label>
+                            <div class="feedback-ratings">
+                                <button type="button" class="rating-btn active" data-rating="Love it">
+                                    <span class="rating-emoji">😍</span>
+                                    <span class="rating-label">Love it</span>
+                                </button>
+                                <button type="button" class="rating-btn" data-rating="Good">
+                                    <span class="rating-emoji">😊</span>
+                                    <span class="rating-label">Good</span>
+                                </button>
+                                <button type="button" class="rating-btn" data-rating="Neutral">
+                                    <span class="rating-emoji">😐</span>
+                                    <span class="rating-label">Neutral</span>
+                                </button>
+                                <button type="button" class="rating-btn" data-rating="Needs Work">
+                                    <span class="rating-emoji">😕</span>
+                                    <span class="rating-label">Needs Work</span>
+                                </button>
+                            </div>
+                            <input type="hidden" id="feedbackRating" value="Love it">
+                        </div>
+
+                        <div class="form-grid" style="margin-bottom: 0;">
+                            <div class="form-group">
+                                <label for="feedbackTitle">Title / Idea Summary</label>
+                                <input type="text" id="feedbackTitle" class="form-control" placeholder="e.g. Export tasks to PDF or recurring task reminders" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="feedbackModule">Related Area</label>
+                                <select id="feedbackModule" class="form-control">
+                                    <option value="General App">🌐 General App</option>
+                                    <option value="Dashboard">📊 Dashboard & Analytics</option>
+                                    <option value="Tasks">📋 Tasks Management</option>
+                                    <option value="Calendar">📅 Calendar Schedule</option>
+                                    <option value="Payments">💳 Payments & Financials</option>
+                                    <option value="Import / Export">📥 File Import / Excel</option>
+                                    <option value="Mobile & UI">📱 Mobile & UI Design</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="feedbackMessage">Detailed Description / Suggestions</label>
+                            <textarea id="feedbackMessage" class="form-control" rows="3" placeholder="Describe what you would like to see, why it would be helpful, or any specific details..." required></textarea>
+                        </div>
+
+                        <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+                            <button type="submit" class="btn btn-primary" id="submitFeedbackBtn">
+                                <span>🚀</span> Submit Feedback
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Feedback Submissions List -->
+                    <div id="feedbackHistorySection" style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border-color); display: none;">
+                        <h3 style="font-size: 15px; font-weight: 800; margin-bottom: 14px; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
+                            <span>📬</span> Your Submitted Feedback & Requests
+                        </h3>
+                        <div id="feedbackHistoryList" class="feedback-history-list">
+                            <!-- Injected by JS -->
                         </div>
                     </div>
                 </section>
