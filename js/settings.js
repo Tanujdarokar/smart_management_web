@@ -36,7 +36,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Profile Form
     document.getElementById('profileForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        const newName = document.getElementById('settingsName').value;
+        const newName = document.getElementById('settingsName').value.trim();
+        if (!newName) {
+            Utils.showToast('Name cannot be empty', 'error');
+            return;
+        }
+
+        if (Storage.isGuestUser(user)) {
+            user.name = newName;
+            Storage.setCurrentUser(user);
+            Utils.showToast('Profile updated (Guest Mode)');
+            Utils.renderSidebar('settings');
+            const newInitials = newName.split(' ').map(n => n[0]).join('').toUpperCase();
+            document.getElementById('settingsAvatar').innerText = newInitials;
+            return;
+        }
 
         const users = Storage.getUsers();
         const userIndex = users.findIndex(u => u.id === user.id);
@@ -49,12 +63,23 @@ document.addEventListener('DOMContentLoaded', () => {
             Storage.setCurrentUser(user);
 
             Utils.showToast('Profile updated successfully');
-            Utils.renderSidebar('settings'); // Refresh sidebar
+            Utils.renderSidebar('settings');
+            const newInitials = newName.split(' ').map(n => n[0]).join('').toUpperCase();
+            document.getElementById('settingsAvatar').innerText = newInitials;
         }
     });
 
     // Delete Account
     document.getElementById('deleteAccountBtn').addEventListener('click', () => {
+        if (Storage.isGuestUser(user)) {
+            if (confirm('End guest preview session?')) {
+                Storage.logout();
+                Utils.showToast('Guest session ended');
+                window.location.href = 'login.html';
+            }
+            return;
+        }
+
         if (confirm('CRITICAL: This will permanently delete your account and all tasks. Continue?')) {
             const users = Storage.getUsers().filter(u => u.id !== user.id);
             Storage.set(Storage.KEYS.USERS, users);

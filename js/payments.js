@@ -1,20 +1,77 @@
-/**
- * SmartTask Manager — Payments Module
- * Handles send/receive payment transactions stored in localStorage.
- */
-
+import Storage from './storage.js';
 import Utils from './utils.js';
 
 const STORAGE_KEY = 'smarttask_payments';
 
 // ─── Data Layer ────────────────────────────────────────────────────────────
 
-function loadPayments() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+function getCurrentUserId() {
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
+    return user.id;
 }
 
-function savePayments(payments) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(payments));
+function loadPayments() {
+    const userId = getCurrentUserId();
+    const all = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    let userPayments = all.filter(p => !p.userId || p.userId === userId);
+
+    if (userPayments.length === 0 && userId === 'guest') {
+        const today = new Date().toISOString().split('T')[0];
+        const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+        const samplePayments = [
+            {
+                id: '_pay_1',
+                userId: 'guest',
+                type: 'received',
+                party: 'Acme Corp',
+                amount: 1250.00,
+                date: today,
+                category: 'Invoice',
+                method: 'Bank Transfer',
+                status: 'completed',
+                note: 'UI Redesign Milestone 1',
+                createdAt: new Date().toISOString()
+            },
+            {
+                id: '_pay_2',
+                userId: 'guest',
+                type: 'sent',
+                party: 'Cloud Hosting Services',
+                amount: 49.99,
+                date: yesterday,
+                category: 'Subscription',
+                method: 'Credit Card',
+                status: 'completed',
+                note: 'Monthly server hosting & domain',
+                createdAt: new Date(Date.now() - 86400000).toISOString()
+            },
+            {
+                id: '_pay_3',
+                userId: 'guest',
+                type: 'received',
+                party: 'DesignCraft Studio',
+                amount: 450.00,
+                date: today,
+                category: 'Freelance',
+                method: 'PayPal',
+                status: 'pending',
+                note: 'Consultation & design review',
+                createdAt: new Date().toISOString()
+            }
+        ];
+        samplePayments.forEach(p => all.push(p));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+        return samplePayments;
+    }
+
+    return userPayments;
+}
+
+function savePayments(userPayments) {
+    const userId = getCurrentUserId();
+    const all = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    const others = all.filter(p => p.userId && p.userId !== userId);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...userPayments, ...others]));
 }
 
 function getPaymentById(id) {
@@ -22,6 +79,7 @@ function getPaymentById(id) {
 }
 
 function upsertPayment(payment) {
+    payment.userId = getCurrentUserId();
     const payments = loadPayments();
     const idx = payments.findIndex(p => p.id === payment.id);
     if (idx === -1) {

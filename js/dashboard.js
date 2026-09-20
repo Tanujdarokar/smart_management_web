@@ -6,7 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize UI
     Utils.renderSidebar('dashboard');
-    document.getElementById('welcomeMessage').innerText = user.isGuest ? 'Welcome, Guest User!' : `Welcome back, ${user.name.split(' ')[0]}!`;
+    const displayName = user.isGuest ? 'Guest User' : (user.name ? user.name.split(' ')[0] : 'User');
+    document.getElementById('welcomeMessage').innerText = user.isGuest ? 'Welcome, Guest User!' : `Welcome back, ${displayName}!`;
 
     loadDashboardStats();
     loadRecentTasks();
@@ -14,10 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event Listeners
     document.getElementById('quickAddTask').addEventListener('click', () => {
-        if (Storage.isGuestUser(Storage.getCurrentUser())) {
-            Utils.showGuestLoginWarning();
-            return;
-        }
         window.location.href = 'tasks.html?action=new';
     });
 });

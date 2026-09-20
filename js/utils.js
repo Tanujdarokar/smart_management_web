@@ -21,48 +21,6 @@ const Utils = {
         }
 
         document.body.dataset.guestProtectionInstalled = 'true';
-
-        document.addEventListener('click', (event) => {
-            const currentUser = Storage.getCurrentUser();
-            const userIsGuest = Storage.isGuestUser(currentUser);
-            const userIsSignedIn = Boolean(currentUser) && !userIsGuest;
-
-            if (userIsSignedIn) {
-                return;
-            }
-
-            if (event.target.closest('#guest-login-modal') || event.target.closest('#guest-login-action') || event.target.closest('#guest-register-action') || event.target.closest('#guest-login-modal-close')) {
-                return;
-            }
-
-            if (event.target.closest('a')) {
-                event.preventDefault();
-                event.stopImmediatePropagation();
-                event.stopPropagation();
-                Utils.showGuestLoginWarning();
-                return;
-            }
-
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            event.stopPropagation();
-            Utils.showGuestLoginWarning();
-        }, true);
-
-        document.addEventListener('submit', (event) => {
-            const currentUser = Storage.getCurrentUser();
-            const userIsGuest = Storage.isGuestUser(currentUser);
-            const userIsSignedIn = Boolean(currentUser) && !userIsGuest;
-
-            if (userIsSignedIn) {
-                return;
-            }
-
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            event.stopPropagation();
-            Utils.showGuestLoginWarning();
-        }, true);
     },
 
     showGuestLoginWarning() {
@@ -81,19 +39,20 @@ const Utils = {
         modal.style.alignItems = 'center';
         modal.style.justifyContent = 'center';
         modal.style.zIndex = '99999';
+        modal.style.backdropFilter = 'blur(4px)';
 
         modal.innerHTML = `
-            <div style="width:min(460px, calc(100vw - 40px)); background: var(--card-bg, #fff); border-radius: 14px; padding: 28px; box-shadow: 0 22px 90px rgba(0,0,0,.35); color: var(--text-main, #111827);">
+            <div style="width:min(460px, calc(100vw - 40px)); background: var(--card-bg-solid, #fff); border-radius: 16px; padding: 32px; box-shadow: 0 24px 80px rgba(0,0,0,.35); color: var(--text-main, #111827); border: 1px solid var(--border-color, #e2e8f0); position: relative;">
                 <div style="display:flex; justify-content:flex-end;">
-                    <button id="guest-login-modal-close" type="button" style="border:none; background: transparent; font-size: 28px; cursor:pointer; color: var(--text-muted, #667085);">×</button>
+                    <button id="guest-login-modal-close" type="button" aria-label="Close" style="border:none; background: transparent; font-size: 24px; cursor:pointer; color: var(--text-muted, #667085); line-height: 1;">✕</button>
                 </div>
                 <div style="text-align:center;">
-                    <div style="font-size:48px; margin-bottom:12px;">🔐</div>
-                    <h2 style="margin:0 0 8px; font-size:24px;">Login required</h2>
-                    <p style="margin:0 0 20px; color: var(--text-muted, #667085); font-size:15px;">Please login or create an account before using SmartTask features.</p>
+                    <div style="font-size:48px; margin-bottom:12px;">✨</div>
+                    <h2 style="margin:0 0 8px; font-size:22px; font-weight:700;">Account Required</h2>
+                    <p style="margin:0 0 24px; color: var(--text-muted, #667085); font-size:14px; line-height: 1.5;">Create a free account or log in to sync, export, and permanently save your tasks and transactions across sessions.</p>
                     <div style="display:flex; justify-content:center; gap:12px; flex-wrap: wrap;">
-                        <a href="login.html" class="btn btn-primary" id="guest-login-action">Login</a>
-                        <a href="register.html" class="btn btn-outline" id="guest-register-action">Sign Up</a>
+                        <a href="login.html" class="btn btn-primary" id="guest-login-action">Sign In</a>
+                        <a href="register.html" class="btn btn-outline" id="guest-register-action">Create Free Account</a>
                     </div>
                 </div>
             </div>
@@ -101,8 +60,21 @@ const Utils = {
 
         document.body.appendChild(modal);
 
-        document.getElementById('guest-login-modal-close')?.addEventListener('click', () => {
+        const closeModal = () => {
             modal.style.display = 'none';
+        };
+
+        document.getElementById('guest-login-modal-close')?.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        document.getElementById('guest-login-action')?.addEventListener('click', () => {
+            Storage.logout();
+        });
+
+        document.getElementById('guest-register-action')?.addEventListener('click', () => {
+            Storage.logout();
         });
     },
 
@@ -254,7 +226,7 @@ const Utils = {
 
         document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
             e.preventDefault();
-            localStorage.removeItem('smarttask_current_user');
+            Storage.logout();
             window.location.href = 'login.html';
         });
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
+
 <body>
     <div class="app-container">
         <!-- Sidebar injected by JS -->
@@ -29,28 +31,32 @@
             <div class="stats-grid">
                 <div class="card stat-card">
                     <div class="stat-card-header">
-                        <div class="stat-icon" style="background: rgba(99, 102, 241, 0.12); color: var(--primary-color);">📊</div>
+                        <div class="stat-icon"
+                            style="background: rgba(99, 102, 241, 0.12); color: var(--primary-color);">📊</div>
                     </div>
                     <div class="stat-value" id="totalTasks">0</div>
                     <div class="stat-label">Total Tasks</div>
                 </div>
                 <div class="card stat-card">
                     <div class="stat-card-header">
-                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.12); color: var(--pending);">⏳</div>
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.12); color: var(--pending);">⏳
+                        </div>
                     </div>
                     <div class="stat-value" id="pendingTasks">0</div>
                     <div class="stat-label">Pending</div>
                 </div>
                 <div class="card stat-card">
                     <div class="stat-card-header">
-                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.12); color: var(--success);">✅</div>
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.12); color: var(--success);">✅
+                        </div>
                     </div>
                     <div class="stat-value" id="completedTasks">0</div>
                     <div class="stat-label">Completed</div>
                 </div>
                 <div class="card stat-card">
                     <div class="stat-card-header">
-                        <div class="stat-icon" style="background: rgba(239, 68, 68, 0.12); color: var(--overdue);">⚠️</div>
+                        <div class="stat-icon" style="background: rgba(239, 68, 68, 0.12); color: var(--overdue);">⚠️
+                        </div>
                     </div>
                     <div class="stat-value" id="overdueTasks">0</div>
                     <div class="stat-label">Overdue</div>
@@ -60,9 +66,11 @@
             <div class="dashboard-grid">
                 <!-- Recent Tasks -->
                 <section class="card recent-tasks">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
                         <h2 style="font-size: 18px; font-weight: 700;">Recent Tasks</h2>
-                        <a href="tasks.html" class="btn btn-outline btn-sm" style="text-decoration: none;">View All →</a>
+                        <a href="tasks.html" class="btn btn-outline btn-sm" style="text-decoration: none;">View All
+                            →</a>
                     </div>
                     <div id="recentTasksList" class="task-mini-list">
                         <div class="empty-state">No recent tasks found.</div>
@@ -71,7 +79,8 @@
 
                 <!-- Progress & Quick Actions -->
                 <section class="card progress-card">
-                    <h2 style="font-size: 18px; font-weight: 700; width: 100%; text-align: left; margin-bottom: 8px;">Completion Rate</h2>
+                    <h2 style="font-size: 18px; font-weight: 700; width: 100%; text-align: left; margin-bottom: 8px;">
+                        Completion Rate</h2>
                     <div class="progress-container">
                         <svg class="progress-ring" width="140" height="140">
                             <defs>
@@ -80,17 +89,23 @@
                                     <stop offset="100%" stop-color="#8b5cf6" />
                                 </linearGradient>
                             </defs>
-                            <circle class="progress-ring__circle-bg" stroke-width="10" fill="transparent" r="58" cx="70" cy="70"/>
-                            <circle class="progress-ring__circle" stroke="url(#progressGradient)" stroke-width="10" stroke-linecap="round" fill="transparent" r="58" cx="70" cy="70" id="progressCircle"/>
+                            <circle class="progress-ring__circle-bg" stroke-width="10" fill="transparent" r="58" cx="70"
+                                cy="70" />
+                            <circle class="progress-ring__circle" stroke="url(#progressGradient)" stroke-width="10"
+                                stroke-linecap="round" fill="transparent" r="58" cx="70" cy="70" id="progressCircle" />
                         </svg>
                         <div class="progress-text" id="progressPercentage">0%</div>
                     </div>
 
                     <div class="quick-actions" style="width: 100%; margin-top: 16px;">
-                        <h3 style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 12px;">Quick Actions</h3>
+                        <h3
+                            style="font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 12px;">
+                            Quick Actions</h3>
                         <div style="display: grid; gap: 10px;">
-                            <a href="import.html" class="btn btn-outline" style="width: 100%; justify-content: center;">📥 Import Tasks</a>
-                            <a href="calendar.html" class="btn btn-outline" style="width: 100%; justify-content: center;">📅 View Calendar</a>
+                            <a href="import.html" class="btn btn-outline"
+                                style="width: 100%; justify-content: center;">📥 Import Tasks</a>
+                            <a href="calendar.html" class="btn btn-outline"
+                                style="width: 100%; justify-content: center;">📅 View Calendar</a>
                         </div>
                     </div>
                 </section>

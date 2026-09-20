@@ -19,8 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCalendar();
     });
 
+    const dayModal = document.getElementById('dayTasksModal');
     document.getElementById('closeCalendarModal').addEventListener('click', () => {
-        document.getElementById('dayTasksModal').style.display = 'none';
+        dayModal.style.display = 'none';
+    });
+    window.addEventListener('click', (e) => {
+        if (e.target === dayModal) dayModal.style.display = 'none';
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && dayModal.style.display === 'block') dayModal.style.display = 'none';
     });
 });
 

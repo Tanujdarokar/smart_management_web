@@ -28,13 +28,22 @@ const Storage = {
     },
 
     // User Methods
+    normalizeEmail(email) {
+        return String(email || '').trim().toLowerCase();
+    },
+
     getUsers() {
         return this.get(this.KEYS.USERS) || [];
     },
 
     saveUser(user) {
         const users = this.getUsers();
-        users.push(user);
+        const normalizedUser = {
+            ...user,
+            email: this.normalizeEmail(user.email)
+        };
+
+        users.push(normalizedUser);
         this.set(this.KEYS.USERS, users);
     },
 
@@ -68,12 +77,72 @@ const Storage = {
     // Task Methods
     getTasks(userId) {
         const allTasks = this.get(this.KEYS.TASKS) || [];
-        return allTasks.filter(task => task.userId === userId);
+        const userTasks = allTasks.filter(task => task.userId === userId);
+
+        // Populate sample tasks for guest preview if empty
+        if (userTasks.length === 0 && userId === 'guest') {
+            const today = new Date().toISOString().split('T')[0];
+            const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+            const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+            const sampleTasks = [
+                {
+                    id: '_sample_1',
+                    userId: 'guest',
+                    title: 'Welcome to SmartTask! Explore your dashboard',
+                    description: 'Track daily work, manage statuses, and view completion metrics in real time.',
+                    category: 'Onboarding',
+                    dueDate: today,
+                    priority: 'High',
+                    status: 'In Progress',
+                    tags: 'getting-started, preview',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: '_sample_2',
+                    userId: 'guest',
+                    title: 'Review weekly sprint milestones',
+                    description: 'Check team deliverables, task blockers, and project timeline.',
+                    category: 'Work',
+                    dueDate: yesterday,
+                    priority: 'Critical',
+                    status: 'Pending',
+                    tags: 'sprint, urgent',
+                    createdAt: new Date(Date.now() - 86400000).toISOString()
+                },
+                {
+                    id: '_sample_3',
+                    userId: 'guest',
+                    title: 'Prepare presentation for quarterly review',
+                    description: 'Gather metrics, payment summary, and task completion percentages.',
+                    category: 'Planning',
+                    dueDate: tomorrow,
+                    priority: 'Medium',
+                    status: 'Pending',
+                    tags: 'presentation, metrics',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: '_sample_4',
+                    userId: 'guest',
+                    title: 'Initial workspace setup',
+                    description: 'Demonstrating archived completed tasks and completion statistics.',
+                    category: 'Setup',
+                    dueDate: yesterday,
+                    priority: 'Low',
+                    status: 'Completed',
+                    tags: 'demo, done',
+                    createdAt: new Date(Date.now() - 172800000).toISOString()
+                }
+            ];
+            sampleTasks.forEach(t => allTasks.push(t));
+            this.set(this.KEYS.TASKS, allTasks);
+            return sampleTasks;
+        }
+
+        return userTasks;
     },
 
     saveTasks(tasks) {
-        // This expects all tasks for all users, or a merge strategy
-        // Better: update only specific tasks
         this.set(this.KEYS.TASKS, tasks);
     },
 

@@ -13,14 +13,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Event Listeners
     document.getElementById('addNewTask').addEventListener('click', () => {
-        if (Storage.isGuestUser(Storage.getCurrentUser())) {
-            Utils.showGuestLoginWarning();
-            return;
-        }
         openModal();
     });
     document.querySelectorAll('.close-modal, .close-modal-btn').forEach(btn => {
         btn.addEventListener('click', closeModal);
+    });
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'block') closeModal();
     });
 
     taskForm.addEventListener('submit', handleTaskSubmit);
@@ -183,8 +185,8 @@ function openModal(task = null, prefilledDate = null) {
         modalTitle.innerText = 'Edit Task';
         taskIdInput.value = task.id;
         document.getElementById('title').value = task.title;
-        document.getElementById('description').value = task.description;
-        document.getElementById('category').value = task.category;
+        document.getElementById('description').value = task.description || '';
+        document.getElementById('category').value = task.category || '';
         document.getElementById('dueDate').value = task.dueDate;
         document.getElementById('priority').value = task.priority;
         document.getElementById('status').value = task.status;
@@ -203,14 +205,8 @@ function closeModal() {
 }
 
 function handleTaskSubmit(e) {
-    if (Storage.isGuestUser(Storage.getCurrentUser())) {
-        e.preventDefault();
-        Utils.showGuestLoginWarning();
-        return;
-    }
-
     e.preventDefault();
-    const user = Storage.getCurrentUser();
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
     const taskId = document.getElementById('taskId').value;
 
     const title = document.getElementById('title').value.trim();
@@ -244,7 +240,7 @@ function handleTaskSubmit(e) {
         userId: user.id,
         title: title,
         description: description,
-        category: document.getElementById('category').value,
+        category: document.getElementById('category').value || 'General',
         dueDate: dueDate,
         priority: document.getElementById('priority').value,
         status: document.getElementById('status').value,
@@ -252,12 +248,12 @@ function handleTaskSubmit(e) {
         createdAt: createdAt
     };
 
-    if (document.getElementById('taskId').value) {
+    if (taskId) {
         Storage.updateTask(taskData);
         Utils.showToast('Task updated successfully');
     } else {
         Storage.addTask(taskData);
-        Utils.showToast('Task added successfully');
+        Utils.showToast(Storage.isGuestUser(user) ? 'Task added (Guest Mode)' : 'Task added successfully');
     }
 
     closeModal();

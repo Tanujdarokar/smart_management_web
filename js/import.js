@@ -105,6 +105,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     document.getElementById('taskForm').addEventListener('submit', handleTaskSubmit);
 
+    window.addEventListener('click', (e) => {
+        const m = document.getElementById('taskModal');
+        if (e.target === m) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+        const m = document.getElementById('taskModal');
+        if (e.key === 'Escape' && m && m.style.display === 'block') closeModal();
+    });
+
     loadImportedTasks();
 });
 
@@ -273,11 +282,10 @@ function renderPreview(fileName, tasks) {
 
 window.removePreviewRow = (btn, index) => {
     btn.closest('tr').remove();
-    // In a real app, update detectedTasks array too
 };
 
 function confirmImport() {
-    const user = Storage.getCurrentUser();
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
     const rows = document.querySelectorAll('#previewBody tr');
     let importedCount = 0;
 
@@ -313,7 +321,7 @@ function confirmImport() {
         Utils.showToast(`Successfully imported ${importedCount} tasks!`);
         setTimeout(() => {
             window.location.href = 'dashboard.html';
-        }, 1500);
+        }, 1200);
     } else {
         Utils.showToast('No tasks selected for import', 'error');
     }

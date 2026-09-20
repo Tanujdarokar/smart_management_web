@@ -12,10 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
         guestLoginBtn.addEventListener('click', (e) => {
             e.preventDefault();
             Storage.setCurrentUser(Storage.getGuestUser());
-            Utils.showToast('Guest preview enabled. Login required to use features.', 'info');
+            Utils.showToast('Guest preview enabled! Exploring SmartTask...', 'info');
             setTimeout(() => {
                 window.location.href = 'dashboard.html';
-            }, 500);
+            }, 400);
         });
     }
 
@@ -24,12 +24,21 @@ document.addEventListener('DOMContentLoaded', () => {
         registerForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            const fullName = document.getElementById('fullName').value;
-            const email = document.getElementById('email').value;
+            const fullName = document.getElementById('fullName').value.trim();
+            const email = Storage.normalizeEmail(document.getElementById('email').value);
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
 
-            // Simple Validation
+            if (!fullName) {
+                Utils.showToast('Name is required', 'error');
+                return;
+            }
+
+            if (!email || !email.includes('@')) {
+                Utils.showToast('Valid email is required', 'error');
+                return;
+            }
+
             if (password.length < 8) {
                 Utils.showToast('Password must be at least 8 characters', 'error');
                 return;
@@ -41,8 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const users = Storage.getUsers();
-            if (users.find(u => u.email === email)) {
-                Utils.showToast('User already exists', 'error');
+            if (users.find(u => Storage.normalizeEmail(u.email) === email)) {
+                Utils.showToast('User already exists with this email', 'error');
                 return;
             }
 
@@ -50,15 +59,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 id: Utils.generateId(),
                 name: fullName,
                 email: email,
-                password: btoa(password) // SECURITY: In real apps, use proper salted hashing (like bcrypt)!
+                password: btoa(password)
             };
 
             Storage.saveUser(newUser);
-            Utils.showToast('Registration successful! Redirecting...', 'success');
+            Utils.showToast('Registration successful! Redirecting to login...', 'success');
 
             setTimeout(() => {
                 window.location.href = 'login.html';
-            }, 1500);
+            }, 1000);
         });
     }
 
@@ -67,13 +76,11 @@ document.addEventListener('DOMContentLoaded', () => {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            const email = document.getElementById('email').value;
+            const email = Storage.normalizeEmail(document.getElementById('email').value);
             const password = document.getElementById('password').value;
-            const rememberMe = document.getElementById('rememberMe').checked;
 
             const users = Storage.getUsers();
-            // Compare against obfuscated password
-            const user = users.find(u => u.email === email && u.password === btoa(password));
+            const user = users.find(u => Storage.normalizeEmail(u.email) === email && u.password === btoa(password));
 
             if (user) {
                 Storage.setCurrentUser(user);
@@ -81,18 +88,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 setTimeout(() => {
                     window.location.href = 'dashboard.html';
-                }, 1000);
+                }, 800);
             } else {
                 Utils.showToast('Invalid email or password', 'error');
             }
         });
     }
 
-    // Auth Check for Dashboard
+    // Auth Check for Dashboard: only auto-redirect if already signed in with a real account
     const currentUser = Storage.getCurrentUser();
     const currentPage = window.location.pathname;
 
-    if (currentUser && (currentPage.includes('login.html') || currentPage.includes('register.html'))) {
+    if (currentUser && !Storage.isGuestUser(currentUser) && (currentPage.includes('login.html') || currentPage.includes('register.html'))) {
         window.location.href = 'dashboard.html';
     }
 });
+
