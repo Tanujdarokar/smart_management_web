@@ -33,6 +33,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // Currency & Budget Preferences
+    const currencySelect = document.getElementById('settingsCurrency');
+    const budgetAlertInput = document.getElementById('settingsBudgetAlert');
+    if (currencySelect) currencySelect.value = settings.currency || 'USD';
+    if (budgetAlertInput) budgetAlertInput.value = settings.budgetAlertThreshold || 80;
+
+    document.getElementById('financeSettingsForm')?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const selectedCurrency = currencySelect.value;
+        const selectedThreshold = parseInt(budgetAlertInput.value, 10) || 80;
+
+        settings.currency = selectedCurrency;
+        settings.budgetAlertThreshold = selectedThreshold;
+        Storage.saveSettings(user.id, settings);
+
+        Utils.showToast(`Financial preferences saved! Currency: ${selectedCurrency}`, 'success');
+    });
+
     // Profile Form
     document.getElementById('profileForm').addEventListener('submit', (e) => {
         e.preventDefault();

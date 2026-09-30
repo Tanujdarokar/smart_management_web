@@ -12,13 +12,74 @@ document.addEventListener('DOMContentLoaded', () => {
     loadDashboardStats();
     loadDashboardSummary();
     loadRecentTasks();
+    loadDashboardFinance();
     updateProgressRing();
+    enableCardTilt();
 
     // Event Listeners
     document.getElementById('quickAddTask').addEventListener('click', () => {
         window.location.href = 'tasks.html?action=new';
     });
 });
+
+function loadDashboardFinance() {
+    const user = Storage.getCurrentUser() || Storage.getGuestUser();
+    const payments = Storage.getPayments(user.id);
+    const goals = Storage.getSavingsGoals(user.id);
+
+    // Filter current month
+    const now = new Date();
+    const currentMonthPayments = payments.filter(p => {
+        if (p.status === 'failed') return false;
+        const d = new Date(p.date.includes('T') ? p.date : p.date + 'T00:00:00');
+        return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+    });
+
+    const received = currentMonthPayments.filter(p => p.type === 'received');
+    const sent = currentMonthPayments.filter(p => p.type === 'sent');
+
+    const totalIncome = received.reduce((s, p) => s + (Number(p.amount) || 0), 0);
+    const totalExpense = sent.reduce((s, p) => s + (Number(p.amount) || 0), 0);
+    const netCashflow = totalIncome - totalExpense;
+
+    const totalGoalsSaved = goals.reduce((s, g) => s + (Number(g.currentAmount) || 0), 0);
+
+    const incomeEl = document.getElementById('dashMonthIncome');
+    const expenseEl = document.getElementById('dashMonthExpense');
+    const netEl = document.getElementById('dashMonthNet');
+    const goalsEl = document.getElementById('dashSavingsBuffer');
+
+    if (incomeEl) incomeEl.textContent = Utils.formatMoney(totalIncome);
+    if (expenseEl) expenseEl.textContent = Utils.formatMoney(totalExpense);
+    if (netEl) {
+        netEl.textContent = Utils.formatMoney(netCashflow);
+        netEl.style.color = netCashflow >= 0 ? 'var(--success)' : 'var(--overdue)';
+    }
+    if (goalsEl) goalsEl.textContent = Utils.formatMoney(totalGoalsSaved);
+}
+
+function enableCardTilt() {
+    const tiltTargets = document.querySelectorAll('.card, .stat-card, .task-mini-item, .summary-mini-card, .btn');
+
+    tiltTargets.forEach((element) => {
+        const applyTilt = (event) => {
+            const rect = element.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width;
+            const y = (event.clientY - rect.top) / rect.height;
+            const rotateY = (x - 0.5) * 16;
+            const rotateX = (0.5 - y) * 16;
+
+            element.style.setProperty('--rx', `${rotateX}deg`);
+            element.style.setProperty('--ry', `${rotateY}deg`);
+        };
+
+        element.addEventListener('pointermove', applyTilt);
+        element.addEventListener('pointerleave', () => {
+            element.style.setProperty('--rx', '0deg');
+            element.style.setProperty('--ry', '0deg');
+        });
+    });
+}
 
 function loadDashboardStats() {
     const user = Storage.getCurrentUser() || Storage.getGuestUser();

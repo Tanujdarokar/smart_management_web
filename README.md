@@ -6,16 +6,23 @@ The current project includes a complete authentication flow, dashboard analytics
 
 ## ✨ Current Features
 
+- **Money Management Hub 💰**:
+  - **Transaction Ledger**: record income/expenses, tag categories, payment methods, link to tasks, duplicate/edit entries.
+  - **Monthly Budgets & Category Spending Limits**: visual progress tracking, budget utilization warning thresholds, and remaining amount calculations.
+  - **Savings Goals & Milestones**: set targets, deposit/withdraw funds, progress bars, and completion deadlines.
+  - **Recurring Subscriptions & Fixed Commitments**: renewal reminders, urgency badges, monthly commitment calculation, and one-click "Record Paid".
+  - **Visual Financial Analytics**: expense distribution by category, income vs expense cash flow ratio, and payment method share.
+  - **Multi-Currency Support**: switch seamlessly between USD ($), EUR (€), GBP (£), INR (₹), JPY (¥), CAD (CA$), and AUD (A$).
+  - **Statement & Export Center**: printable financial statement generator, CSV spreadsheet exports, and JSON backups.
 - **Authentication and user flow**: register, login, logout, guest mode, remember-me behavior, and user storage handling.
-- **Dashboard overview**: task totals, pending/completed counts, overdue tracking, progress ring, and summary cards.
+- **Dashboard overview**: task totals, pending/completed counts, overdue tracking, progress ring, monthly finance snapshot widget, and summary cards.
 - **Task manager**: create, edit, delete, complete, filter, sort, and search tasks.
 - **Smart import system**: supports CSV, TXT, JSON, XLSX, and tracker-style workbook imports.
 - **Flexible import parsing**: detects matching columns dynamically, handles extra rows/columns, preserves explicit dates, and adds sequential dates when missing.
 - **Tracker support**: dedicated tracker page and import workflow for interview or workflow workbook files.
 - **Workbook summary view**: imported task data can be aggregated into category and priority summaries on the dashboard.
 - **Calendar view**: visual date-based task planning and day grouping.
-- **Payments tracking**: add/manage payment records, status filters, and financial overview.
-- **Settings page**: theme switching, profile data management, and account-level preferences.
+- **Settings page**: theme switching, default currency selection, budget warning thresholds, profile data management, and feature feedback.
 - **Responsive UI**: sidebar navigation, mobile layout support, and modern dashboard styling.
 
 ## 🧩 Project Structure

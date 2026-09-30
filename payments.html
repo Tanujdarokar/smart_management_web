@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Payments | SmartTask Manager</title>
-    <meta name="description" content="Manage your payment transactions — send and receive payments seamlessly within SmartTask Manager.">
+    <title>Money Manager & Finance Hub | SmartTask</title>
+    <meta name="description" content="Comprehensive money management, budgeting, savings goals, recurring bills, and financial analytics in SmartTask Manager.">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/payments.css">
 </head>
@@ -15,27 +15,59 @@
         <aside class="sidebar"></aside>
 
         <main class="main-content">
-            <header class="header">
+            <!-- Header with Quick Controls -->
+            <header class="header money-header">
                 <div>
-                    <h1>💳 Payments</h1>
-                    <p style="color: var(--text-muted);">Track, send, and receive payments with ease.</p>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+                        <span class="header-icon-badge">💰</span>
+                        <h1>Money Management Hub</h1>
+                    </div>
+                    <p style="color: var(--text-muted);">Track cashflow, set category budgets, grow savings goals, and manage recurring bills.</p>
                 </div>
-                <div class="header-actions">
-                    <button class="btn btn-outline" id="btnReceive">
-                        <span>📥</span> Receive Payment
+                <div class="header-actions money-header-actions">
+                    <div class="currency-selector-wrap" title="Change display currency">
+                        <span class="currency-globe-icon">🌐</span>
+                        <select id="currencySelector" class="currency-select" aria-label="Select Currency">
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                            <option value="INR">INR (₹)</option>
+                            <option value="JPY">JPY (¥)</option>
+                            <option value="CAD">CAD (CA$)</option>
+                            <option value="AUD">AUD (A$)</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-outline btn-sm" id="btnExportStatement" title="Export CSV or Generate Statement">
+                        <span>📑</span> Statement / Export
+                    </button>
+                    <button class="btn btn-outline" id="btnReceive" style="border-color: rgba(16, 185, 129, 0.4); color: var(--success);">
+                        <span>📥</span> + Income
                     </button>
                     <button class="btn btn-primary" id="btnSend">
-                        <span>📤</span> Send Payment
+                        <span>📤</span> + Expense
                     </button>
                 </div>
             </header>
 
-            <!-- Summary Cards -->
-            <div class="payment-stats">
+            <!-- Timeframe Filter Toolbar -->
+            <div class="timeframe-bar">
+                <div class="timeframe-pills">
+                    <button class="timeframe-btn active" data-period="all">All Time</button>
+                    <button class="timeframe-btn" data-period="this-month">This Month</button>
+                    <button class="timeframe-btn" data-period="last-month">Last Month</button>
+                    <button class="timeframe-btn" data-period="this-year">This Year</button>
+                </div>
+                <div class="quick-summary-pill" id="timeframeLabel">
+                    📅 Showing: <strong>All Time Overview</strong>
+                </div>
+            </div>
+
+            <!-- 5 Dynamic Financial Stats -->
+            <div class="payment-stats money-stats-grid">
                 <div class="card pay-stat-card pay-stat-income">
                     <div class="pay-stat-icon">📥</div>
                     <div class="pay-stat-body">
-                        <div class="pay-stat-label">Total Received</div>
+                        <div class="pay-stat-label">Total Income</div>
                         <div class="pay-stat-value" id="totalReceived">$0.00</div>
                         <div class="pay-stat-sub" id="receivedCount">0 transactions</div>
                     </div>
@@ -43,7 +75,7 @@
                 <div class="card pay-stat-card pay-stat-expense">
                     <div class="pay-stat-icon">📤</div>
                     <div class="pay-stat-body">
-                        <div class="pay-stat-label">Total Sent</div>
+                        <div class="pay-stat-label">Total Expenses</div>
                         <div class="pay-stat-value" id="totalSent">$0.00</div>
                         <div class="pay-stat-sub" id="sentCount">0 transactions</div>
                     </div>
@@ -51,73 +83,289 @@
                 <div class="card pay-stat-card pay-stat-balance">
                     <div class="pay-stat-icon">⚖️</div>
                     <div class="pay-stat-body">
-                        <div class="pay-stat-label">Net Balance</div>
+                        <div class="pay-stat-label">Net Cash Flow</div>
                         <div class="pay-stat-value" id="netBalance">$0.00</div>
-                        <div class="pay-stat-sub">Received minus Sent</div>
+                        <div class="pay-stat-sub" id="savingsRateSub">Savings Rate: 0%</div>
                     </div>
                 </div>
-                <div class="card pay-stat-card pay-stat-pending">
-                    <div class="pay-stat-icon">⏳</div>
+                <div class="card pay-stat-card pay-stat-goals">
+                    <div class="pay-stat-icon">🎯</div>
                     <div class="pay-stat-body">
-                        <div class="pay-stat-label">Pending</div>
-                        <div class="pay-stat-value" id="totalPending">$0.00</div>
-                        <div class="pay-stat-sub" id="pendingCount">0 transactions</div>
+                        <div class="pay-stat-label">Savings In Goals</div>
+                        <div class="pay-stat-value" id="totalSavingsValue">$0.00</div>
+                        <div class="pay-stat-sub" id="goalsCountSub">0 active goals</div>
+                    </div>
+                </div>
+                <div class="card pay-stat-card pay-stat-recurring">
+                    <div class="pay-stat-icon">🔄</div>
+                    <div class="pay-stat-body">
+                        <div class="pay-stat-label">Monthly Commitments</div>
+                        <div class="pay-stat-value" id="totalRecurringValue">$0.00</div>
+                        <div class="pay-stat-sub" id="billsCountSub">0 active subscriptions</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tabs + Filter Bar -->
-            <div class="card payment-panel">
-                <div class="pay-toolbar">
-                    <div class="pay-tabs">
-                        <button class="pay-tab active" data-tab="all" id="tabAll">All</button>
-                        <button class="pay-tab" data-tab="received" id="tabReceived">Received</button>
-                        <button class="pay-tab" data-tab="sent" id="tabSent">Sent</button>
+            <!-- Primary Navigation Tabs -->
+            <div class="money-nav-tabs">
+                <button class="money-tab active" data-section="transactions">
+                    <span>📜</span> Transactions & Ledger
+                </button>
+                <button class="money-tab" data-section="budgets">
+                    <span>📊</span> Budgets & Limits
+                </button>
+                <button class="money-tab" data-section="goals">
+                    <span>🎯</span> Savings Goals
+                </button>
+                <button class="money-tab" data-section="recurring">
+                    <span>🔄</span> Subscriptions & Bills
+                </button>
+                <button class="money-tab" data-section="analytics">
+                    <span>📈</span> Visual Analytics & Insights
+                </button>
+            </div>
+
+            <!-- ════════ SECTION 1: TRANSACTIONS ════════ -->
+            <section id="sec-transactions" class="money-section active">
+                <div class="card payment-panel">
+                    <div class="pay-toolbar">
+                        <div class="pay-tabs">
+                            <button class="pay-tab active" data-tab="all" id="tabAll">All (0)</button>
+                            <button class="pay-tab" data-tab="received" id="tabReceived">Income (0)</button>
+                            <button class="pay-tab" data-tab="sent" id="tabSent">Expenses (0)</button>
+                        </div>
+                        <div class="pay-filters">
+                            <input type="text" id="searchPayment" placeholder="🔍 Search description, party, notes..." class="pay-search">
+                            <select id="filterCategory" class="pay-filter-select">
+                                <option value="all">All Categories</option>
+                                <option value="Salary">Salary</option>
+                                <option value="Freelance">Freelance</option>
+                                <option value="Invoice">Invoice</option>
+                                <option value="Rent">Rent / Housing</option>
+                                <option value="Food">Food & Dining</option>
+                                <option value="Subscription">Subscriptions</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Travel">Travel</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="General">General</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <select id="filterStatus" class="pay-filter-select">
+                                <option value="all">All Status</option>
+                                <option value="completed">Completed</option>
+                                <option value="pending">Pending</option>
+                                <option value="failed">Failed</option>
+                            </select>
+                            <select id="sortBy" class="pay-filter-select">
+                                <option value="date-desc">📅 Date (Newest)</option>
+                                <option value="date-asc">📅 Date (Oldest)</option>
+                                <option value="amount-desc">💰 Amount (High to Low)</option>
+                                <option value="amount-asc">💰 Amount (Low to High)</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="pay-filters">
-                        <input type="text" id="searchPayment" placeholder="Search by name or note" class="pay-search">
-                        <select id="filterStatus" class="pay-filter-select">
-                            <option value="all">All Status</option>
-                            <option value="completed">Completed</option>
-                            <option value="pending">Pending</option>
-                            <option value="failed">Failed</option>
-                        </select>
+
+                    <!-- Transaction Table -->
+                    <div class="pay-table-wrapper">
+                        <table class="pay-table" id="paymentTable">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Recipient / Source</th>
+                                    <th>Amount</th>
+                                    <th>Category</th>
+                                    <th>Date</th>
+                                    <th>Method</th>
+                                    <th>Linked Task</th>
+                                    <th>Status</th>
+                                    <th>Note</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="paymentTableBody">
+                            </tbody>
+                        </table>
+                        <div id="paymentEmptyState" class="pay-empty" style="display:none;">
+                            <div class="pay-empty-icon">💸</div>
+                            <h3>No transactions match your criteria</h3>
+                            <p>Click <strong>+ Income</strong> or <strong>+ Expense</strong> to add your entry, or clear your search filters.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ════════ SECTION 2: BUDGETS & LIMITS ════════ -->
+            <section id="sec-budgets" class="money-section">
+                <div class="section-top-bar">
+                    <div>
+                        <h2>Monthly Budgets & Category Spending Limits</h2>
+                        <p style="color: var(--text-muted); font-size: 14px;">Set and track monthly spending ceilings per category to stay financially disciplined.</p>
+                    </div>
+                    <button class="btn btn-primary" id="btnNewBudget">
+                        <span>➕</span> Add / Edit Category Budget
+                    </button>
+                </div>
+
+                <!-- Overall Monthly Budget Health Banner -->
+                <div class="card budget-overall-card" id="budgetOverallCard">
+                    <div class="budget-overall-header">
+                        <div>
+                            <span class="budget-pill" id="overallBudgetStatusPill">🟢 On Track</span>
+                            <h3 style="margin: 8px 0 4px; font-size: 20px;">Total Monthly Spending vs Budget Limit</h3>
+                            <p style="color: var(--text-muted); font-size: 13.5px; margin: 0;">Calculated from all expenses recorded for this month.</p>
+                        </div>
+                        <div class="budget-overall-numbers">
+                            <div class="budget-spent-val" id="overallSpentVal">$0.00</div>
+                            <div class="budget-limit-val" id="overallLimitVal">of $0.00 allocated</div>
+                        </div>
+                    </div>
+                    <div class="budget-track-large">
+                        <div class="budget-bar-large" id="overallBudgetBar" style="width: 0%;"></div>
+                    </div>
+                    <div class="budget-track-footer">
+                        <span id="overallRemainingText">Remaining: $0.00</span>
+                        <span id="overallPercentText">0% utilized</span>
                     </div>
                 </div>
 
-                <!-- Transaction Table -->
-                <div class="pay-table-wrapper">
-                    <table class="pay-table" id="paymentTable">
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Party</th>
-                                <th>Amount</th>
-                                <th>Category</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th>Note</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="paymentTableBody">
-                        </tbody>
-                    </table>
-                    <div id="paymentEmptyState" class="pay-empty" style="display:none;">
-                        <div class="pay-empty-icon">💸</div>
-                        <h3>No transactions yet</h3>
-                        <p>Click <strong>Send Payment</strong> or <strong>Receive Payment</strong> to add your first entry.</p>
+                <!-- Category Budgets Grid -->
+                <div class="budgets-grid" id="budgetsGrid">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+
+            <!-- ════════ SECTION 3: SAVINGS GOALS ════════ -->
+            <section id="sec-goals" class="money-section">
+                <div class="section-top-bar">
+                    <div>
+                        <h2>Savings Goals & Milestones</h2>
+                        <p style="color: var(--text-muted); font-size: 14px;">Define financial targets, deposit towards your goals, and track your milestone progress.</p>
+                    </div>
+                    <button class="btn btn-primary" id="btnNewGoal">
+                        <span>🎯</span> Create New Goal
+                    </button>
+                </div>
+
+                <div class="goals-grid" id="goalsGrid">
+                    <!-- Injected by JS -->
+                </div>
+            </section>
+
+            <!-- ════════ SECTION 4: RECURRING BILLS & SUBSCRIPTIONS ════════ -->
+            <section id="sec-recurring" class="money-section">
+                <div class="section-top-bar">
+                    <div>
+                        <h2>Recurring Subscriptions & Fixed Commitments</h2>
+                        <p style="color: var(--text-muted); font-size: 14px;">Keep track of upcoming renewals, monthly subscriptions, and fixed bills.</p>
+                    </div>
+                    <button class="btn btn-primary" id="btnNewRecurring">
+                        <span>🔄</span> Add Recurring Bill
+                    </button>
+                </div>
+
+                <div class="recurring-container">
+                    <div class="card" style="padding: 0; overflow: hidden;">
+                        <div class="recurring-header-summary">
+                            <div class="rec-metric">
+                                <span class="rec-metric-lbl">Total Monthly Recurring</span>
+                                <span class="rec-metric-val" id="recurringTotalCost">$0.00/mo</span>
+                            </div>
+                            <div class="rec-metric">
+                                <span class="rec-metric-lbl">Active Services</span>
+                                <span class="rec-metric-val" id="recurringActiveCount">0 Active</span>
+                            </div>
+                            <div class="rec-metric">
+                                <span class="rec-metric-lbl">Next Due In</span>
+                                <span class="rec-metric-val" id="recurringNextDue">None</span>
+                            </div>
+                        </div>
+
+                        <div class="pay-table-wrapper">
+                            <table class="pay-table" id="recurringTable">
+                                <thead>
+                                    <tr>
+                                        <th>Service / Bill</th>
+                                        <th>Category</th>
+                                        <th>Amount</th>
+                                        <th>Billing Cycle</th>
+                                        <th>Next Due Date</th>
+                                        <th>Urgency Status</th>
+                                        <th>Quick Action</th>
+                                        <th>Manage</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recurringTableBody">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            <!-- ════════ SECTION 5: VISUAL ANALYTICS & INSIGHTS ════════ -->
+            <section id="sec-analytics" class="money-section">
+                <div class="analytics-grid">
+                    <!-- Cash Flow Breakdown Card -->
+                    <div class="card analytics-card">
+                        <div class="analytics-card-header">
+                            <div>
+                                <h3>📊 Expense Breakdown by Category</h3>
+                                <p style="color: var(--text-muted); font-size: 13px;">Spending distribution across all active categories.</p>
+                            </div>
+                            <span class="badge" style="background: rgba(99, 102, 241, 0.1); color: var(--primary-color);">Category Mix</span>
+                        </div>
+                        <div id="categoryAnalyticsBars" class="category-analytics-list">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Payment Methods & Income vs Expense Breakdown -->
+                    <div class="card analytics-card">
+                        <div class="analytics-card-header">
+                            <div>
+                                <h3>⚖️ Income vs Expense Ratio</h3>
+                                <p style="color: var(--text-muted); font-size: 13px;">Net cash flow generation efficiency.</p>
+                            </div>
+                            <span class="badge" id="cashflowHealthBadge" style="background: var(--success-bg); color: var(--success);">Healthy</span>
+                        </div>
+                        <div class="cashflow-ratio-widget" id="cashflowRatioWidget">
+                            <!-- Injected by JS -->
+                        </div>
+
+                        <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+                            <h4 style="font-size: 14px; margin-bottom: 12px; font-weight: 700;">💳 Payment Method Distribution</h4>
+                            <div id="paymentMethodBars" class="category-analytics-list">
+                                <!-- Injected by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Smart Financial Health & Advisory Tips -->
+                    <div class="card analytics-card full-span-card">
+                        <div class="analytics-card-header">
+                            <div>
+                                <h3>💡 Smart Financial Health & Tips</h3>
+                                <p style="color: var(--text-muted); font-size: 13px;">Automated intelligence based on your spending habits and savings rate.</p>
+                            </div>
+                            <span class="badge" id="financialScoreBadge" style="background: var(--primary-gradient-subtle); color: var(--primary-color); font-weight: 800;">
+                                Score: 92/100
+                            </span>
+                        </div>
+                        <div class="financial-tips-grid" id="financialTipsGrid">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
-    <!-- Payment Modal (Send / Receive) -->
+    <!-- ════════ MODAL 1: TRANSACTION (ADD / EDIT) ════════ -->
     <div class="modal-overlay" id="paymentModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="modal-box">
             <div class="modal-header">
-                <h2 id="modalTitle">Send Payment</h2>
+                <h2 id="modalTitle">Record Transaction</h2>
                 <button class="modal-close" id="closeModal" aria-label="Close">&#x2715;</button>
             </div>
             <form id="paymentForm" autocomplete="off" novalidate>
@@ -125,13 +373,13 @@
 
                 <!-- Type Toggle -->
                 <div class="form-group">
-                    <label class="form-label">Payment Type</label>
+                    <label class="form-label">Transaction Type</label>
                     <div class="type-toggle">
-                        <button type="button" class="type-btn active" id="typeSend" data-value="sent">
-                            Send
-                        </button>
                         <button type="button" class="type-btn" id="typeReceive" data-value="received">
-                            Receive
+                            📥 + Income
+                        </button>
+                        <button type="button" class="type-btn active" id="typeSend" data-value="sent">
+                            📤 − Expense
                         </button>
                     </div>
                     <input type="hidden" id="paymentType" value="sent">
@@ -139,13 +387,13 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="partyName">Person / Organization <span class="required">*</span></label>
-                        <input type="text" id="partyName" placeholder="e.g. John Doe, Acme Corp" required>
+                        <label class="form-label" for="partyName">Person / Business / Source <span class="required">*</span></label>
+                        <input type="text" id="partyName" placeholder="e.g. Acme Corp, AWS, Whole Foods" required>
                     </div>
                     <div class="form-group">
-                        <label class="form-label" for="paymentAmount">Amount (USD) <span class="required">*</span></label>
+                        <label class="form-label" for="paymentAmount">Amount <span class="required">*</span></label>
                         <div class="input-prefix-wrap">
-                            <span class="input-prefix">$</span>
+                            <span class="input-prefix" id="modalCurrencyPrefix">$</span>
                             <input type="number" id="paymentAmount" placeholder="0.00" min="0.01" step="0.01" required>
                         </div>
                     </div>
@@ -160,14 +408,17 @@
                         <label class="form-label" for="paymentCategory">Category</label>
                         <select id="paymentCategory">
                             <option value="General">General</option>
-                            <option value="Invoice">Invoice</option>
                             <option value="Salary">Salary</option>
                             <option value="Freelance">Freelance</option>
+                            <option value="Invoice">Invoice</option>
+                            <option value="Rent">Rent / Housing</option>
+                            <option value="Food">Food & Dining</option>
                             <option value="Subscription">Subscription</option>
                             <option value="Utilities">Utilities</option>
-                            <option value="Rent">Rent</option>
-                            <option value="Food">Food and Dining</option>
                             <option value="Travel">Travel</option>
+                            <option value="Shopping">Shopping</option>
+                            <option value="Entertainment">Entertainment</option>
+                            <option value="Healthcare">Healthcare</option>
                             <option value="Other">Other</option>
                         </select>
                     </div>
@@ -178,11 +429,13 @@
                         <label class="form-label" for="paymentMethod">Payment Method</label>
                         <select id="paymentMethod">
                             <option value="Bank Transfer">Bank Transfer</option>
-                            <option value="Cash">Cash</option>
                             <option value="Credit Card">Credit Card</option>
+                            <option value="Debit Card">Debit Card</option>
                             <option value="UPI">UPI</option>
                             <option value="PayPal">PayPal</option>
+                            <option value="Cash">Cash</option>
                             <option value="Crypto">Crypto</option>
+                            <option value="Apple Pay">Apple Pay</option>
                             <option value="Other">Other</option>
                         </select>
                     </div>
@@ -197,28 +450,284 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label" for="paymentNote">Note / Description</label>
-                    <textarea id="paymentNote" rows="3" placeholder="Add a note about this transaction..."></textarea>
+                    <label class="form-label" for="linkedTaskSelect">Link to Task / Project (Optional)</label>
+                    <select id="linkedTaskSelect">
+                        <option value="">— None (Unlinked) —</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="paymentNote">Note / Invoice # / Description</label>
+                    <textarea id="paymentNote" rows="2" placeholder="Add invoice number, receipt details, or transaction memo..."></textarea>
                 </div>
 
                 <div class="modal-actions">
                     <button type="button" class="btn btn-outline" id="cancelPayment">Cancel</button>
                     <button type="submit" class="btn btn-primary" id="submitPayment">
-                        <span id="submitIcon">&#128228;</span> <span id="submitLabel">Send Payment</span>
+                        <span id="submitIcon">&#128228;</span> <span id="submitLabel">Save Transaction</span>
                     </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Delete Confirm Modal -->
+    <!-- ════════ MODAL 2: CATEGORY BUDGET (ADD / EDIT) ════════ -->
+    <div class="modal-overlay" id="budgetModal" role="dialog" aria-modal="true">
+        <div class="modal-box modal-box--sm">
+            <div class="modal-header">
+                <h2 id="budgetModalTitle">Set Category Budget</h2>
+                <button class="modal-close" id="closeBudgetModal">&#x2715;</button>
+            </div>
+            <form id="budgetForm">
+                <div class="form-group">
+                    <label class="form-label" for="budgetCategory">Category</label>
+                    <select id="budgetCategory" required>
+                        <option value="Rent">Rent / Housing (🏠)</option>
+                        <option value="Food">Food & Dining (🍔)</option>
+                        <option value="Subscription">Subscriptions (📱)</option>
+                        <option value="Utilities">Utilities (💡)</option>
+                        <option value="Travel">Travel (✈️)</option>
+                        <option value="Shopping">Shopping (🛍️)</option>
+                        <option value="Entertainment">Entertainment (🍿)</option>
+                        <option value="Healthcare">Healthcare (💊)</option>
+                        <option value="General">General (📦)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="budgetLimit">Monthly Spending Limit</label>
+                    <div class="input-prefix-wrap">
+                        <span class="input-prefix" id="budgetCurrencyPrefix">$</span>
+                        <input type="number" id="budgetLimit" placeholder="0.00" min="1" step="1" required>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" id="cancelBudget">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Budget</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ════════ MODAL 3: SAVINGS GOAL (ADD / EDIT) ════════ -->
+    <div class="modal-overlay" id="goalModal" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 id="goalModalTitle">Create Savings Goal</h2>
+                <button class="modal-close" id="closeGoalModal">&#x2715;</button>
+            </div>
+            <form id="goalForm">
+                <input type="hidden" id="editGoalId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="goalName">Goal Name <span class="required">*</span></label>
+                        <input type="text" id="goalName" placeholder="e.g. Emergency Fund, New Laptop, Holiday Trip" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="goalIcon">Icon</label>
+                        <select id="goalIcon">
+                            <option value="🛡️">🛡️ Shield / Safety</option>
+                            <option value="💻">💻 Tech / Gear</option>
+                            <option value="✈️">✈️ Vacation / Travel</option>
+                            <option value="🚗">🚗 Vehicle / Auto</option>
+                            <option value="🏠">🏠 House / Real Estate</option>
+                            <option value="📑">📑 Taxes / Provision</option>
+                            <option value="🎓">🎓 Education / Course</option>
+                            <option value="💎">💎 Investment / Wealth</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="goalTargetAmount">Target Amount <span class="required">*</span></label>
+                        <div class="input-prefix-wrap">
+                            <span class="input-prefix" id="goalCurrencyPrefix1">$</span>
+                            <input type="number" id="goalTargetAmount" placeholder="0.00" min="1" step="1" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="goalCurrentAmount">Current Saved Amount</label>
+                        <div class="input-prefix-wrap">
+                            <span class="input-prefix" id="goalCurrencyPrefix2">$</span>
+                            <input type="number" id="goalCurrentAmount" placeholder="0.00" min="0" step="1" value="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="goalTargetDate">Target Completion Date</label>
+                        <input type="date" id="goalTargetDate">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="goalCategory">Category</label>
+                        <input type="text" id="goalCategory" placeholder="e.g. Personal, Safety, Tech">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="goalNote">Goal Purpose / Memo</label>
+                    <textarea id="goalNote" rows="2" placeholder="Why are you saving for this? Add details..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" id="cancelGoal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Goal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ════════ MODAL 4: DEPOSIT / WITHDRAW FUNDS FOR GOAL ════════ -->
+    <div class="modal-overlay" id="goalAdjustModal" role="dialog" aria-modal="true">
+        <div class="modal-box modal-box--sm">
+            <div class="modal-header">
+                <h2 id="goalAdjustTitle">Deposit to Goal</h2>
+                <button class="modal-close" id="closeGoalAdjustModal">&#x2715;</button>
+            </div>
+            <form id="goalAdjustForm">
+                <input type="hidden" id="adjustGoalId">
+                <div class="form-group">
+                    <label class="form-label">Action</label>
+                    <div class="type-toggle">
+                        <button type="button" class="type-btn active" id="adjustDepositBtn" data-mode="deposit">
+                            ➕ Deposit Funds
+                        </button>
+                        <button type="button" class="type-btn" id="adjustWithdrawBtn" data-mode="withdraw">
+                            ➖ Withdraw Funds
+                        </button>
+                    </div>
+                    <input type="hidden" id="adjustMode" value="deposit">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="adjustAmount">Amount</label>
+                    <div class="input-prefix-wrap">
+                        <span class="input-prefix" id="adjustCurrencyPrefix">$</span>
+                        <input type="number" id="adjustAmount" placeholder="0.00" min="0.01" step="0.01" required>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" id="cancelGoalAdjust">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="confirmGoalAdjust">Confirm Deposit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ════════ MODAL 5: RECURRING BILL (ADD / EDIT) ════════ -->
+    <div class="modal-overlay" id="recurringModal" role="dialog" aria-modal="true">
+        <div class="modal-box modal-box--sm">
+            <div class="modal-header">
+                <h2 id="recurringModalTitle">Add Recurring Subscription</h2>
+                <button class="modal-close" id="closeRecurringModal">&#x2715;</button>
+            </div>
+            <form id="recurringForm">
+                <input type="hidden" id="editRecurringId">
+                <div class="form-group">
+                    <label class="form-label" for="recName">Subscription / Bill Name <span class="required">*</span></label>
+                    <input type="text" id="recName" placeholder="e.g. AWS Cloud, Netflix, Gym, Fiber Internet" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="recAmount">Amount <span class="required">*</span></label>
+                        <div class="input-prefix-wrap">
+                            <span class="input-prefix" id="recCurrencyPrefix">$</span>
+                            <input type="number" id="recAmount" placeholder="0.00" min="0.01" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="recFrequency">Billing Cycle</label>
+                        <select id="recFrequency">
+                            <option value="Monthly">Monthly</option>
+                            <option value="Yearly">Yearly</option>
+                            <option value="Weekly">Weekly</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="recCategory">Category</label>
+                        <select id="recCategory">
+                            <option value="Subscription">Subscription</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Rent">Rent</option>
+                            <option value="Food">Food / Groceries</option>
+                            <option value="General">General</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="recNextDueDate">Next Renewal Date <span class="required">*</span></label>
+                        <input type="date" id="recNextDueDate" required>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" id="cancelRecurring">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Subscription</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ════════ MODAL 6: EXPORT & STATEMENT GENERATOR ════════ -->
+    <div class="modal-overlay" id="statementModal" role="dialog" aria-modal="true">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2>📑 Financial Statement & Export Center</h2>
+                <button class="modal-close" id="closeStatementModal">&#x2715;</button>
+            </div>
+            <div class="statement-preview-card" id="printableStatement">
+                <div class="statement-banner">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-size:28px;">✨</span>
+                        <div>
+                            <h3 style="margin:0; font-size:18px;">SmartTask Money Statement</h3>
+                            <span id="statementGeneratedDate" style="font-size:12px; color:var(--text-muted);">Generated on ...</span>
+                        </div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div id="statementUserName" style="font-weight:700;">User</div>
+                        <div id="statementUserEmail" style="font-size:12px; color:var(--text-muted);">user@smarttask.local</div>
+                    </div>
+                </div>
+
+                <div class="statement-metrics-row">
+                    <div class="stmt-box">
+                        <span class="stmt-lbl">Total Income</span>
+                        <strong class="stmt-val text-success" id="stmtIncome">$0.00</strong>
+                    </div>
+                    <div class="stmt-box">
+                        <span class="stmt-lbl">Total Expenses</span>
+                        <strong class="stmt-val text-danger" id="stmtExpense">$0.00</strong>
+                    </div>
+                    <div class="stmt-box">
+                        <span class="stmt-lbl">Net Cashflow</span>
+                        <strong class="stmt-val" id="stmtNet">$0.00</strong>
+                    </div>
+                    <div class="stmt-box">
+                        <span class="stmt-lbl">Transactions</span>
+                        <strong class="stmt-val" id="stmtCount">0</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="export-options-grid">
+                <button class="btn btn-outline" id="btnPrintStatement" style="justify-content:center;">
+                    🖨️ Print Statement
+                </button>
+                <button class="btn btn-outline" id="btnDownloadCsv" style="justify-content:center;">
+                    📥 Download CSV Spreadsheet
+                </button>
+                <button class="btn btn-outline" id="btnDownloadJson" style="justify-content:center;">
+                    💾 Download JSON Backup
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════ MODAL 7: DELETE CONFIRMATION ════════ -->
     <div class="modal-overlay" id="deleteModal" role="dialog" aria-modal="true">
         <div class="modal-box modal-box--sm">
             <div class="modal-header">
-                <h2>Delete Transaction</h2>
+                <h2>Confirm Deletion</h2>
                 <button class="modal-close" id="closeDeleteModal">&#x2715;</button>
             </div>
-            <p style="color:var(--text-muted); margin-bottom:24px;">Are you sure you want to delete this transaction? This action cannot be undone.</p>
+            <p id="deleteModalPrompt" style="color:var(--text-muted); margin-bottom:24px;">Are you sure you want to delete this record? This action cannot be undone.</p>
             <div class="modal-actions">
                 <button class="btn btn-outline" id="cancelDelete">Cancel</button>
                 <button class="btn" id="confirmDelete" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;">Delete</button>

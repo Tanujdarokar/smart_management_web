@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import * as XLSX from 'xlsx';
 import Storage from '../js/storage.js';
 import Parser from '../js/parser.js';
+import Utils from '../js/utils.js';
 
 class MemoryLocalStorage {
   constructor() {
@@ -156,10 +157,28 @@ test('Parser imports .xlsx files and maps sheet rows into tasks', async () => {
 });
 
 test('Parser selects the tracker sheet instead of the summary sheet when importing the interview workbook', async () => {
-  const fs = await import('node:fs');
-  const file = new File([
-    fs.readFileSync(new URL('../assets/tracker/FAANG_Startup_MNC_Interview_Tracker.xlsx', import.meta.url))
-  ], 'FAANG_Startup_MNC_Interview_Tracker.xlsx', {
+  const workbook = XLSX.utils.book_new();
+
+  // Summary sheet that shouldn't be selected as primary tasks
+  const summaryRows = [
+    ['Interview Prep Tracker: Progress Summary', ''],
+    ['Total Problems', '150'],
+    ['Completed', '45']
+  ];
+  const summarySheet = XLSX.utils.aoa_to_sheet(summaryRows);
+  XLSX.utils.book_append_sheet(workbook, summarySheet, 'Summary');
+
+  // Main tracker sheet
+  const trackerRows = [
+    ['Problem / Task Title', 'Category', 'Difficulty', 'Status', 'Target Date', 'Notes'],
+    ['Two Sum & 3Sum Implementation', 'Algorithms', 'High', 'In Progress', '2026-10-15', 'Leetcode blind 75'],
+    ['Design a URL Shortener Service', 'System Design', 'Medium', 'Pending', '2026-10-20', 'High scale caching']
+  ];
+  const trackerSheet = XLSX.utils.aoa_to_sheet(trackerRows);
+  XLSX.utils.book_append_sheet(workbook, trackerSheet, 'Interview_Tracker');
+
+  const buffer = XLSX.write(workbook, { type: 'array', bookType: 'xlsx' });
+  const file = new File([buffer], 'FAANG_Startup_MNC_Interview_Tracker.xlsx', {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   });
 
@@ -194,3 +213,97 @@ test('Storage handles feature feedback persistence and deletion', () => {
   Storage.deleteFeedback('fb_001');
   assert.equal(Storage.getFeedback('u1').length, 0);
 });
+
+test('Money Management: Payments storage supports income and expense tracking', () => {
+  const userId = 'user_test_finance';
+  Storage.remove(Storage.KEYS.PAYMENTS);
+
+  const income = {
+    id: 'pay_inc_1',
+    userId,
+    type: 'received',
+    party: 'Acme Corp Client',
+    amount: 3500.00,
+    date: '2026-10-01',
+    category: 'Invoice',
+    method: 'Bank Transfer',
+    status: 'completed'
+  };
+
+  const expense = {
+    id: 'pay_exp_1',
+    userId,
+    type: 'sent',
+    party: 'AWS Cloud Services',
+    amount: 85.50,
+    date: '2026-10-02',
+    category: 'Subscription',
+    method: 'Credit Card',
+    status: 'completed'
+  };
+
+  Storage.upsertPayment(userId, income);
+  Storage.upsertPayment(userId, expense);
+
+  const payments = Storage.getPayments(userId);
+  assert.equal(payments.length, 2);
+
+  const totalIncome = payments.filter(p => p.type === 'received').reduce((s, p) => s + p.amount, 0);
+  const totalExpense = payments.filter(p => p.type === 'sent').reduce((s, p) => s + p.amount, 0);
+
+  assert.equal(totalIncome, 3500.00);
+  assert.equal(totalExpense, 85.50);
+  assert.equal(totalIncome - totalExpense, 3414.50);
+
+  Storage.deletePayment(userId, 'pay_exp_1');
+  assert.equal(Storage.getPayments(userId).length, 1);
+});
+
+test('Money Management: Budgets, Savings Goals, and Recurring Bills', () => {
+  const userId = 'user_test_budget';
+  Storage.remove(Storage.KEYS.BUDGETS);
+  Storage.remove(Storage.KEYS.SAVINGS_GOALS);
+  Storage.remove(Storage.KEYS.RECURRING_BILLS);
+
+  // 1. Budget
+  Storage.setBudget(userId, { category: 'Food', monthlyLimit: 600, icon: '🍔' });
+  Storage.setBudget(userId, { category: 'Rent', monthlyLimit: 1500, icon: '🏠' });
+  const budgets = Storage.getBudgets(userId);
+  assert.equal(budgets.length, 2);
+  assert.equal(budgets.find(b => b.category === 'Food').monthlyLimit, 600);
+
+  // 2. Savings Goal
+  const goal = {
+    id: 'goal_macbook',
+    name: 'New Workstation',
+    targetAmount: 2500,
+    currentAmount: 1000,
+    icon: '💻'
+  };
+  Storage.upsertSavingsGoal(userId, goal);
+  assert.equal(Storage.getSavingsGoals(userId).length, 1);
+
+  // Deposit funds into goal
+  Storage.adjustGoalAmount(userId, 'goal_macbook', 500);
+  assert.equal(Storage.getSavingsGoals(userId)[0].currentAmount, 1500);
+
+  // 3. Recurring Bills
+  const bill = {
+    id: 'rec_spotify',
+    name: 'Spotify Premium',
+    amount: 11.99,
+    frequency: 'Monthly',
+    category: 'Subscription',
+    nextDueDate: '2026-11-01'
+  };
+  Storage.upsertRecurringBill(userId, bill);
+  assert.equal(Storage.getRecurringBills(userId).length, 1);
+  assert.equal(Storage.getRecurringBills(userId)[0].amount, 11.99);
+
+  // 4. Currency Formatter helper
+  assert.equal(Utils.getCurrencySymbol('USD'), '$');
+  assert.equal(Utils.getCurrencySymbol('EUR'), '€');
+  assert.equal(Utils.getCurrencySymbol('INR'), '₹');
+  assert.equal(Utils.getCurrencySymbol('GBP'), '£');
+});
+

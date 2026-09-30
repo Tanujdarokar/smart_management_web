@@ -112,10 +112,33 @@ const Utils = {
         }, 3000);
     },
 
+    // Currency & Number Formatters
+    getCurrencySymbol(code = 'USD') {
+        const symbols = {
+            USD: '$',
+            EUR: '€',
+            GBP: '£',
+            INR: '₹',
+            JPY: '¥',
+            CAD: 'CA$',
+            AUD: 'A$'
+        };
+        return symbols[code] || '$';
+    },
+
+    formatMoney(amount, currencyCode = null) {
+        const user = Storage.getCurrentUser() || Storage.getGuestUser();
+        const settings = Storage.getSettings(user ? user.id : null);
+        const code = currencyCode || settings.currency || 'USD';
+        const symbol = this.getCurrencySymbol(code);
+        const num = Number(amount) || 0;
+        return symbol + num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    },
+
     // Date Formatters
     formatDate(dateStr) {
         if (!dateStr) return 'No date';
-        const date = new Date(dateStr);
+        const date = new Date(dateStr.includes('T') ? dateStr : dateStr + 'T00:00:00');
         return date.toLocaleDateString('en-US', {
             month: 'short',
             day: 'numeric',
@@ -133,7 +156,7 @@ const Utils = {
     isToday(dateStr) {
         if (!dateStr) return false;
         const today = new Date();
-        const date = new Date(dateStr);
+        const date = new Date(dateStr.includes('T') ? dateStr : dateStr + 'T00:00:00');
         return date.getDate() === today.getDate() &&
                date.getMonth() === today.getMonth() &&
                date.getFullYear() === today.getFullYear();
@@ -203,7 +226,7 @@ const Utils = {
                 </li>
                 <li class="nav-item">
                     <a href="payments.html" class="nav-link ${activePage === 'payments' ? 'active' : ''}">
-                        <span class="icon-bubble">💳</span> <span>Payments</span>
+                        <span class="icon-bubble">💰</span> <span>Money Manager</span>
                     </a>
                 </li>
                 <li class="nav-item">

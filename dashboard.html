@@ -124,6 +124,8 @@
                             style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 12px;">
                             Quick Actions</h3>
                         <div style="display: grid; gap: 10px;">
+                            <a href="payments.html" class="btn btn-outline"
+                                style="width: 100%; justify-content: center; border-color: rgba(99, 102, 241, 0.4); color: var(--primary-color);">💰 Money Hub</a>
                             <a href="import.html" class="btn btn-outline"
                                 style="width: 100%; justify-content: center;">📥 Import Tasks</a>
                             <a href="calendar.html" class="btn btn-outline"
@@ -132,6 +134,41 @@
                     </div>
                 </section>
             </div>
+
+            <!-- Financial Health Snapshot Widget -->
+            <section class="card dashboard-finance-widget" style="margin-top: 28px;">
+                <div class="finance-widget-header">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <div class="stat-icon" style="background: var(--primary-gradient-subtle); color: var(--primary-color); width: 44px; height: 44px; font-size: 20px;">💰</div>
+                        <div>
+                            <h2 style="font-size: 18px; font-weight: 800; margin: 0 0 2px;">Monthly Finance & Cashflow Overview</h2>
+                            <p style="color: var(--text-muted); font-size: 13px; margin: 0;">Live tracking of income, expenses, and savings goals.</p>
+                        </div>
+                    </div>
+                    <a href="payments.html" class="btn btn-outline btn-sm" style="text-decoration: none;">
+                        Open Money Hub →
+                    </a>
+                </div>
+
+                <div class="finance-widget-metrics">
+                    <div class="finance-mini-stat">
+                        <span class="finance-stat-lbl">This Month Income</span>
+                        <strong class="finance-stat-val text-success" id="dashMonthIncome">$0.00</strong>
+                    </div>
+                    <div class="finance-mini-stat">
+                        <span class="finance-stat-lbl">This Month Expenses</span>
+                        <strong class="finance-stat-val text-danger" id="dashMonthExpense">$0.00</strong>
+                    </div>
+                    <div class="finance-mini-stat">
+                        <span class="finance-stat-lbl">Net Cashflow</span>
+                        <strong class="finance-stat-val" id="dashMonthNet">$0.00</strong>
+                    </div>
+                    <div class="finance-mini-stat">
+                        <span class="finance-stat-lbl">Savings Goals Buffer</span>
+                        <strong class="finance-stat-val text-purple" id="dashSavingsBuffer">$0.00</strong>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
