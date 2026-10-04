@@ -2,7 +2,7 @@
 
 SmartTask Manager is a browser-based productivity app for managing tasks, imports, payments, schedules, and tracker-style workflow data. It is built with vanilla HTML, CSS, and JavaScript and stores all user data in the browser using `localStorage`.
 
-The current project includes a complete authentication flow, dashboard analytics, task management, smart import parsing, calendar planning, tracker workflow support, payments management, and settings. It is designed to support both regular task tracking and workbook-style imported data from CSV, TXT, JSON, and Excel files.
+The current project includes authentication, dashboard analytics, task management, smart import parsing, calendar planning, interview tracker imports, job-application tracking, payments management, and settings. It is designed to support both regular task tracking and workbook-style imported data from CSV, TXT, JSON, and Excel files.
 
 ## ✨ Current Features
 
@@ -20,11 +20,11 @@ The current project includes a complete authentication flow, dashboard analytics
 - **Smart import system**: supports CSV, TXT, JSON, XLSX, and tracker-style workbook imports.
 - **Flexible import parsing**: detects matching columns dynamically, handles extra rows/columns, preserves explicit dates, and adds sequential dates when missing.
 - **Tracker support**: dedicated tracker page and import workflow for interview or workflow workbook files.
-- **Company Tracker**: track job applications by company, role, stage, applied date, follow-up date, job link, and notes.
+- **Company Tracker**: track job applications by company, role, stage, location, expected salary, applied date, follow-up date, job link, and notes. Search, filter, and sort applications, and view summary counts for active applications, interviews, and offers.
 - **Workbook summary view**: imported task data can be aggregated into category and priority summaries on the dashboard.
 - **Calendar view**: visual date-based task planning and day grouping.
-- **Settings page**: theme switching, default currency selection, budget warning thresholds, profile data management, and feature feedback.
-- **Responsive UI**: sidebar navigation, mobile layout support, and modern dashboard styling.
+- **Settings page**: light, dark, or system theme selection, default currency, budget warning thresholds, profile data management, and feature feedback.
+- **Simple, responsive UI**: consistent blue and neutral colors, clear forms and navigation, and layouts that adapt to mobile screens.
 
 ## 🧩 Project Structure
 
@@ -37,6 +37,7 @@ smart-task-manager/
 ├── tasks.html
 ├── import.html
 ├── tracker.html
+├── companies.html
 ├── calendar.html
 ├── payments.html
 ├── settings.html
@@ -56,6 +57,12 @@ smart-task-manager/
 - **Import/Excel support**: `xlsx` package
 - **Testing**: Node.js built-in test runner (`node --test`)
 - **Architecture**: static browser app without a backend
+
+## 🏢 Company Tracker
+
+Open **Company Tracker** from the sidebar to manage job applications. Each entry can include a company, job title, stage (Interested, Applied, Interviewing, Offer, Rejected, or Withdrawn), location, expected salary, application and follow-up dates, job posting URL, and notes.
+
+Use search to find a company, role, or location; filter by stage; or sort by company name, follow-up date, and most recently updated. Application records are stored locally in the browser and kept separate for each user.
 
 ## 🚀 How to Run
 
