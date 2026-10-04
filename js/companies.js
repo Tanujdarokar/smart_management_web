@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('cancelCompanyEdit').addEventListener('click', closeModal);
     document.getElementById('companySearch').addEventListener('input', renderApplications);
     document.getElementById('companyStatusFilter').addEventListener('change', renderApplications);
+    document.getElementById('companyPinnedFilter').addEventListener('change', renderApplications);
     document.getElementById('companySort').addEventListener('change', renderApplications);
 
     document.getElementById('companyList').addEventListener('click', handleCardAction);
@@ -39,11 +40,14 @@ function loadApplications() {
 function renderApplications() {
     const query = document.getElementById('companySearch').value.trim().toLowerCase();
     const selectedStatus = document.getElementById('companyStatusFilter').value;
+    const pinnedFilter = document.getElementById('companyPinnedFilter').value;
     const sort = document.getElementById('companySort').value;
     const visibleApplications = applications.filter(application => {
         const matchesQuery = [application.company, application.role, application.location]
             .some(value => String(value || '').toLowerCase().includes(query));
-        return matchesQuery && (selectedStatus === 'all' || application.status === selectedStatus);
+        const matchesStatus = selectedStatus === 'all' || application.status === selectedStatus;
+        const matchesPinned = pinnedFilter !== 'pinned' || application.pinned === true;
+        return matchesQuery && matchesStatus && matchesPinned;
     });
 
     visibleApplications.sort((a, b) => {
@@ -89,7 +93,10 @@ function renderCard(application) {
         <article class="card company-card">
             <div class="company-card-top">
                 <div class="company-avatar" aria-hidden="true">${Utils.escapeHtml(application.company.slice(0, 1).toUpperCase())}</div>
-                <span class="company-status status-${Utils.escapeHtml(statusClass)}">${Utils.escapeHtml(application.status)}</span>
+                <div class="company-card-badges">
+                    ${application.pinned ? '<span class="company-pin-badge">📌 Pinned</span>' : ''}
+                    <span class="company-status status-${Utils.escapeHtml(statusClass)}">${Utils.escapeHtml(application.status)}</span>
+                </div>
             </div>
             <h2>${Utils.escapeHtml(application.company)}</h2>
             <p class="company-role">${Utils.escapeHtml(application.role)}</p>
@@ -117,6 +124,7 @@ function openModal(application = null) {
     document.getElementById('jobTitle').value = application ? application.role : '';
     document.getElementById('companyType').value = application ? application.companyType || '' : '';
     document.getElementById('applicationStatus').value = application ? application.status : 'Applied';
+    document.getElementById('companyPinned').checked = application ? application.pinned === true : false;
     document.getElementById('companyLocation').value = application ? application.location || '' : '';
     document.getElementById('expectedSalary').value = application ? application.expectedSalary || '' : '';
     document.getElementById('appliedDate').value = application ? application.appliedDate || '' : '';
@@ -155,6 +163,7 @@ function saveApplication(event) {
         role: document.getElementById('jobTitle').value.trim(),
         companyType: document.getElementById('companyType').value,
         status: document.getElementById('applicationStatus').value,
+        pinned: document.getElementById('companyPinned').checked,
         location: document.getElementById('companyLocation').value.trim(),
         expectedSalary: document.getElementById('expectedSalary').value.trim(),
         appliedDate: document.getElementById('appliedDate').value,

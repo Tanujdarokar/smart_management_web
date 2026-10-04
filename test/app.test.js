@@ -321,7 +321,8 @@ test('Company applications persist per user and support update and delete', () =
     appliedDate: '2026-10-01',
     expectedSalary: '$120,000 / year',
     companyType: 'FAANG',
-    companyUrl: 'https://acme.example'
+    companyUrl: 'https://acme.example',
+    pinned: true
   };
   Storage.upsertCompanyApplication(firstUser, application);
   Storage.upsertCompanyApplication(secondUser, {
@@ -341,6 +342,7 @@ test('Company applications persist per user and support update and delete', () =
   assert.equal(Storage.getCompanyApplications(firstUser)[0].expectedSalary, '$120,000 / year');
   assert.equal(Storage.getCompanyApplications(firstUser)[0].companyType, 'FAANG');
   assert.equal(Storage.getCompanyApplications(firstUser)[0].companyUrl, 'https://acme.example');
+  assert.equal(Storage.getCompanyApplications(firstUser)[0].pinned, true);
 
   Storage.deleteCompanyApplication(firstUser, application.id);
   assert.equal(Storage.getCompanyApplications(firstUser).length, 0);

@@ -55,6 +55,11 @@
                     <option value="Rejected">Rejected</option>
                     <option value="Withdrawn">Withdrawn</option>
                 </select>
+                <label class="visually-hidden" for="companyPinnedFilter">Filter pinned companies</label>
+                <select class="form-control" id="companyPinnedFilter">
+                    <option value="all">All companies</option>
+                    <option value="pinned">Pinned companies</option>
+                </select>
                 <label class="visually-hidden" for="companySort">Sort applications</label>
                 <select class="form-control" id="companySort">
                     <option value="appliedDate" selected>Latest application date</option>
@@ -112,6 +117,12 @@
                             <option>Rejected</option>
                             <option>Withdrawn</option>
                         </select>
+                    </div>
+                    <div class="field-group full-width">
+                        <label class="company-pin-field" for="companyPinned">
+                            <input id="companyPinned" name="pinned" type="checkbox">
+                            <span>Pin this company for quick access</span>
+                        </label>
                     </div>
                     <div class="field-group">
                         <label for="companyLocation">Location</label>

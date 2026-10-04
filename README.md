@@ -20,7 +20,7 @@ The current project includes authentication, dashboard analytics, task managemen
 - **Smart import system**: supports CSV, TXT, JSON, XLSX, and tracker-style workbook imports.
 - **Flexible import parsing**: detects matching columns dynamically, handles extra rows/columns, preserves explicit dates, and adds sequential dates when missing.
 - **Tracker support**: dedicated tracker page and import workflow for interview or workflow workbook files.
-- **Company Tracker**: track job applications by company, company type (MNC, Top startup, FAANG, or Other), role, stage, location, expected salary, applied date, follow-up date, company website, job posting link, and notes. Search, filter, and sort applications, and view summary counts for active applications, interviews, and offers.
+- **Company Tracker**: track job applications by company, company type (MNC, Top startup, FAANG, or Other), role, stage, location, expected salary, applied date, follow-up date, company website, job posting link, pin status, and notes. Search, filter by stage or pinned companies, and sort applications; summary counts show active applications, interviews, and offers.
 - **Workbook summary view**: imported task data can be aggregated into category and priority summaries on the dashboard.
 - **Calendar view**: visual date-based task planning and day grouping.
 - **Settings page**: light, dark, or system theme selection, default currency, budget warning thresholds, profile data management, and feature feedback.
@@ -60,7 +60,7 @@ smart-task-manager/
 
 ## 🏢 Company Tracker
 
-Open **Company Tracker** from the sidebar to manage job applications. Each entry can include a company and type (MNC, Top startup, FAANG, or Other), job title, stage (Interested, Applied, Interviewing, Offer, Rejected, or Withdrawn), location, expected salary, application and follow-up dates, a company website, a job posting URL, and notes. Use the separate company website and job posting links on a card to open either page.
+Open **Company Tracker** from the sidebar to manage job applications. Each entry can include a company and type (MNC, Top startup, FAANG, or Other), job title, stage (Interested, Applied, Interviewing, Offer, Rejected, or Withdrawn), location, expected salary, application and follow-up dates, a company website, a job posting URL, a pin, and notes. Use the separate company website and job posting links on a card to open either page. Select **Pinned companies** in the filter to quickly find saved pinned entries.
 
 Use search to find a company, role, or location; filter by stage; or sort by the latest application date, follow-up date, most recently updated, or company name. The latest application date is the default, and entries without an application date appear after dated entries. Application records are stored locally in the browser and kept separate for each user.
 
