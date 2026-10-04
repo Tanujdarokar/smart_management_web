@@ -220,6 +220,11 @@ const Utils = {
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="companies.html" class="nav-link ${activePage === 'companies' ? 'active' : ''}">
+                        <span class="icon-bubble">🏢</span> <span>Company Tracker</span>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="calendar.html" class="nav-link ${activePage === 'calendar' ? 'active' : ''}">
                         <span class="icon-bubble">📅</span> <span>Calendar</span>
                     </a>

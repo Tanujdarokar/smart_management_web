@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Tracker | SmartTask Manager</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tasks.css">
+    <link rel="stylesheet" href="css/companies.css">
+</head>
+<body>
+    <div class="app-container">
+        <aside class="sidebar"></aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div>
+                    <h1>Company Tracker</h1>
+                    <p style="color: var(--text-muted);">Keep every job application, interview, and follow-up in one place.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-primary" id="addCompanyBtn">＋ Add Company</button>
+                </div>
+            </header>
+
+            <section class="company-stats" aria-label="Application summary">
+                <article class="card company-stat">
+                    <span class="company-stat-icon">🏢</span>
+                    <div><p>Companies tracked</p><strong id="totalCompanies">0</strong></div>
+                </article>
+                <article class="card company-stat">
+                    <span class="company-stat-icon">📨</span>
+                    <div><p>Active applications</p><strong id="activeApplications">0</strong></div>
+                </article>
+                <article class="card company-stat">
+                    <span class="company-stat-icon">🎤</span>
+                    <div><p>Interviews</p><strong id="interviewCount">0</strong></div>
+                </article>
+                <article class="card company-stat">
+                    <span class="company-stat-icon">🎉</span>
+                    <div><p>Offers</p><strong id="offerCount">0</strong></div>
+                </article>
+            </section>
+
+            <section class="card company-filters" aria-label="Filter applications">
+                <label class="visually-hidden" for="companySearch">Search companies</label>
+                <input class="form-control" id="companySearch" type="search" placeholder="Search company, role, or location...">
+                <label class="visually-hidden" for="companyStatusFilter">Filter by application stage</label>
+                <select class="form-control" id="companyStatusFilter">
+                    <option value="all">All stages</option>
+                    <option value="Interested">Interested</option>
+                    <option value="Applied">Applied</option>
+                    <option value="Interviewing">Interviewing</option>
+                    <option value="Offer">Offer</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Withdrawn">Withdrawn</option>
+                </select>
+                <label class="visually-hidden" for="companySort">Sort applications</label>
+                <select class="form-control" id="companySort">
+                    <option value="updated">Recently updated</option>
+                    <option value="followUp">Follow-up date</option>
+                    <option value="company">Company name</option>
+                </select>
+            </section>
+
+            <section id="companyList" class="company-grid" aria-live="polite"></section>
+            <section id="companyEmpty" class="card company-empty" hidden>
+                <div aria-hidden="true">🗂️</div>
+                <h2>No companies yet</h2>
+                <p>Add a company to start tracking roles, application stages, and follow-up dates.</p>
+                <button class="btn btn-primary" id="emptyAddCompanyBtn">Add your first company</button>
+            </section>
+            <p id="noCompanyMatches" class="company-no-matches" hidden>No companies match these filters.</p>
+        </main>
+    </div>
+
+    <div class="modal" id="companyModal" role="dialog" aria-modal="true" aria-labelledby="companyModalTitle">
+        <div class="modal-content company-modal-content">
+            <div class="modal-header">
+                <h2 id="companyModalTitle">Add Company</h2>
+                <button type="button" class="close-modal" id="closeCompanyModal" aria-label="Close">&times;</button>
+            </div>
+            <form id="companyForm">
+                <input type="hidden" id="companyId">
+                <div class="form-grid">
+                    <div class="field-group">
+                        <label for="companyName">Company *</label>
+                        <input class="form-control" id="companyName" name="company" required maxlength="100" placeholder="e.g. Acme Inc.">
+                    </div>
+                    <div class="field-group">
+                        <label for="jobTitle">Job title *</label>
+                        <input class="form-control" id="jobTitle" name="role" required maxlength="100" placeholder="e.g. Product Designer">
+                    </div>
+                    <div class="field-group">
+                        <label for="applicationStatus">Stage</label>
+                        <select class="form-control" id="applicationStatus" name="status">
+                            <option>Interested</option>
+                            <option selected>Applied</option>
+                            <option>Interviewing</option>
+                            <option>Offer</option>
+                            <option>Rejected</option>
+                            <option>Withdrawn</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label for="companyLocation">Location</label>
+                        <input class="form-control" id="companyLocation" name="location" maxlength="100" placeholder="e.g. Remote / New York">
+                    </div>
+                    <div class="field-group">
+                        <label for="expectedSalary">Expected salary</label>
+                        <input class="form-control" id="expectedSalary" name="expectedSalary" maxlength="100" placeholder="e.g. $120,000 / year or $60–$70 / hour">
+                    </div>
+                    <div class="field-group">
+                        <label for="appliedDate">Applied date</label>
+                        <input class="form-control" id="appliedDate" name="appliedDate" type="date">
+                    </div>
+                    <div class="field-group">
+                        <label for="followUpDate">Follow-up date</label>
+                        <input class="form-control" id="followUpDate" name="followUpDate" type="date">
+                    </div>
+                    <div class="field-group full-width">
+                        <label for="jobUrl">Job posting URL</label>
+                        <input class="form-control" id="jobUrl" name="jobUrl" type="url" maxlength="2048" placeholder="https://...">
+                    </div>
+                    <div class="field-group full-width">
+                        <label for="companyNotes">Notes</label>
+                        <textarea class="form-control" id="companyNotes" name="notes" rows="3" maxlength="2000" placeholder="Recruiter contact, interview notes, or next steps..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" id="cancelCompanyEdit">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Company</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="js/companies.js"></script>
+</body>
+</html>

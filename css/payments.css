@@ -155,7 +155,7 @@
 .pay-stat-income::before    { background: var(--success); }
 .pay-stat-expense::before   { background: var(--overdue); }
 .pay-stat-balance::before   { background: var(--primary-color); }
-.pay-stat-goals::before     { background: #8b5cf6; }
+.pay-stat-goals::before     { background: var(--primary-color); }
 .pay-stat-recurring::before { background: #f59e0b; }
 
 .pay-stat-icon {
@@ -192,7 +192,7 @@
 .pay-stat-income    .pay-stat-value { color: var(--success); }
 .pay-stat-expense   .pay-stat-value { color: var(--overdue); }
 .pay-stat-balance   .pay-stat-value { color: var(--primary-color); }
-.pay-stat-goals     .pay-stat-value { color: #8b5cf6; }
+.pay-stat-goals     .pay-stat-value { color: var(--primary-color); }
 .pay-stat-recurring .pay-stat-value { color: #f59e0b; }
 
 .pay-stat-sub {
@@ -354,7 +354,7 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: var(--text-muted);
-    background: rgba(99, 102, 241, 0.04);
+    background: var(--primary-gradient-subtle);
     border-bottom: 1px solid var(--border-color);
     text-align: left;
     white-space: nowrap;
@@ -369,7 +369,7 @@
 }
 
 .pay-table tr:last-child td { border-bottom: none; }
-.pay-table tr:hover td { background: rgba(99, 102, 241, 0.03); }
+.pay-table tr:hover td { background: var(--primary-gradient-subtle); }
 
 .type-badge {
     display: inline-flex;
@@ -421,7 +421,7 @@
     align-items: center;
     gap: 4px;
     padding: 2px 8px;
-    background: rgba(99, 102, 241, 0.1);
+    background: var(--primary-gradient-subtle);
     color: var(--primary-color);
     border-radius: 6px;
     font-size: 11.5px;
@@ -531,11 +531,11 @@
 .budget-bar-large {
     height: 100%;
     border-radius: 8px;
-    background: linear-gradient(90deg, #10b981, #6366f1);
+    background: var(--primary-color);
     transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.budget-bar-large.warning { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+.budget-bar-large.warning { background: #d97706; }
 .budget-bar-large.danger  { background: #ef4444; }
 
 .budget-track-footer {
@@ -691,7 +691,7 @@
 .goal-saved-big {
     font-size: 22px;
     font-weight: 800;
-    color: #8b5cf6;
+    color: var(--primary-color);
 }
 
 .goal-target-small {
@@ -710,7 +710,7 @@
 .goal-bar-fill {
     height: 100%;
     border-radius: 8px;
-    background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+    background: var(--primary-color);
     transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -764,7 +764,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     padding: 20px 24px;
-    background: rgba(99, 102, 241, 0.04);
+    background: var(--primary-gradient-subtle);
     border-bottom: 1px solid var(--border-color);
     gap: 16px;
 }
@@ -806,7 +806,7 @@
 .btn-pay-now {
     padding: 5px 12px;
     border-radius: 7px;
-    border: 1px solid rgba(99, 102, 241, 0.4);
+    border: 1px solid var(--border-hover);
     background: var(--primary-gradient-subtle);
     color: var(--primary-color);
     font-size: 12px;
@@ -878,7 +878,7 @@
 .cat-analytics-fill {
     height: 100%;
     border-radius: 6px;
-    background: linear-gradient(90deg, #6366f1, #ec4899);
+    background: var(--primary-color);
 }
 
 .cashflow-ratio-widget {
@@ -1022,7 +1022,7 @@
 
 .modal-close:hover {
     color: var(--text-main);
-    background: rgba(99, 102, 241, 0.08);
+    background: var(--primary-gradient-subtle);
 }
 
 .modal-actions {

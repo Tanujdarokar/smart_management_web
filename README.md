@@ -20,6 +20,7 @@ The current project includes a complete authentication flow, dashboard analytics
 - **Smart import system**: supports CSV, TXT, JSON, XLSX, and tracker-style workbook imports.
 - **Flexible import parsing**: detects matching columns dynamically, handles extra rows/columns, preserves explicit dates, and adds sequential dates when missing.
 - **Tracker support**: dedicated tracker page and import workflow for interview or workflow workbook files.
+- **Company Tracker**: track job applications by company, role, stage, applied date, follow-up date, job link, and notes.
 - **Workbook summary view**: imported task data can be aggregated into category and priority summaries on the dashboard.
 - **Calendar view**: visual date-based task planning and day grouping.
 - **Settings page**: theme switching, default currency selection, budget warning thresholds, profile data management, and feature feedback.
@@ -107,6 +108,7 @@ The project includes regression tests for the main features, including:
 - CSV and TXT imports
 - Excel import
 - tracker workflow sheet selection
+- company application storage, updates, deletion, and per-user isolation
 - date assignment and consistency
 
 Run:

@@ -307,3 +307,38 @@ test('Money Management: Budgets, Savings Goals, and Recurring Bills', () => {
   assert.equal(Utils.getCurrencySymbol('GBP'), '£');
 });
 
+test('Company applications persist per user and support update and delete', () => {
+  const firstUser = 'company_tracker_user_1';
+  const secondUser = 'company_tracker_user_2';
+  Storage.remove(Storage.KEYS.COMPANY_APPLICATIONS);
+
+  const application = {
+    id: 'application_1',
+    userId: firstUser,
+    company: 'Acme Inc.',
+    role: 'Product Designer',
+    status: 'Applied',
+    appliedDate: '2026-10-01',
+    expectedSalary: '$120,000 / year'
+  };
+  Storage.upsertCompanyApplication(firstUser, application);
+  Storage.upsertCompanyApplication(secondUser, {
+    ...application,
+    userId: secondUser,
+    company: 'Other Co.'
+  });
+  assert.equal(Storage.getCompanyApplications(firstUser).length, 1);
+  assert.equal(Storage.getCompanyApplications(secondUser)[0].company, 'Other Co.');
+
+  Storage.upsertCompanyApplication(firstUser, {
+    ...application,
+    status: 'Interviewing'
+  });
+  assert.equal(Storage.getCompanyApplications(firstUser).length, 1);
+  assert.equal(Storage.getCompanyApplications(firstUser)[0].status, 'Interviewing');
+  assert.equal(Storage.getCompanyApplications(firstUser)[0].expectedSalary, '$120,000 / year');
+
+  Storage.deleteCompanyApplication(firstUser, application.id);
+  assert.equal(Storage.getCompanyApplications(firstUser).length, 0);
+  assert.equal(Storage.getCompanyApplications(secondUser).length, 1);
+});

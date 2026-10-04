@@ -15,7 +15,8 @@ const Storage = {
         PAYMENTS: 'smarttask_payments',
         BUDGETS: 'smarttask_budgets',
         SAVINGS_GOALS: 'smarttask_savings_goals',
-        RECURRING_BILLS: 'smarttask_recurring_bills'
+        RECURRING_BILLS: 'smarttask_recurring_bills',
+        COMPANY_APPLICATIONS: 'smarttask_company_applications'
     },
 
     // Generic get/set
@@ -534,6 +535,36 @@ const Storage = {
     deleteRecurringBill(userId, billId) {
         const bills = this.getRecurringBills(userId).filter(b => b.id !== billId);
         this.saveRecurringBills(userId, bills);
+    },
+
+    // Company Application Methods
+    getCompanyApplications(userId) {
+        const applications = this.get(this.KEYS.COMPANY_APPLICATIONS) || {};
+        return applications[userId] || [];
+    },
+
+    saveCompanyApplications(userId, applications) {
+        const allApplications = this.get(this.KEYS.COMPANY_APPLICATIONS) || {};
+        allApplications[userId] = applications;
+        this.set(this.KEYS.COMPANY_APPLICATIONS, allApplications);
+    },
+
+    upsertCompanyApplication(userId, application) {
+        const applications = this.getCompanyApplications(userId);
+        const index = applications.findIndex(item => item.id === application.id);
+        if (index === -1) {
+            applications.push(application);
+        } else {
+            applications[index] = application;
+        }
+        this.saveCompanyApplications(userId, applications);
+        return application;
+    },
+
+    deleteCompanyApplication(userId, applicationId) {
+        const applications = this.getCompanyApplications(userId)
+            .filter(application => application.id !== applicationId);
+        this.saveCompanyApplications(userId, applications);
     },
 
     // Feedback Methods
