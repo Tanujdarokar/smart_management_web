@@ -62,7 +62,7 @@ smart-task-manager/
 
 Open **Company Tracker** from the sidebar to manage job applications. Each entry can include a company, job title, stage (Interested, Applied, Interviewing, Offer, Rejected, or Withdrawn), location, expected salary, application and follow-up dates, job posting URL, and notes.
 
-Use search to find a company, role, or location; filter by stage; or sort by company name, follow-up date, and most recently updated. Application records are stored locally in the browser and kept separate for each user.
+Use search to find a company, role, or location; filter by stage; or sort by the latest application date, follow-up date, most recently updated, or company name. The latest application date is the default, and entries without an application date appear after dated entries. Application records are stored locally in the browser and kept separate for each user.
 
 ## 🚀 How to Run
 

@@ -51,6 +51,10 @@ function renderApplications() {
         if (sort === 'followUp') {
             return (a.followUpDate || '9999-12-31').localeCompare(b.followUpDate || '9999-12-31');
         }
+        if (sort === 'appliedDate') {
+            return (b.appliedDate || '').localeCompare(a.appliedDate || '') ||
+                (b.createdAt || '').localeCompare(a.createdAt || '');
+        }
         return (b.updatedAt || b.createdAt || '').localeCompare(a.updatedAt || a.createdAt || '');
     });
 
