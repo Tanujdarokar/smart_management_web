@@ -93,6 +93,16 @@
                         <input class="form-control" id="jobTitle" name="role" required maxlength="100" placeholder="e.g. Product Designer">
                     </div>
                     <div class="field-group">
+                        <label for="companyType">Company type</label>
+                        <select class="form-control" id="companyType" name="companyType">
+                            <option value="">Select company type</option>
+                            <option value="MNC">MNC</option>
+                            <option value="Top startup">Top startup</option>
+                            <option value="FAANG">FAANG</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
                         <label for="applicationStatus">Stage</label>
                         <select class="form-control" id="applicationStatus" name="status">
                             <option>Interested</option>
@@ -118,6 +128,10 @@
                     <div class="field-group">
                         <label for="followUpDate">Follow-up date</label>
                         <input class="form-control" id="followUpDate" name="followUpDate" type="date">
+                    </div>
+                    <div class="field-group full-width">
+                        <label for="companyUrl">Company website</label>
+                        <input class="form-control" id="companyUrl" name="companyUrl" type="url" maxlength="2048" placeholder="https://company.com">
                     </div>
                     <div class="field-group full-width">
                         <label for="jobUrl">Job posting URL</label>

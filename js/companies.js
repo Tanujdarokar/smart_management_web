@@ -76,7 +76,8 @@ function renderApplications() {
 
 function renderCard(application) {
     const statusClass = application.status.toLowerCase();
-    const safeUrl = getSafeJobUrl(application.jobUrl);
+    const companyUrl = getSafeJobUrl(application.companyUrl);
+    const jobUrl = getSafeJobUrl(application.jobUrl);
     const followUp = application.followUpDate
         ? `<p class="company-date"><span>🔔</span> Follow up ${Utils.escapeHtml(Utils.formatDate(application.followUpDate))}</p>`
         : '';
@@ -92,12 +93,14 @@ function renderCard(application) {
             </div>
             <h2>${Utils.escapeHtml(application.company)}</h2>
             <p class="company-role">${Utils.escapeHtml(application.role)}</p>
+            ${application.companyType ? `<p class="company-location">🏷️ ${Utils.escapeHtml(application.companyType)}</p>` : ''}
             ${application.location ? `<p class="company-location">📍 ${Utils.escapeHtml(application.location)}</p>` : ''}
             ${application.expectedSalary ? `<p class="company-location">💵 Expected salary: ${Utils.escapeHtml(application.expectedSalary)}</p>` : ''}
             <div class="company-dates">${applied}${followUp}</div>
             ${application.notes ? `<p class="company-notes">${Utils.escapeHtml(application.notes)}</p>` : ''}
             <div class="company-card-actions">
-                ${safeUrl ? `<a class="btn btn-outline btn-sm" href="${Utils.escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">View job</a>` : ''}
+                ${companyUrl ? `<a class="btn btn-outline btn-sm" href="${Utils.escapeHtml(companyUrl)}" target="_blank" rel="noopener noreferrer">Company website</a>` : ''}
+                ${jobUrl ? `<a class="btn btn-outline btn-sm" href="${Utils.escapeHtml(jobUrl)}" target="_blank" rel="noopener noreferrer">View job</a>` : ''}
                 <button class="btn btn-outline btn-sm" type="button" data-action="edit" data-id="${Utils.escapeHtml(application.id)}">Edit</button>
                 <button class="btn btn-outline btn-sm company-delete" type="button" data-action="delete" data-id="${Utils.escapeHtml(application.id)}">Delete</button>
             </div>
@@ -112,11 +115,13 @@ function openModal(application = null) {
     document.getElementById('companyModalTitle').textContent = application ? 'Edit Company' : 'Add Company';
     document.getElementById('companyName').value = application ? application.company : '';
     document.getElementById('jobTitle').value = application ? application.role : '';
+    document.getElementById('companyType').value = application ? application.companyType || '' : '';
     document.getElementById('applicationStatus').value = application ? application.status : 'Applied';
     document.getElementById('companyLocation').value = application ? application.location || '' : '';
     document.getElementById('expectedSalary').value = application ? application.expectedSalary || '' : '';
     document.getElementById('appliedDate').value = application ? application.appliedDate || '' : '';
     document.getElementById('followUpDate').value = application ? application.followUpDate || '' : '';
+    document.getElementById('companyUrl').value = application ? application.companyUrl || '' : '';
     document.getElementById('jobUrl').value = application ? application.jobUrl || '' : '';
     document.getElementById('companyNotes').value = application ? application.notes || '' : '';
     document.getElementById('companyModal').style.display = 'flex';
@@ -132,11 +137,13 @@ function saveApplication(event) {
     const userId = currentUserId();
     const id = document.getElementById('companyId').value;
     const existing = applications.find(application => application.id === id);
+    const companyUrlInput = document.getElementById('companyUrl').value.trim();
+    const companyUrl = getSafeJobUrl(companyUrlInput);
     const jobUrlInput = document.getElementById('jobUrl').value.trim();
     const jobUrl = getSafeJobUrl(jobUrlInput);
 
-    if (jobUrlInput && !jobUrl) {
-        Utils.showToast('Enter a valid http or https job posting URL.', 'error');
+    if ((companyUrlInput && !companyUrl) || (jobUrlInput && !jobUrl)) {
+        Utils.showToast('Enter valid http or https links for the company website and job posting.', 'error');
         return;
     }
 
@@ -146,11 +153,13 @@ function saveApplication(event) {
         userId,
         company: document.getElementById('companyName').value.trim(),
         role: document.getElementById('jobTitle').value.trim(),
+        companyType: document.getElementById('companyType').value,
         status: document.getElementById('applicationStatus').value,
         location: document.getElementById('companyLocation').value.trim(),
         expectedSalary: document.getElementById('expectedSalary').value.trim(),
         appliedDate: document.getElementById('appliedDate').value,
         followUpDate: document.getElementById('followUpDate').value,
+        companyUrl,
         jobUrl,
         notes: document.getElementById('companyNotes').value.trim(),
         createdAt: existing ? existing.createdAt : timestamp,
