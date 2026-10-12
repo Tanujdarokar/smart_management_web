@@ -551,7 +551,7 @@ function renderRecurringBills() {
             </td>
             <td style="color:var(--text-muted); font-size:13px;">${Utils.escapeHtml(b.category || 'Subscription')}</td>
             <td style="font-weight:800; color:var(--overdue);">${formatMoney(b.amount)}</td>
-            <td><span class="badge" style="background:rgba(99,102,241,0.1); color:var(--primary-color);">${b.frequency}</span></td>
+            <td><span class="badge" style="background:var(--primary-gradient-subtle); color:var(--primary-color);">${b.frequency}</span></td>
             <td style="font-size:13px; color:var(--text-muted);">${Utils.formatDate(b.nextDueDate)}</td>
             <td>${urgencyPill}</td>
             <td>

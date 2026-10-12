@@ -117,7 +117,7 @@
 
 .status-interested { color: var(--primary-color); background: var(--primary-gradient-subtle); }
 .status-applied { color: var(--in-progress); background: var(--in-progress-bg); }
-.status-interviewing { color: #7c3aed; background: rgba(124, 58, 237, .12); }
+.status-interviewing { color: var(--primary-color); background: var(--primary-gradient-subtle); }
 .status-offer { color: var(--success); background: var(--success-bg); }
 .status-rejected { color: var(--overdue); background: var(--overdue-bg); }
 .status-withdrawn { color: var(--text-muted); background: rgba(148, 163, 184, .12); }

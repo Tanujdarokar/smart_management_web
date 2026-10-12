@@ -223,7 +223,7 @@ function renderFeedbackHistory(user) {
                         <span class="feedback-status-pill">
                             ${typeIcon} ${Utils.escapeHtml(item.type)}
                         </span>
-                        <span style="font-size: 12px; font-weight: 600; color: var(--primary-color); background: rgba(99, 102, 241, 0.08); padding: 2px 8px; border-radius: 6px;">
+                        <span style="font-size: 12px; font-weight: 600; color: var(--primary-color); background: var(--primary-gradient-subtle); padding: 2px 8px; border-radius: 6px;">
                             ${Utils.escapeHtml(item.moduleArea || 'General')}
                         </span>
                     </div>

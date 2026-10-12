@@ -115,7 +115,7 @@ function loadDashboardSummary() {
     const pending = tasks.filter(t => t.status === 'Pending').length;
 
     const statusCards = [
-        { label: 'Active Tasks', value: total, color: '#6366f1' },
+        { label: 'Active Tasks', value: total, color: 'var(--primary-color)' },
         { label: 'Completed', value: completed, color: '#10b981' },
         { label: 'In Progress', value: inProgress, color: '#f59e0b' },
         { label: 'Pending', value: pending, color: '#ef4444' }
