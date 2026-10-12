@@ -288,6 +288,15 @@
         grid-template-columns: 1fr !important;
     }
 
+    .profile-avatar-row {
+        flex-wrap: wrap;
+        gap: 12px !important;
+    }
+
+    .profile-avatar-row > div:last-child { min-width: 0; }
+    .profile-avatar-row .btn { max-width: 100%; white-space: normal; }
+    .feedback-card-header { flex-wrap: wrap; }
+
     .theme-preview {
         height: 70px;
     }

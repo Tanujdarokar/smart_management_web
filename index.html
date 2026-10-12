@@ -3,23 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartTask Manager</title>
-    <script type="module">
-        import Storage from './js/storage.js';
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const user = Storage.getCurrentUser();
-            if (user) {
-                window.location.href = 'dashboard.html';
-            } else {
-                window.location.href = 'login.html';
-            }
-        });
-    </script>
+    <meta name="description" content="Plan tasks, track projects, and organize your day with SmartTask Manager. A simple productivity workspace that keeps your data in your browser.">
+    <meta name="theme-color" content="#2563eb">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="SmartTask Manager — Make room for your best work">
+    <meta property="og:description" content="Plan tasks, track projects, and organize your day in one simple workspace.">
+    <meta property="og:image" content="assets/social-preview.svg">
+    <meta property="og:image:alt" content="SmartTask Manager: tasks, plans, and progress in one clear workspace.">
+    <title>SmartTask Manager — Make room for your best work</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/landing.css">
+    <script type="module" src="js/privacy.js"></script>
 </head>
 <body>
-    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif;">
-        <p>Redirecting...</p>
-    </div>
+    <main class="landing">
+        <nav class="landing-nav" aria-label="Main navigation">
+            <a class="landing-brand" href="index.html"><span aria-hidden="true">✓</span> SmartTask</a>
+            <a class="landing-signin" href="login.html">Sign in</a>
+        </nav>
+
+        <section class="landing-hero" aria-labelledby="hero-title">
+            <div class="landing-copy">
+                <p class="landing-eyebrow">A calmer way to get things done</p>
+                <h1 id="hero-title">Make room for your <span>best work.</span></h1>
+                <p class="landing-description">Bring your tasks, projects, and plans together in one simple workspace. Your information stays in this browser.</p>
+                <a class="btn btn-primary landing-cta" href="register.html">Start organizing — it’s free <span aria-hidden="true">→</span></a>
+                <p class="landing-note">No credit card. Your workspace is stored locally on this device.</p>
+            </div>
+            <div class="landing-preview" role="img" aria-label="Illustration of a task workspace with tasks, a weekly plan, and progress">
+                <div class="preview-top"><span class="preview-dot"></span><span class="preview-dot"></span><span class="preview-dot"></span><span class="preview-label">YOUR WORKSPACE</span></div>
+                <div class="preview-heading">Today <span>3 tasks</span></div>
+                <div class="preview-task"><i class="preview-check">✓</i><span>Plan the week</span><b>Today</b></div>
+                <div class="preview-task"><i class="preview-check">✓</i><span>Review project notes</span><b>Today</b></div>
+                <div class="preview-task preview-task-done"><i class="preview-check">✓</i><span>Clear your inbox</span><b>Done</b></div>
+                <div class="preview-progress"><div><span>Weekly progress</span><b>68%</b></div><i><i></i></i></div>
+            </div>
+        </section>
+
+        <section class="landing-features" aria-label="What you can do">
+            <article><span aria-hidden="true">◷</span><h2>See what matters</h2><p>Keep upcoming work and priorities easy to find.</p></article>
+            <article><span aria-hidden="true">▦</span><h2>Plan your way</h2><p>Organize tasks, projects, schedules, and more.</p></article>
+            <article><span aria-hidden="true">⌂</span><h2>Stay in control</h2><p>Your workspace lives in your browser, not an account in the cloud.</p></article>
+        </section>
+    </main>
 </body>
 </html>

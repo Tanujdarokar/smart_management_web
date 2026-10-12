@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sign in to your SmartTask Manager workspace and keep your tasks, plans, and projects organized.">
+    <meta name="robots" content="noindex, nofollow">
     <title>Login | SmartTask Manager</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/auth.css">
+    <script type="module" src="js/privacy.js"></script>
 </head>
 <body>
     <div class="auth-container">
@@ -19,12 +23,12 @@
             <form id="loginForm">
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="name@company.com" required>
+                    <input type="email" id="email" autocomplete="email" maxlength="254" placeholder="name@company.com" required>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="••••••••" required>
+                    <input type="password" id="password" autocomplete="current-password" minlength="8" placeholder="At least 8 characters" required>
                 </div>
 
                 <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
@@ -38,6 +42,7 @@
 
             <div class="auth-footer">
                 Don't have an account? <a href="register.html">Sign Up</a>
+                <p><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms</a></p>
             </div>
         </div>
     </div>

@@ -28,36 +28,36 @@
     --glass-border: 1px solid #e5e7eb;
 
     /* Status Colors */
-    --success: #10b981;
-    --success-rgb: 16, 185, 129;
-    --success-bg: rgba(16, 185, 129, 0.12);
-    --success-border: rgba(16, 185, 129, 0.25);
+    --success: #076b49;
+    --success-rgb: 7, 107, 73;
+    --success-bg: rgba(7, 107, 73, 0.12);
+    --success-border: rgba(7, 107, 73, 0.25);
     
-    --pending: #f59e0b;
-    --pending-rgb: 245, 158, 11;
-    --pending-bg: rgba(245, 158, 11, 0.12);
-    --pending-border: rgba(245, 158, 11, 0.25);
+    --pending: #895300;
+    --pending-rgb: 137, 83, 0;
+    --pending-bg: rgba(137, 83, 0, 0.12);
+    --pending-border: rgba(137, 83, 0, 0.25);
 
-    --in-progress: #3b82f6;
-    --in-progress-rgb: 59, 130, 246;
-    --in-progress-bg: rgba(59, 130, 246, 0.12);
-    --in-progress-border: rgba(59, 130, 246, 0.25);
+    --in-progress: #1d4ed8;
+    --in-progress-rgb: 29, 78, 216;
+    --in-progress-bg: rgba(29, 78, 216, 0.12);
+    --in-progress-border: rgba(29, 78, 216, 0.25);
 
-    --cancelled: #94a3b8;
-    --cancelled-rgb: 148, 163, 184;
-    --cancelled-bg: rgba(148, 163, 184, 0.12);
-    --cancelled-border: rgba(148, 163, 184, 0.25);
+    --cancelled: #586579;
+    --cancelled-rgb: 88, 101, 121;
+    --cancelled-bg: rgba(88, 101, 121, 0.12);
+    --cancelled-border: rgba(88, 101, 121, 0.25);
 
-    --overdue: #f43f5e;
-    --overdue-rgb: 244, 63, 94;
-    --overdue-bg: rgba(244, 63, 94, 0.12);
-    --overdue-border: rgba(244, 63, 94, 0.25);
+    --overdue: #be123c;
+    --overdue-rgb: 190, 18, 60;
+    --overdue-bg: rgba(190, 18, 60, 0.12);
+    --overdue-border: rgba(190, 18, 60, 0.25);
 
     /* Priority Colors */
-    --priority-low: #10b981;
-    --priority-medium: #3b82f6;
-    --priority-high: #f59e0b;
-    --priority-critical: #f43f5e;
+    --priority-low: #076b49;
+    --priority-medium: #1d4ed8;
+    --priority-high: #895300;
+    --priority-critical: #be123c;
 
     /* Metrics & Geometry */
     --radius-xl: 16px;
@@ -101,11 +101,25 @@
     --border-glass: #374151;
     --glass-backdrop: none;
     --glass-border: 1px solid #374151;
-    --success-bg: rgba(16, 185, 129, 0.16);
-    --pending-bg: rgba(245, 158, 11, 0.16);
-    --in-progress-bg: rgba(59, 130, 246, 0.16);
-    --cancelled-bg: rgba(148, 163, 184, 0.16);
-    --overdue-bg: rgba(244, 63, 94, 0.16);
+    --success: #34d399;
+    --success-rgb: 52, 211, 153;
+    --pending: #fbbf24;
+    --pending-rgb: 251, 191, 36;
+    --in-progress: #93c5fd;
+    --in-progress-rgb: 147, 197, 253;
+    --cancelled: #cbd5e1;
+    --cancelled-rgb: 203, 213, 225;
+    --overdue: #fda4af;
+    --overdue-rgb: 253, 164, 175;
+    --priority-low: #34d399;
+    --priority-medium: #93c5fd;
+    --priority-high: #fbbf24;
+    --priority-critical: #fda4af;
+    --success-bg: rgba(52, 211, 153, 0.16);
+    --pending-bg: rgba(251, 191, 36, 0.16);
+    --in-progress-bg: rgba(147, 197, 253, 0.16);
+    --cancelled-bg: rgba(203, 213, 225, 0.16);
+    --overdue-bg: rgba(253, 164, 175, 0.16);
     --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.18);
     --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
     --shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
@@ -138,11 +152,25 @@
         --border-glass: #374151;
         --glass-backdrop: none;
         --glass-border: 1px solid #374151;
-        --success-bg: rgba(16, 185, 129, 0.16);
-        --pending-bg: rgba(245, 158, 11, 0.16);
-        --in-progress-bg: rgba(59, 130, 246, 0.16);
-        --cancelled-bg: rgba(148, 163, 184, 0.16);
-        --overdue-bg: rgba(244, 63, 94, 0.16);
+        --success: #34d399;
+        --success-rgb: 52, 211, 153;
+        --pending: #fbbf24;
+        --pending-rgb: 251, 191, 36;
+        --in-progress: #93c5fd;
+        --in-progress-rgb: 147, 197, 253;
+        --cancelled: #cbd5e1;
+        --cancelled-rgb: 203, 213, 225;
+        --overdue: #fda4af;
+        --overdue-rgb: 253, 164, 175;
+        --priority-low: #34d399;
+        --priority-medium: #93c5fd;
+        --priority-high: #fbbf24;
+        --priority-critical: #fda4af;
+        --success-bg: rgba(52, 211, 153, 0.16);
+        --pending-bg: rgba(251, 191, 36, 0.16);
+        --in-progress-bg: rgba(147, 197, 253, 0.16);
+        --cancelled-bg: rgba(203, 213, 225, 0.16);
+        --overdue-bg: rgba(253, 164, 175, 0.16);
         --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.18);
         --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
         --shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
@@ -160,6 +188,11 @@
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 3px;
 }
 
 body {

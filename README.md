@@ -31,8 +31,11 @@ The current project includes authentication, dashboard analytics, task managemen
 ```text
 smart-task-manager/
 ├── index.html
+├── 404.html
 ├── login.html
 ├── register.html
+├── privacy.html
+├── terms.html
 ├── dashboard.html
 ├── tasks.html
 ├── import.html
@@ -44,6 +47,9 @@ smart-task-manager/
 ├── css/
 ├── js/
 ├── assets/
+├── robots.txt
+├── scripts/
+│   └── generate-sitemap.js
 ├── test/
 ├── package.json
 ├── README.md
@@ -123,6 +129,21 @@ Run:
 ```bash
 npm test
 ```
+
+## 🌐 Production setup
+
+The app is static and has no server-side authentication, contact form endpoint, or analytics provider. Registration is browser-only; passwords are Base64-encoded in local storage and are not protected authentication credentials. Do not use sensitive or reused passwords. A real production account system and protection for server-side secrets require a backend; no API secret is present in this frontend project.
+
+Before deployment, choose a hosting provider and production domain. Configure HTTPS redirects and security headers at that provider; an HTML-only app cannot enforce HTTPS before the host serves the page. After the production domain is available, generate a sitemap and matching `robots.txt` from the project root:
+
+```powershell
+$env:SITE_URL = "https://www.example.com"
+npm run generate:sitemap
+```
+
+The command rejects non-HTTPS URLs and writes absolute sitemap URLs for the public landing, privacy, and terms pages. Run it again whenever the production domain changes. `robots.txt` is initially a permissive placeholder without a sitemap URL; do not deploy the placeholder in place of the generated version.
+
+Optional analytics are not active. Choose an analytics provider, configure its account/site ID, and connect its loading code to the saved opt-in consent before enabling it. The consent banner does not load a tracker by itself. Bot protection and abuse limits must be enforced by a backend if server-backed forms or APIs are added; browser-only checks can be bypassed.
 
 ## 📝 Notes
 

@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Create a SmartTask Manager workspace to plan tasks, track projects, and organize your work in your browser.">
+    <meta name="robots" content="noindex, nofollow">
     <title>Register | SmartTask Manager</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/auth.css">
+    <script type="module" src="js/privacy.js"></script>
 </head>
 <body>
     <div class="auth-container">
@@ -19,25 +23,25 @@
             <form id="registerForm">
                 <div class="form-group">
                     <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" placeholder="John Doe" required>
+                    <input type="text" id="fullName" autocomplete="name" maxlength="100" placeholder="John Doe" required>
                     <div class="error-message" id="nameError">Name is required</div>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="name@company.com" required>
+                    <input type="email" id="email" autocomplete="email" maxlength="254" placeholder="name@company.com" required>
                     <div class="error-message" id="emailError">Invalid email format</div>
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="At least 8 characters" required>
+                    <input type="password" id="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required>
                     <div class="error-message" id="passError">Password must be 8+ characters</div>
                 </div>
 
                 <div class="form-group">
                     <label for="confirmPassword">Confirm Password</label>
-                    <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                    <input type="password" id="confirmPassword" autocomplete="new-password" minlength="8" placeholder="Confirm your password" required>
                     <div class="error-message" id="confirmError">Passwords do not match</div>
                 </div>
 
@@ -46,6 +50,7 @@
 
             <div class="auth-footer">
                 Already have an account? <a href="login.html">Sign In</a>
+                <p><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms</a></p>
             </div>
         </div>
     </div>

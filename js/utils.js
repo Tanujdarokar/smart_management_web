@@ -49,7 +49,7 @@ const Utils = {
                 <div style="text-align:center;">
                     <div style="font-size:48px; margin-bottom:12px;">✨</div>
                     <h2 style="margin:0 0 8px; font-size:22px; font-weight:700;">Account Required</h2>
-                    <p style="margin:0 0 24px; color: var(--text-muted, #667085); font-size:14px; line-height: 1.5;">Create a free account or log in to sync, export, and permanently save your tasks and transactions across sessions.</p>
+                    <p style="margin:0 0 24px; color: var(--text-muted, #667085); font-size:14px; line-height: 1.5;">Create an account to save tasks and transactions in this browser. Data does not sync to other devices.</p>
                     <div style="display:flex; justify-content:center; gap:12px; flex-wrap: wrap;">
                         <a href="login.html" class="btn btn-primary" id="guest-login-action">Sign In</a>
                         <a href="register.html" class="btn btn-outline" id="guest-register-action">Create Free Account</a>

@@ -252,3 +252,9 @@
         font-size: 20px;
     }
 }
+
+@media (max-width: 360px) {
+    .company-stats {
+        grid-template-columns: 1fr;
+    }
+}

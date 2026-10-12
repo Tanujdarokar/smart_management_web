@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Manage your SmartTask profile, appearance, currency, budget preferences, and feedback.">
+    <meta name="robots" content="noindex, nofollow">
     <title>Settings | SmartTask Manager</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/settings.css">
+    <script type="module" src="js/privacy.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -20,12 +24,12 @@
                 </div>
             </header>
 
-            <div style="max-width: 840px; display: grid; gap: 32px;">
+            <div style="max-width: 840px; width: 100%; min-width: 0; grid-template-columns: minmax(0, 1fr); display: grid; gap: 32px;">
                 <!-- Profile Section -->
                 <section class="card">
                     <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 24px;">👤 Profile Details</h2>
                     <form id="profileForm">
-                        <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 28px;">
+                        <div class="profile-avatar-row" style="display: flex; align-items: center; gap: 24px; margin-bottom: 28px;">
                             <div class="avatar" id="settingsAvatar" style="width: 72px; height: 72px; font-size: 28px; border-radius: 20px;">JD</div>
                             <div>
                                 <button type="button" class="btn btn-outline btn-sm">📷 Change Profile Photo</button>
@@ -90,7 +94,7 @@
 
                 <!-- Feature Request & Feedback Section -->
                 <section class="card feedback-card" id="feedbackSection">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 20px;">
+                    <div class="feedback-card-header" style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 20px;">
                         <div>
                             <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">💡 Feature Request & Feedback</h2>
                             <p style="color: var(--text-muted); font-size: 13.5px; margin: 0;">Have an idea or need an enhancement? Help us make SmartTask even better!</p>

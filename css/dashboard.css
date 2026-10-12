@@ -129,6 +129,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    flex-wrap: wrap;
     gap: 16px;
     margin-bottom: 24px;
 }
@@ -301,10 +302,10 @@
     font-weight: 700;
 }
 
-.priority-low { background: rgba(16, 185, 129, 0.12); color: var(--success); }
-.priority-medium { background: rgba(59, 130, 246, 0.12); color: var(--in-progress); }
-.priority-high { background: rgba(245, 158, 11, 0.12); color: var(--pending); }
-.priority-critical { background: rgba(244, 63, 94, 0.12); color: var(--overdue); }
+.priority-low { background: var(--success-bg); color: var(--success); }
+.priority-medium { background: var(--in-progress-bg); color: var(--in-progress); }
+.priority-high { background: var(--pending-bg); color: var(--pending); }
+.priority-critical { background: var(--overdue-bg); color: var(--overdue); }
 
 /* Circular Progress Widget */
 .progress-card {
@@ -424,12 +425,20 @@
 .text-purple  { color: var(--primary-color) !important; }
 
 @media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .finance-widget-metrics {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
     .finance-widget-metrics {
         grid-template-columns: 1fr;
     }

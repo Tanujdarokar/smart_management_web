@@ -1,7 +1,8 @@
 {
   "type": "module",
   "scripts": {
-    "test": "node --test"
+    "test": "node --test",
+    "generate:sitemap": "node scripts/generate-sitemap.js"
   },
   "dependencies": {
     "xlsx": "^0.18.5"

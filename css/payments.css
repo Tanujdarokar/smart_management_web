@@ -1152,6 +1152,11 @@
     .pay-search, .pay-filter-select {
         width: 100%;
     }
+    .timeframe-pills {
+        max-width: 100%;
+        overflow-x: auto;
+    }
+    .timeframe-btn { flex-shrink: 0; }
     .export-options-grid {
         grid-template-columns: 1fr;
     }
