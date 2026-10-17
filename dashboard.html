@@ -1,77 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Review your SmartTask tasks, projects, priorities, and progress in one dashboard.">
+    <meta name="description" content="Review your SmartTask tasks, career applications, financial health, and workspace progress in one intuitive dashboard.">
     <meta name="robots" content="noindex, nofollow">
     <title>Dashboard | SmartTask Manager</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/style.css?v=4">
+    <link rel="stylesheet" href="css/dashboard.css?v=4">
     <script type="module" src="js/privacy.js"></script>
 </head>
-
 <body>
     <div class="app-container">
         <!-- Sidebar injected by JS -->
         <aside class="sidebar"></aside>
 
         <main class="main-content">
-            <header class="header">
-                <div>
+            <!-- Modernized Welcome Header -->
+            <header class="header dashboard-header">
+                <div class="header-welcome-info">
+                    <div class="header-date-badge" id="currentDateDisplay">
+                        <span>📅</span> Loading date...
+                    </div>
                     <h1 id="welcomeMessage">Welcome back, User!</h1>
-                    <p style="color: var(--text-muted);">Here's what's happening with your tasks and projects today.</p>
+                    <p style="color: var(--text-muted);">
+                        Here is your unified productivity overview: tasks, job applications, and finances at a glance.
+                    </p>
                 </div>
                 <div class="header-actions">
+                    <span class="dashboard-status-pill" id="statusSummaryPill">
+                        <span class="status-pulse-dot"></span> Loading status...
+                    </span>
+                    <a href="tasks.html#import" class="btn btn-outline" id="quickImportBtn">
+                        <span>📥</span> Batch Import
+                    </a>
                     <button class="btn btn-primary" id="quickAddTask">
                         <span>⚡</span> Quick Add Task
                     </button>
                 </div>
             </header>
 
-            <!-- Stats Grid -->
-            <div class="stats-grid">
-                <div class="card stat-card" style="--stat-glow: rgba(var(--primary-rgb), 0.18);">
+            <!-- 4 Primary Stat Cards -->
+            <section class="stats-grid" aria-label="Task metrics summary">
+                <a href="tasks.html" class="card stat-card stat-card-total" style="--stat-glow: rgba(var(--primary-rgb), 0.18); text-decoration: none;">
                     <div class="stat-card-header">
-                        <div class="stat-icon"
-                            style="background: var(--primary-gradient-subtle); color: var(--primary-color);">📊</div>
+                        <div class="stat-icon stat-icon-blue">📊</div>
+                        <span class="stat-mini-badge">All Items</span>
                     </div>
                     <div class="stat-value" id="totalTasks">0</div>
                     <div class="stat-label">Total Tasks</div>
-                </div>
-                <div class="card stat-card" style="--stat-glow: rgba(245, 158, 11, 0.22);">
+                    <div class="stat-subtext">Click to view all tasks →</div>
+                </a>
+
+                <a href="tasks.html" class="card stat-card stat-card-pending" style="--stat-glow: rgba(245, 158, 11, 0.22); text-decoration: none;">
                     <div class="stat-card-header">
-                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.12); color: var(--pending);">⏳
-                        </div>
+                        <div class="stat-icon stat-icon-amber">⏳</div>
+                        <span class="stat-mini-badge badge-pending">Active</span>
                     </div>
                     <div class="stat-value" id="pendingTasks">0</div>
-                    <div class="stat-label">Pending</div>
-                </div>
-                <div class="card stat-card" style="--stat-glow: rgba(16, 185, 129, 0.22);">
+                    <div class="stat-label">Pending Tasks</div>
+                    <div class="stat-subtext">In queue or working →</div>
+                </a>
+
+                <a href="tasks.html" class="card stat-card stat-card-completed" style="--stat-glow: rgba(16, 185, 129, 0.22); text-decoration: none;">
                     <div class="stat-card-header">
-                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.12); color: var(--success);">✅
-                        </div>
+                        <div class="stat-icon stat-icon-green">✅</div>
+                        <span class="stat-mini-badge badge-success">Done</span>
                     </div>
                     <div class="stat-value" id="completedTasks">0</div>
-                    <div class="stat-label">Completed</div>
-                </div>
-                <div class="card stat-card" style="--stat-glow: rgba(244, 63, 94, 0.22);">
+                    <div class="stat-label">Completed Tasks</div>
+                    <div class="stat-subtext">Archived in history →</div>
+                </a>
+
+                <a href="tasks.html" class="card stat-card stat-card-overdue" style="--stat-glow: rgba(244, 63, 94, 0.22); text-decoration: none;">
                     <div class="stat-card-header">
-                        <div class="stat-icon" style="background: rgba(244, 63, 94, 0.12); color: var(--overdue);">⚠️
-                        </div>
+                        <div class="stat-icon stat-icon-red">⚠️</div>
+                        <span class="stat-mini-badge badge-danger">Needs Action</span>
                     </div>
                     <div class="stat-value" id="overdueTasks">0</div>
-                    <div class="stat-label">Overdue</div>
-                </div>
-            </div>
+                    <div class="stat-label">Overdue Tasks</div>
+                    <div class="stat-subtext">Past target due dates →</div>
+                </a>
+            </section>
 
+            <!-- Workspace Quick Hubs Strip -->
+            <section class="hubs-strip" aria-label="Workspace feature quick hubs">
+                <a href="tasks.html" class="card hub-strip-card">
+                    <div class="hub-strip-icon hub-icon-tasks">📋</div>
+                    <div class="hub-strip-info">
+                        <strong>Tasks &amp; Import Hub</strong>
+                        <span id="dashHubTaskInfo">Manage and batch-import tasks</span>
+                    </div>
+                    <div class="hub-strip-arrow">→</div>
+                </a>
+
+                <a href="companies.html" class="card hub-strip-card">
+                    <div class="hub-strip-icon hub-icon-tracker">🏢</div>
+                    <div class="hub-strip-info">
+                        <strong>Company &amp; Tracker</strong>
+                        <span id="dashHubCompanyInfo">Track roles &amp; prep workbooks</span>
+                    </div>
+                    <div class="hub-strip-arrow">→</div>
+                </a>
+
+                <a href="career-focus.html" class="card hub-strip-card">
+                    <div class="hub-strip-icon hub-icon-career">🎯</div>
+                    <div class="hub-strip-info">
+                        <strong>Goal Career Portals</strong>
+                        <span>75+ direct MNC &amp; startup links</span>
+                    </div>
+                    <div class="hub-strip-arrow">→</div>
+                </a>
+
+                <a href="payments.html" class="card hub-strip-card">
+                    <div class="hub-strip-icon hub-icon-finance">💰</div>
+                    <div class="hub-strip-info">
+                        <strong>Money Manager Hub</strong>
+                        <span>Track budgets, goals &amp; cashflow</span>
+                    </div>
+                    <div class="hub-strip-arrow">→</div>
+                </a>
+            </section>
+
+            <!-- Optional Workbook / Sheet Summary section -->
             <section class="card dashboard-summary" id="dashboardSummary" style="display: none; margin-bottom: 28px;">
                 <div class="summary-header">
                     <div>
-                        <h2>Workbook Summary</h2>
-                        <p>Aggregated metrics from imported spreadsheets and trackers.</p>
+                        <h2>Workbook &amp; Task Aggregates</h2>
+                        <p>Aggregated metrics from your task list and imported spreadsheets.</p>
                     </div>
                     <span class="summary-pill" id="summaryPill">Live Overview</span>
                 </div>
@@ -88,69 +145,151 @@
                 </div>
             </section>
 
+            <!-- Main Working Grid: Recent Tasks & Progress -->
             <div class="dashboard-grid">
-                <!-- Recent Tasks -->
-                <section class="card recent-tasks">
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                        <h2 style="font-size: 18px; font-weight: 800;">Recent Tasks</h2>
-                        <a href="tasks.html" class="btn btn-outline btn-sm" style="text-decoration: none;">View All
-                            →</a>
-                    </div>
-                    <div id="recentTasksList" class="task-mini-list">
-                        <div class="empty-state">No recent tasks found.</div>
-                    </div>
-                </section>
-
-                <!-- Progress & Quick Actions -->
-                <section class="card progress-card">
-                    <h2 style="font-size: 18px; font-weight: 800; width: 100%; text-align: left; margin-bottom: 8px;">
-                        Completion Rate</h2>
-                    <div class="progress-container">
-                        <svg class="progress-ring" width="140" height="140">
-                            <defs>
-                                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#2563eb" />
-                                    <stop offset="100%" stop-color="#1d4ed8" />
-                                </linearGradient>
-                            </defs>
-                            <circle class="progress-ring__circle-bg" stroke-width="10" fill="transparent" r="58" cx="70"
-                                cy="70" />
-                            <circle class="progress-ring__circle" stroke="url(#progressGradient)" stroke-width="10"
-                                stroke-linecap="round" fill="transparent" r="58" cx="70" cy="70" id="progressCircle" />
-                        </svg>
-                        <div class="progress-text" id="progressPercentage">0%</div>
-                    </div>
-
-                    <div class="quick-actions" style="width: 100%; margin-top: 16px;">
-                        <h3
-                            style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 12px;">
-                            Quick Actions</h3>
-                        <div style="display: grid; gap: 10px;">
-                            <a href="payments.html" class="btn btn-outline"
-                                style="width: 100%; justify-content: center; border-color: rgba(var(--primary-rgb), 0.4); color: var(--primary-color);">💰 Money Hub</a>
-                            <a href="tasks.html#import" class="btn btn-outline"
-                                style="width: 100%; justify-content: center;">📥 Import Tasks</a>
-                            <a href="calendar.html" class="btn btn-outline"
-                                style="width: 100%; justify-content: center;">📅 View Calendar</a>
+                <!-- Left: Recent Tasks + Career Pipeline -->
+                <div class="dashboard-main-col">
+                    <!-- Recent Tasks Section -->
+                    <section class="card recent-tasks-card">
+                        <div class="section-card-header">
+                            <div>
+                                <h2 style="font-size: 18px; font-weight: 800; margin: 0 0 4px;">Recent Tasks</h2>
+                                <p style="font-size: 13px; color: var(--text-muted); margin: 0;">Quick overview of your latest priorities and due dates.</p>
+                            </div>
+                            <a href="tasks.html" class="btn btn-outline btn-sm">View All Tasks →</a>
                         </div>
-                    </div>
-                </section>
+                        <div id="recentTasksList" class="task-mini-list">
+                            <div class="empty-state">No recent tasks found.</div>
+                        </div>
+                    </section>
+
+                    <!-- Career & Application Pipeline Snapshot -->
+                    <section class="card dashboard-career-widget" id="dashCareerWidget" style="margin-top: 24px;">
+                        <div class="section-card-header">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div class="stat-icon stat-icon-blue" style="width: 42px; height: 42px; font-size: 20px;">🏢</div>
+                                <div>
+                                    <h2 style="font-size: 17px; font-weight: 800; margin: 0 0 2px;">Job Application Pipeline</h2>
+                                    <p style="font-size: 13px; color: var(--text-muted); margin: 0;">Live tracking from your Company &amp; Interview Tracker.</p>
+                                </div>
+                            </div>
+                            <a href="companies.html" class="btn btn-outline btn-sm">Company Tracker →</a>
+                        </div>
+                        <div class="career-pipeline-stats">
+                            <div class="pipeline-item">
+                                <span class="pipeline-lbl">Tracked</span>
+                                <strong id="dashPipelineTracked">0</strong>
+                            </div>
+                            <div class="pipeline-item">
+                                <span class="pipeline-lbl">Applied</span>
+                                <strong id="dashPipelineApplied">0</strong>
+                            </div>
+                            <div class="pipeline-item">
+                                <span class="pipeline-lbl">Interviewing</span>
+                                <strong id="dashPipelineInterviewing" style="color: var(--primary-color);">0</strong>
+                            </div>
+                            <div class="pipeline-item">
+                                <span class="pipeline-lbl">Offers</span>
+                                <strong id="dashPipelineOffers" style="color: var(--success);">0</strong>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- Right: Circular Progress & Shortcuts -->
+                <div class="dashboard-side-col">
+                    <!-- Completion Rate Widget -->
+                    <section class="card progress-card">
+                        <div class="section-card-header" style="width: 100%; border: none; padding: 0; margin-bottom: 8px;">
+                            <h2 style="font-size: 18px; font-weight: 800;">Completion Rate</h2>
+                            <span class="progress-status-badge" id="progressStatusBadge">On Track</span>
+                        </div>
+                        <div class="progress-container">
+                            <svg class="progress-ring" width="140" height="140">
+                                <defs>
+                                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#2563eb" />
+                                        <stop offset="100%" stop-color="#10b981" />
+                                    </linearGradient>
+                                </defs>
+                                <circle class="progress-ring__circle-bg" stroke-width="12" fill="transparent" r="56" cx="70" cy="70" />
+                                <circle class="progress-ring__circle" stroke="url(#progressGradient)" stroke-width="12"
+                                    stroke-linecap="round" fill="transparent" r="56" cx="70" cy="70" id="progressCircle" />
+                            </svg>
+                            <div class="progress-text-wrap">
+                                <div class="progress-text" id="progressPercentage">0%</div>
+                                <span class="progress-sub-text">Completed</span>
+                            </div>
+                        </div>
+                        <p class="progress-footnote" id="progressFootnote">
+                            Completed 0 of 0 tasks
+                        </p>
+                    </section>
+
+                    <!-- Quick Shortcuts Action Card -->
+                    <section class="card shortcuts-card" style="margin-top: 24px;">
+                        <h2 style="font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 14px;">
+                            Quick Actions
+                        </h2>
+                        <div class="shortcuts-grid">
+                            <a href="tasks.html?action=new" class="shortcut-btn">
+                                <span>✨</span>
+                                <div>
+                                    <strong>Create Task</strong>
+                                    <small>Add new item</small>
+                                </div>
+                            </a>
+                            <a href="tasks.html#import" class="shortcut-btn">
+                                <span>📥</span>
+                                <div>
+                                    <strong>Import File</strong>
+                                    <small>Excel, CSV, TXT</small>
+                                </div>
+                            </a>
+                            <a href="companies.html" class="shortcut-btn">
+                                <span>🏢</span>
+                                <div>
+                                    <strong>Track Company</strong>
+                                    <small>Role &amp; stage</small>
+                                </div>
+                            </a>
+                            <a href="career-focus.html" class="shortcut-btn">
+                                <span>🎯</span>
+                                <div>
+                                    <strong>Career Portals</strong>
+                                    <small>75+ top links</small>
+                                </div>
+                            </a>
+                            <a href="payments.html" class="shortcut-btn">
+                                <span>💰</span>
+                                <div>
+                                    <strong>Record Money</strong>
+                                    <small>Income / Expense</small>
+                                </div>
+                            </a>
+                            <a href="calendar.html" class="shortcut-btn">
+                                <span>📅</span>
+                                <div>
+                                    <strong>Calendar View</strong>
+                                    <small>Date schedule</small>
+                                </div>
+                            </a>
+                        </div>
+                    </section>
+                </div>
             </div>
 
             <!-- Financial Health Snapshot Widget -->
             <section class="card dashboard-finance-widget" style="margin-top: 28px;">
                 <div class="finance-widget-header">
                     <div style="display: flex; align-items: center; gap: 12px;">
-                        <div class="stat-icon" style="background: var(--primary-gradient-subtle); color: var(--primary-color); width: 44px; height: 44px; font-size: 20px;">💰</div>
+                        <div class="stat-icon stat-icon-blue" style="width: 44px; height: 44px; font-size: 20px;">💰</div>
                         <div>
-                            <h2 style="font-size: 18px; font-weight: 800; margin: 0 0 2px;">Monthly Finance & Cashflow Overview</h2>
-                            <p style="color: var(--text-muted); font-size: 13px; margin: 0;">Live tracking of income, expenses, and savings goals.</p>
+                            <h2 style="font-size: 18px; font-weight: 800; margin: 0 0 2px;">Monthly Finance &amp; Cashflow Overview</h2>
+                            <p style="color: var(--text-muted); font-size: 13px; margin: 0;">Live tracking of income, expenses, and savings goals from Money Hub.</p>
                         </div>
                     </div>
-                    <a href="payments.html" class="btn btn-outline btn-sm" style="text-decoration: none;">
-                        Open Money Hub →
-                    </a>
+                    <a href="payments.html" class="btn btn-outline btn-sm">Open Money Hub →</a>
                 </div>
 
                 <div class="finance-widget-metrics">
@@ -175,6 +314,6 @@
         </main>
     </div>
 
-    <script type="module" src="js/dashboard.js"></script>
+    <script type="module" src="js/dashboard.js?v=4"></script>
 </body>
 </html>
