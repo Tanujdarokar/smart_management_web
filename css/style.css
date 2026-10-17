@@ -737,3 +737,104 @@ select {
     white-space: nowrap !important;
     border: 0 !important;
 }
+
+/* ══════════════════════════════════════════════
+   Segmented Hub Tabs & Walkthrough Components
+   ══════════════════════════════════════════════ */
+.segmented-tabs {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(var(--primary-rgb), 0.06);
+    padding: 5px;
+    border-radius: var(--radius-xl);
+    gap: 4px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border-color);
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+[data-theme="dark"] .segmented-tabs {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.segmented-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: var(--radius-lg);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-muted);
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.segmented-tab:hover {
+    color: var(--text-main);
+    background: rgba(var(--primary-rgb), 0.08);
+}
+
+.segmented-tab.active {
+    background: var(--card-bg-solid);
+    color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+    border-color: var(--border-hover);
+}
+
+.segmented-tab .tab-badge {
+    padding: 2px 7px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 800;
+    background: rgba(0, 0, 0, 0.07);
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] .segmented-tab .tab-badge {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.segmented-tab.active .tab-badge {
+    background: var(--primary-gradient-subtle);
+    color: var(--primary-color);
+}
+
+.tab-view {
+    display: none;
+}
+
+.tab-view.active {
+    display: block;
+    animation: fadeInTab 0.2s ease;
+}
+
+@keyframes fadeInTab {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.hub-tip-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 18px;
+    margin-bottom: 24px;
+    border-radius: var(--radius-lg);
+    background: var(--primary-gradient-subtle);
+    border: 1px solid var(--border-hover);
+    color: var(--text-main);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.hub-tip-banner strong {
+    color: var(--primary-color);
+}
+

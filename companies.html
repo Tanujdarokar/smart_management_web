@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Track job applications, company details, interview stages, and follow-up dates in your local SmartTask workspace.">
+    <meta name="description" content="Track job applications, interview stages, follow-up dates, and import interview prep workbooks in SmartTask Manager.">
     <meta name="robots" content="noindex, nofollow">
-    <title>Company Tracker | SmartTask Manager</title>
+    <title>Company &amp; Interview Tracker | SmartTask Manager</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/tasks.css">
+    <link rel="stylesheet" href="css/import.css">
     <link rel="stylesheet" href="css/companies.css">
     <script type="module" src="js/privacy.js"></script>
 </head>
@@ -19,71 +20,182 @@
         <main class="main-content">
             <header class="header">
                 <div>
-                    <h1>Company Tracker</h1>
-                    <p style="color: var(--text-muted);">Keep every job application, interview, and follow-up in one place.</p>
+                    <h1>Company &amp; Interview Tracker</h1>
+                    <p style="color: var(--text-muted);">Manage your targeted companies, application stages, and interview prep workbooks.</p>
                 </div>
                 <div class="header-actions">
-                    <button class="btn btn-primary" id="addCompanyBtn">＋ Add Company</button>
+                    <a href="career-focus.html" class="btn btn-outline" id="careerFocusLinkBtn">
+                        🎯 Goal carrer Focus Company
+                    </a>
+                    <button class="btn btn-outline" id="headerPrepTabBtn">
+                        📊 Interview Prep Tracker
+                    </button>
+                    <button class="btn btn-primary" id="addCompanyBtn">
+                        ＋ Add Company
+                    </button>
                 </div>
             </header>
 
-            <section class="company-stats" aria-label="Application summary">
-                <article class="card company-stat">
-                    <span class="company-stat-icon">🏢</span>
-                    <div><p>Companies tracked</p><strong id="totalCompanies">0</strong></div>
-                </article>
-                <article class="card company-stat">
-                    <span class="company-stat-icon">📨</span>
-                    <div><p>Active applications</p><strong id="activeApplications">0</strong></div>
-                </article>
-                <article class="card company-stat">
-                    <span class="company-stat-icon">🎤</span>
-                    <div><p>Interviews</p><strong id="interviewCount">0</strong></div>
-                </article>
-                <article class="card company-stat">
-                    <span class="company-stat-icon">🎉</span>
-                    <div><p>Offers</p><strong id="offerCount">0</strong></div>
-                </article>
+            <!-- Segmented Hub Tabs -->
+            <nav class="segmented-tabs" aria-label="Company applications and interview tracker views">
+                <button class="segmented-tab active" data-tab="companyAppsTab" id="tabBtnCompanies">
+                    <span>🏢 Company Applications</span>
+                    <span class="tab-badge" id="totalCompaniesBadge">0</span>
+                </button>
+                <button class="segmented-tab" data-tab="interviewPrepTab" id="tabBtnPrep">
+                    <span>📊 Interview Prep &amp; Workbooks</span>
+                    <span class="tab-badge" id="prepTasksBadge">0</span>
+                </button>
+            </nav>
+
+            <!-- TAB 1: Company Applications -->
+            <section id="companyAppsTab" class="tab-view active" aria-label="Company applications list">
+                <div class="hub-tip-banner">
+                    <div>
+                        <strong>💡 How to use:</strong> Add companies you are interviewing with or targeting. Any career URL you paste here automatically syncs with <strong>Goal carrer Focus Company</strong>! Switch to <strong>Interview Prep &amp; Workbooks</strong> to import and track technical practice sheets.
+                    </div>
+                </div>
+
+                <section class="company-stats" aria-label="Application summary">
+                    <article class="card company-stat">
+                        <span class="company-stat-icon">🏢</span>
+                        <div><p>Companies tracked</p><strong id="totalCompanies">0</strong></div>
+                    </article>
+                    <article class="card company-stat">
+                        <span class="company-stat-icon">📨</span>
+                        <div><p>Active applications</p><strong id="activeApplications">0</strong></div>
+                    </article>
+                    <article class="card company-stat">
+                        <span class="company-stat-icon">🎤</span>
+                        <div><p>Interviews</p><strong id="interviewCount">0</strong></div>
+                    </article>
+                    <article class="card company-stat">
+                        <span class="company-stat-icon">🎉</span>
+                        <div><p>Offers</p><strong id="offerCount">0</strong></div>
+                    </article>
+                </section>
+
+                <section class="card company-filters" aria-label="Filter applications">
+                    <label class="visually-hidden" for="companySearch">Search companies</label>
+                    <input class="form-control" id="companySearch" type="search" placeholder="Search company, role, or location...">
+                    <label class="visually-hidden" for="companyStatusFilter">Filter by application stage</label>
+                    <select class="form-control" id="companyStatusFilter">
+                        <option value="all">All stages</option>
+                        <option value="Offer">Offers</option>
+                        <option value="Interested">Interested</option>
+                        <option value="Interviewing">Interview</option>
+                        <option value="Applied">Applied</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Withdrawn">Withdrawn</option>
+                    </select>
+                    <label class="visually-hidden" for="companyPinnedFilter">Filter pinned companies</label>
+                    <select class="form-control" id="companyPinnedFilter">
+                        <option value="all">All companies</option>
+                        <option value="pinned">Pinned companies</option>
+                    </select>
+                    <label class="visually-hidden" for="companySort">Sort applications</label>
+                    <select class="form-control" id="companySort">
+                        <option value="appliedDate" selected>Latest application date</option>
+                        <option value="updated">Recently updated</option>
+                        <option value="followUp">Follow-up date</option>
+                        <option value="company">Company name</option>
+                    </select>
+                </section>
+
+                <section id="companyList" class="company-grid" aria-live="polite"></section>
+                <section id="companyEmpty" class="card company-empty" hidden>
+                    <div aria-hidden="true">🗂️</div>
+                    <h2>No companies yet</h2>
+                    <p>Add a company to start tracking roles, application stages, and follow-up dates.</p>
+                    <button class="btn btn-primary" id="emptyAddCompanyBtn">Add your first company</button>
+                </section>
+                <p id="noCompanyMatches" class="company-no-matches" hidden>No companies match these filters.</p>
             </section>
 
-            <section class="card company-filters" aria-label="Filter applications">
-                <label class="visually-hidden" for="companySearch">Search companies</label>
-                <input class="form-control" id="companySearch" type="search" placeholder="Search company, role, or location...">
-                <label class="visually-hidden" for="companyStatusFilter">Filter by application stage</label>
-                <select class="form-control" id="companyStatusFilter">
-                    <option value="all">All stages</option>
-                    <option value="Offer">Offers</option>
-                    <option value="Interested">Interested</option>
-                    <option value="Interviewing">Interview</option>
-                    <option value="Applied">Applied</option>
-                    <option value="Rejected">Rejected</option>
-                    <option value="Withdrawn">Withdrawn</option>
-                </select>
-                <label class="visually-hidden" for="companyPinnedFilter">Filter pinned companies</label>
-                <select class="form-control" id="companyPinnedFilter">
-                    <option value="all">All companies</option>
-                    <option value="pinned">Pinned companies</option>
-                </select>
-                <label class="visually-hidden" for="companySort">Sort applications</label>
-                <select class="form-control" id="companySort">
-                    <option value="appliedDate" selected>Latest application date</option>
-                    <option value="updated">Recently updated</option>
-                    <option value="followUp">Follow-up date</option>
-                    <option value="company">Company name</option>
-                </select>
-            </section>
+            <!-- TAB 2: Interview Prep & Workbooks -->
+            <section id="interviewPrepTab" class="tab-view" aria-label="Interview prep workbook tracker">
+                <div class="hub-tip-banner">
+                    <div>
+                        <strong>📊 Interview Prep Workbook:</strong> Drag and drop your LeetCode Blind 75, System Design, or DSA interview prep spreadsheets below (<code>.xlsx</code>, <code>.csv</code>, <code>.json</code>). Review and track problems, statuses, and target dates.
+                    </div>
+                </div>
 
-            <section id="companyList" class="company-grid" aria-live="polite"></section>
-            <section id="companyEmpty" class="card company-empty" hidden>
-                <div aria-hidden="true">🗂️</div>
-                <h2>No companies yet</h2>
-                <p>Add a company to start tracking roles, application stages, and follow-up dates.</p>
-                <button class="btn btn-primary" id="emptyAddCompanyBtn">Add your first company</button>
+                <div class="import-area" id="dropZoneTracker">
+                    <div class="import-icon">📊</div>
+                    <h2>Import Interview Prep Spreadsheet</h2>
+                    <p>Supports <code>.xlsx</code>, <code>.xls</code>, <code>.csv</code>, and <code>.json</code> interview study exports</p>
+                    <input type="file" id="fileInputTracker" hidden accept=".txt,.csv,.json,.xlsx,.xls">
+                    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-primary" id="browseTrackerBtn">📂 Browse Interview Files</button>
+                        <button class="btn btn-secondary" id="addManualTrackerBtn">➕ Add Manual Prep Item</button>
+                    </div>
+                </div>
+
+                <!-- Preview Section -->
+                <section id="previewSectionTracker" class="card" style="display: none; margin-top: 32px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+                        <div>
+                            <h2 id="fileNameDisplayTracker" style="font-size: 20px; font-weight: 800;">File: tracker.xlsx</h2>
+                            <p id="taskCountDisplayTracker" style="font-size: 14px; color: var(--text-muted);">Detected items</p>
+                        </div>
+                        <div class="preview-actions">
+                            <button class="btn btn-outline" id="cancelTrackerImport">Cancel</button>
+                            <button class="btn btn-primary" id="confirmTrackerImport">✨ Import Selected Items</button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="preview-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <label for="selectAllTracker" class="visually-hidden">Select all items</label>
+                                        <input type="checkbox" id="selectAllTracker" checked>
+                                    </th>
+                                    <th>Problem / Task Title</th>
+                                    <th>Priority / Difficulty</th>
+                                    <th>Status</th>
+                                    <th>Target Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="previewBodyTracker"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Imported Prep Tasks List -->
+                <section id="importedPrepTasksSection" style="margin-top: 40px; display: none;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                        <div>
+                            <h2 style="font-size: 20px; font-weight: 800;">📦 Interview &amp; Prep Items</h2>
+                            <p id="importedPrepCount" style="font-size: 13px; color: var(--text-muted); margin-top: 4px;"></p>
+                        </div>
+                        <button class="btn btn-outline" id="clearPrepTasksBtn" style="border-color: #ef4444; color: #ef4444;">
+                            🗑️ Clear All Prep Items
+                        </button>
+                    </div>
+                    <div class="card" style="overflow-x: auto;">
+                        <table class="preview-table" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Problem / Task Title</th>
+                                    <th>Category</th>
+                                    <th>Difficulty</th>
+                                    <th>Status</th>
+                                    <th>Target Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="importedPrepTasksBody"></tbody>
+                        </table>
+                    </div>
+                </section>
             </section>
-            <p id="noCompanyMatches" class="company-no-matches" hidden>No companies match these filters.</p>
         </main>
     </div>
 
+    <!-- Company Modal -->
     <div class="modal" id="companyModal" role="dialog" aria-modal="true" aria-labelledby="companyModalTitle">
         <div class="modal-content company-modal-content">
             <div class="modal-header">
@@ -145,8 +257,8 @@
                         <input class="form-control" id="followUpDate" name="followUpDate" type="date">
                     </div>
                     <div class="field-group full-width">
-                        <label for="companyUrl">Company website</label>
-                        <input class="form-control" id="companyUrl" name="companyUrl" type="url" maxlength="2048" placeholder="https://company.com">
+                        <label for="companyUrl">Company career page / website (syncs to Goal carrer Focus Company)</label>
+                        <input class="form-control" id="companyUrl" name="companyUrl" type="url" maxlength="2048" placeholder="https://careers.company.com">
                     </div>
                     <div class="field-group full-width">
                         <label for="jobUrl">Job posting URL</label>
@@ -160,6 +272,59 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline" id="cancelCompanyEdit">Cancel</button>
                     <button type="submit" class="btn btn-primary">Save Company</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Prep Task Modal -->
+    <div id="prepTaskModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="prepModalTitle">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="prepModalTitle">Edit Prep Task</h2>
+                <span class="close-modal" id="closePrepModalBtn">&times;</span>
+            </div>
+            <form id="prepTaskForm">
+                <input type="hidden" id="prepTaskId">
+                <div class="form-grid">
+                    <div class="field-group">
+                        <label for="prepTitle">Problem / Title *</label>
+                        <input type="text" id="prepTitle" required class="form-control">
+                    </div>
+                    <div class="field-group">
+                        <label for="prepCategory">Category / Topic</label>
+                        <input type="text" id="prepCategory" class="form-control" placeholder="e.g. Algorithms, System Design">
+                    </div>
+                    <div class="field-group">
+                        <label for="prepDueDate">Target Date</label>
+                        <input type="date" id="prepDueDate" class="form-control">
+                    </div>
+                    <div class="field-group">
+                        <label for="prepPriority">Difficulty / Priority</label>
+                        <select id="prepPriority" class="form-control">
+                            <option value="Low">Low (Easy)</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="High">High (Hard)</option>
+                            <option value="Critical">Critical</option>
+                        </select>
+                    </div>
+                    <div class="field-group">
+                        <label for="prepStatus">Status</label>
+                        <select id="prepStatus" class="form-control">
+                            <option value="Pending">Pending</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="field-group full-width">
+                        <label for="prepDescription">Notes / Solution Approach</label>
+                        <textarea id="prepDescription" rows="3" class="form-control" placeholder="Time complexity, edge cases, key insights..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" id="cancelPrepModalBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
                 </div>
             </form>
         </div>

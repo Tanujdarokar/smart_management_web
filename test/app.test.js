@@ -4,6 +4,7 @@ import * as XLSX from 'xlsx';
 import Storage from '../js/storage.js';
 import Parser from '../js/parser.js';
 import Utils from '../js/utils.js';
+import { CURATED_COMPANIES, buildUnifiedCompanies, getSafeUrl } from '../js/career-focus.js';
 
 class MemoryLocalStorage {
   constructor() {
@@ -348,3 +349,152 @@ test('Company applications persist per user and support update and delete', () =
   assert.equal(Storage.getCompanyApplications(firstUser).length, 0);
   assert.equal(Storage.getCompanyApplications(secondUser).length, 1);
 });
+
+test('Goal carrer Focus Company: curated MNC and top startups, and synchronizes user pasted URLs from company tracker', () => {
+  assert.ok(Array.isArray(CURATED_COMPANIES));
+  assert.ok(CURATED_COMPANIES.length >= 50, `Expected 50+ companies, got ${CURATED_COMPANIES.length}`);
+
+  // Check MNC and Top startup tags exist
+  const mncItem = CURATED_COMPANIES.find(c => c.type === 'MNC');
+  const startupItem = CURATED_COMPANIES.find(c => c.type === 'Top startup');
+  assert.ok(mncItem, 'Curated list should contain MNC entries');
+  assert.ok(startupItem, 'Curated list should contain Top startup entries');
+  assert.ok(mncItem.careerUrl.startsWith('https://'));
+  assert.ok(startupItem.careerUrl.startsWith('https://'));
+
+  // Test URL safety helper
+  assert.equal(getSafeUrl('https://careers.google.com'), 'https://careers.google.com/');
+  assert.equal(getSafeUrl('javascript:alert(1)'), '');
+  assert.equal(getSafeUrl(''), '');
+
+  // Test buildUnifiedCompanies with user tracked companies
+  const tracked = [
+    {
+      id: 'app_1',
+      userId: 'user_test',
+      company: 'Google',
+      role: 'Staff Engineer',
+      companyType: 'MNC',
+      status: 'Interviewing',
+      companyUrl: 'https://careers.google.com/jobs/results/123',
+      pinned: true
+    },
+    {
+      id: 'app_2',
+      userId: 'user_test',
+      company: 'Custom Unicorn Labs',
+      role: 'AI Researcher',
+      companyType: 'Top startup',
+      status: 'Applied',
+      companyUrl: 'https://customunicorn.example/careers',
+      pinned: false
+    }
+  ];
+
+  const unified = buildUnifiedCompanies(CURATED_COMPANIES, tracked);
+
+  // Curated Google entry should now be merged with user tracking details
+  const google = unified.find(c => c.name.toLowerCase() === 'google');
+  assert.ok(google, 'Google should be present');
+  assert.equal(google.isTracked, true);
+  assert.equal(google.status, 'Interviewing');
+  assert.equal(google.role, 'Staff Engineer');
+  assert.equal(google.careerUrl, 'https://careers.google.com/jobs/results/123');
+  assert.equal(google.pinned, true);
+
+  // Custom company pasted into company tracker should appear in unified list!
+  const custom = unified.find(c => c.name === 'Custom Unicorn Labs');
+  assert.ok(custom, 'Custom company from Company Tracker must show in Goal carrer Focus Company');
+  assert.equal(custom.isTracked, true);
+  assert.equal(custom.type, 'Top startup');
+  assert.equal(custom.status, 'Applied');
+  assert.equal(custom.careerUrl, 'https://customunicorn.example/careers');
+  assert.ok(custom.tags.includes('From Company Tracker'));
+});
+
+test('Tasks & Import Hub: supports seamless bulk task importing and imported task tagging', () => {
+  const userId = 'user_hub_tasks';
+  Storage.remove(Storage.KEYS.TASKS);
+
+  // 1. Regular task
+  const regular = {
+    id: 't_reg_1',
+    userId,
+    title: 'Review pull request',
+    priority: 'High',
+    status: 'In Progress',
+    dueDate: '2026-10-20',
+    source: 'manual'
+  };
+  Storage.addTask(regular);
+
+  // 2. Imported tasks
+  const imported1 = {
+    id: 't_imp_1',
+    userId,
+    title: 'Migrate PostgreSQL database',
+    priority: 'Critical',
+    status: 'Pending',
+    dueDate: '2026-10-25',
+    category: 'Infra',
+    source: 'imported'
+  };
+  const imported2 = {
+    id: 't_imp_2',
+    userId,
+    title: 'Update OAuth2 configuration',
+    priority: 'Medium',
+    status: 'Completed',
+    dueDate: '2026-10-22',
+    category: 'Security',
+    source: 'imported'
+  };
+  Storage.addTask(imported1);
+  Storage.addTask(imported2);
+
+  const all = Storage.getTasks(userId);
+  assert.equal(all.length, 3);
+  const importedBatch = all.filter(t => t.source === 'imported');
+  assert.equal(importedBatch.length, 2);
+  assert.equal(importedBatch[0].title, 'Migrate PostgreSQL database');
+});
+
+test('Company & Interview Tracker: supports company applications and interview prep workbooks', () => {
+  const userId = 'user_hub_tracker';
+  Storage.remove(Storage.KEYS.COMPANY_APPLICATIONS);
+
+  // 1. Company application
+  const app = {
+    id: 'comp_1',
+    userId,
+    company: 'Stripe',
+    role: 'Backend Engineer',
+    companyType: 'Top startup',
+    status: 'Interviewing',
+    companyUrl: 'https://stripe.com/jobs',
+    pinned: true
+  };
+  Storage.upsertCompanyApplication(userId, app);
+  const userApps = Storage.getCompanyApplications(userId);
+  assert.equal(userApps.length, 1);
+  assert.equal(userApps[0].company, 'Stripe');
+
+  // 2. Interview Prep study task
+  const prepTask = {
+    id: 'prep_1',
+    userId,
+    title: 'Implement LRU Cache in O(1)',
+    category: 'Interview Prep',
+    priority: 'High',
+    status: 'In Progress',
+    dueDate: '2026-11-01',
+    source: 'tracker'
+  };
+  Storage.addTask(prepTask);
+  const userTasks = Storage.getTasks(userId);
+  const interviewTasks = userTasks.filter(t => t.source === 'tracker' || t.category === 'Interview Prep');
+  assert.equal(interviewTasks.length, 1);
+  assert.equal(interviewTasks[0].title, 'Implement LRU Cache in O(1)');
+});
+
+

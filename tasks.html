@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Create, prioritize, search, and track tasks in your SmartTask Manager workspace.">
+    <meta name="description" content="Manage, prioritize, and batch import tasks from spreadsheets and files in SmartTask Manager.">
     <meta name="robots" content="noindex, nofollow">
-    <title>Tasks | SmartTask Manager</title>
+    <title>Tasks & Import Hub | SmartTask Manager</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/tasks.css">
+    <link rel="stylesheet" href="css/import.css">
     <script type="module" src="js/privacy.js"></script>
 </head>
 <body>
@@ -19,96 +20,237 @@
         <main class="main-content">
             <header class="header">
                 <div>
-                    <h1>My Tasks</h1>
-                    <p style="color: var(--text-muted);">Manage, filter, and track your daily work.</p>
+                    <h1>Tasks & Import Hub</h1>
+                    <p style="color: var(--text-muted);">Manage daily priorities, track workflows, and batch import from spreadsheets.</p>
                 </div>
                 <div class="header-actions">
+                    <button class="btn btn-outline" id="headerImportTabBtn">
+                        <span>📥</span> Import Spreadsheet / File
+                    </button>
                     <button class="btn btn-primary" id="addNewTask">
                         <span>✨</span> Create Task
                     </button>
                 </div>
             </header>
 
-            <!-- Filters & Search Bar -->
-            <div class="card filters-card">
-                <div class="filters-grid">
-                    <div class="filter-group">
-                        <label for="taskSearch" class="visually-hidden">Search tasks</label>
-                        <input type="text" id="taskSearch" placeholder="🔍 Search tasks by title or description..." class="form-control">
-                    </div>
-                    <div class="filter-group">
-                        <select id="statusFilter" class="form-control">
-                            <option value="all">⚡ All Statuses</option>
-                            <option value="Pending">Pending</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Completed">Completed</option>
-                            <option value="Cancelled">Cancelled</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <select id="priorityFilter" class="form-control">
-                            <option value="all">🎯 All Priorities</option>
-                            <option value="Low">Low</option>
-                            <option value="Medium">Medium</option>
-                            <option value="High">High</option>
-                            <option value="Critical">Critical</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <select id="sortBy" class="form-control">
-                            <option value="newest">📅 Newest First</option>
-                            <option value="dueDate">⏳ Due Date</option>
-                            <option value="priority">🔥 Priority Level</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Task Grid -->
-            <div id="activeTasksSection">
-                <div id="overdueTasksContainer" style="display: none; margin-bottom: 32px;">
-                    <h2 style="font-size: 18px; font-weight: 800; color: var(--overdue); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
-                        ⚠️ Overdue Tasks
-                    </h2>
-                    <div id="overdueTaskList" class="task-grid"></div>
-                </div>
-
-                <div id="todayTasksContainer" style="display: none; margin-bottom: 32px;">
-                    <h2 style="font-size: 18px; font-weight: 800; color: var(--primary-color); margin-bottom: 16px;">
-                        📅 Today's Focus
-                    </h2>
-                    <div id="todayTaskList" class="task-grid"></div>
-                </div>
-
-                <div id="upcomingTasksContainer" style="display: none; margin-bottom: 32px;">
-                    <h2 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 16px;">
-                        🚀 Upcoming Tasks
-                    </h2>
-                    <div id="upcomingTaskList" class="task-grid"></div>
-                </div>
-            </div>
-
-            <div id="historyTasksSection" style="margin-top: 48px; border-top: 2px dashed var(--border-color); padding-top: 32px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                    <h2 style="font-size: 18px; font-weight: 800; color: var(--text-muted);">📜 Completed History</h2>
-                    <button id="toggleHistory" class="btn btn-secondary btn-sm">Show History</button>
-                </div>
-                <div id="historyTaskList" class="task-grid" style="display: none; opacity: 0.7;"></div>
-            </div>
-
-            <div id="emptyTasks" class="empty-state card" style="display: none; margin-top: 24px;">
-                <div style="font-size: 54px; margin-bottom: 12px; opacity: 0.8;">📂</div>
-                <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 6px; color: var(--text-main);">No tasks found</h3>
-                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Try adjusting your filters or create a new task to get started.</p>
-                <button class="btn btn-primary" onclick="document.getElementById('addNewTask').click()">
-                    <span>✨</span> Create Your First Task
+            <!-- Segmented Hub Tabs -->
+            <nav class="segmented-tabs" aria-label="Tasks and import views">
+                <button class="segmented-tab active" data-tab="taskListTab" id="tabBtnTasks">
+                    <span>📋 My Tasks</span>
+                    <span class="tab-badge" id="myTasksCountBadge">0</span>
                 </button>
-            </div>
+                <button class="segmented-tab" data-tab="taskImportTab" id="tabBtnImport">
+                    <span>📥 Batch Import (Excel/CSV/TXT)</span>
+                </button>
+                <button class="segmented-tab" data-tab="taskImportedTab" id="tabBtnImported">
+                    <span>📦 Imported History</span>
+                    <span class="tab-badge" id="importedHistoryBadge">0</span>
+                </button>
+            </nav>
+
+            <!-- TAB 1: My Tasks View -->
+            <section id="taskListTab" class="tab-view active" aria-label="My tasks list">
+                <div class="hub-tip-banner">
+                    <div>
+                        <strong>💡 How to use:</strong> Organize tasks by priority and due date. Need to bring in many items at once? Switch to <strong>Batch Import</strong> to drag &amp; drop your <code>.xlsx</code>, <code>.csv</code>, or <code>.txt</code> files.
+                    </div>
+                </div>
+
+                <!-- Filters & Search Bar -->
+                <div class="card filters-card">
+                    <div class="filters-grid">
+                        <div class="filter-group">
+                            <label for="taskSearch" class="visually-hidden">Search tasks</label>
+                            <input type="text" id="taskSearch" placeholder="🔍 Search tasks by title or description..." class="form-control">
+                        </div>
+                        <div class="filter-group">
+                            <label for="statusFilter" class="visually-hidden">Filter by status</label>
+                            <select id="statusFilter" class="form-control">
+                                <option value="all">⚡ All Statuses</option>
+                                <option value="Pending">Pending</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="priorityFilter" class="visually-hidden">Filter by priority</label>
+                            <select id="priorityFilter" class="form-control">
+                                <option value="all">🎯 All Priorities</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
+                                <option value="Critical">Critical</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="sortBy" class="visually-hidden">Sort tasks</label>
+                            <select id="sortBy" class="form-control">
+                                <option value="newest">📅 Newest First</option>
+                                <option value="dueDate">⏳ Due Date</option>
+                                <option value="priority">🔥 Priority Level</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Task Sections -->
+                <div id="activeTasksSection">
+                    <div id="overdueTasksContainer" style="display: none; margin-bottom: 32px;">
+                        <h2 style="font-size: 18px; font-weight: 800; color: var(--overdue); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+                            ⚠️ Overdue Tasks
+                        </h2>
+                        <div id="overdueTaskList" class="task-grid"></div>
+                    </div>
+
+                    <div id="todayTasksContainer" style="display: none; margin-bottom: 32px;">
+                        <h2 style="font-size: 18px; font-weight: 800; color: var(--primary-color); margin-bottom: 16px;">
+                            📅 Today's Focus
+                        </h2>
+                        <div id="todayTaskList" class="task-grid"></div>
+                    </div>
+
+                    <div id="upcomingTasksContainer" style="display: none; margin-bottom: 32px;">
+                        <h2 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin-bottom: 16px;">
+                            🚀 Upcoming Tasks
+                        </h2>
+                        <div id="upcomingTaskList" class="task-grid"></div>
+                    </div>
+                </div>
+
+                <div id="historyTasksSection" style="margin-top: 48px; border-top: 2px dashed var(--border-color); padding-top: 32px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h2 style="font-size: 18px; font-weight: 800; color: var(--text-muted);">📜 Completed History</h2>
+                        <button id="toggleHistory" class="btn btn-secondary btn-sm">Show History</button>
+                    </div>
+                    <div id="historyTaskList" class="task-grid" style="display: none; opacity: 0.7;"></div>
+                </div>
+
+                <div id="emptyTasks" class="empty-state card" style="display: none; margin-top: 24px;">
+                    <div style="font-size: 54px; margin-bottom: 12px; opacity: 0.8;">📂</div>
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 6px; color: var(--text-main);">No tasks found</h3>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Create a new task manually or import a batch from your spreadsheets.</p>
+                    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="document.getElementById('addNewTask').click()">
+                            <span>✨</span> Create First Task
+                        </button>
+                        <button class="btn btn-secondary" id="emptyImportBtn">
+                            <span>📥</span> Batch Import Tasks
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: Batch Import View -->
+            <section id="taskImportTab" class="tab-view" aria-label="Batch import tasks">
+                <div class="hub-tip-banner">
+                    <div>
+                        <strong>📥 Spreadsheet Importer:</strong> Drag and drop any <code>.xlsx</code>, <code>.xls</code>, <code>.csv</code>, <code>.json</code>, or <code>.txt</code> file below. You will be able to review, edit, and select tasks before importing them into your task list.
+                    </div>
+                </div>
+
+                <div class="import-area" id="dropZone">
+                    <div class="import-icon">📥</div>
+                    <h2>Drag &amp; Drop Spreadsheet or Text Files Here</h2>
+                    <p>Supports <code>.xlsx</code>, <code>.xls</code>, <code>.csv</code>, <code>.json</code>, and smart <code>.txt</code> formats</p>
+                    <input type="file" id="fileInput" hidden accept=".txt,.csv,.json,.xlsx,.xls">
+                    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-primary" id="browseBtn">📂 Browse Computer Files</button>
+                        <button class="btn btn-secondary" id="addManualPreviewBtn">➕ Add Manual Row</button>
+                    </div>
+                </div>
+
+                <!-- Preview Section -->
+                <section id="previewSection" class="card" style="display: none; margin-top: 32px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+                        <div>
+                            <h2 id="fileNameDisplay" style="font-size: 20px; font-weight: 800;">File: tasks.txt</h2>
+                            <p id="taskCountDisplay" style="font-size: 14px; color: var(--text-muted);">Detected tasks</p>
+                        </div>
+                        <div class="preview-actions">
+                            <button class="btn btn-outline" id="cancelImport">Cancel</button>
+                            <button class="btn btn-primary" id="confirmImport">✨ Import Selected Tasks</button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="preview-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <label for="selectAll" class="visually-hidden">Select all tasks</label>
+                                        <input type="checkbox" id="selectAll" checked>
+                                    </th>
+                                    <th>Task Title</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Due Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="previewBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Format Guide Section -->
+                <div class="guide-grid" style="margin-top: 40px;">
+                    <div class="card">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <span style="font-size: 20px;">📄</span>
+                            <h3 style="font-size: 16px; font-weight: 700;">Smart TXT Format</h3>
+                        </div>
+                        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+                            <code>[HIGH] Buy groceries by tomorrow</code><br>
+                            <code>[DONE] Complete website project</code><br>
+                            <code>Team sync meeting on 2026-09-10</code>
+                        </p>
+                    </div>
+                    <div class="card">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <span style="font-size: 20px;">📊</span>
+                            <h3 style="font-size: 16px; font-weight: 700;">Excel / CSV / JSON Structure</h3>
+                        </div>
+                        <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+                            <code>Title, Priority, Status, DueDate</code><br>
+                            <code>Fix bugs, High, Pending, 2026-09-05</code>
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: Previously Imported History -->
+            <section id="taskImportedTab" class="tab-view" aria-label="Imported tasks history">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <h2 style="font-size: 20px; font-weight: 800;">📦 Imported Batch Tasks</h2>
+                        <p id="importedCount" style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Tasks brought in via spreadsheet import.</p>
+                    </div>
+                    <button class="btn btn-outline" id="clearImportedBtn" style="border-color: #ef4444; color: #ef4444;">
+                        🗑️ Clear All Imported
+                    </button>
+                </div>
+                <div class="card" style="overflow-x: auto;">
+                    <table class="preview-table" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Task Title</th>
+                                <th>Category</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Due Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="importedTasksBody"></tbody>
+                    </table>
+                </div>
+            </section>
         </main>
     </div>
 
-    <!-- Task Modal -->
-    <div id="taskModal" class="modal">
+    <!-- Task Modal (Create & Edit) -->
+    <div id="taskModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="modalTitle">Add New Task</h2>
@@ -117,7 +259,7 @@
             <form id="taskForm">
                 <input type="hidden" id="taskId">
                 <div class="form-row">
-                    <label for="title">Task Title</label>
+                    <label for="title">Task Title *</label>
                     <input type="text" id="title" required placeholder="What needs to be done?">
                 </div>
                 <div class="form-row">
@@ -130,7 +272,7 @@
                         <input type="text" id="category" placeholder="e.g. Work, Design">
                     </div>
                     <div class="form-group">
-                        <label for="dueDate">Due Date</label>
+                        <label for="dueDate">Due Date *</label>
                         <input type="date" id="dueDate" required>
                     </div>
                 </div>

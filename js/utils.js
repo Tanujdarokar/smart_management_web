@@ -205,23 +205,18 @@ const Utils = {
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="tasks.html" class="nav-link ${activePage === 'tasks' ? 'active' : ''}">
-                        <span class="icon-bubble">📋</span> <span>Tasks</span>
+                    <a href="tasks.html" class="nav-link ${activePage === 'tasks' || activePage === 'import' ? 'active' : ''}">
+                        <span class="icon-bubble">📋</span> <span>Tasks & Import</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="import.html" class="nav-link ${activePage === 'import' ? 'active' : ''}">
-                        <span class="icon-bubble">📥</span> <span>Import Tasks</span>
+                    <a href="companies.html" class="nav-link ${activePage === 'companies' || activePage === 'tracker' ? 'active' : ''}">
+                        <span class="icon-bubble">🏢</span> <span>Company & Tracker</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="tracker.html" class="nav-link ${activePage === 'tracker' ? 'active' : ''}">
-                        <span class="icon-bubble">🧭</span> <span>Tracker</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="companies.html" class="nav-link ${activePage === 'companies' ? 'active' : ''}">
-                        <span class="icon-bubble">🏢</span> <span>Company Tracker</span>
+                    <a href="career-focus.html" class="nav-link ${activePage === 'career-focus' ? 'active' : ''}">
+                        <span class="icon-bubble">🎯</span> <span>Goal carrer Focus Company</span>
                     </a>
                 </li>
                 <li class="nav-item">

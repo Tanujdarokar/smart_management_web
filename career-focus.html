@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore direct MNC and top startup career pages, paste and organize career links, and sync job applications directly with your Company Tracker in SmartTask.">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Goal carrer Focus Company | SmartTask Manager</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/tasks.css">
+    <link rel="stylesheet" href="css/companies.css">
+    <link rel="stylesheet" href="css/career-focus.css">
+    <script type="module" src="js/privacy.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar injected by JS -->
+        <aside class="sidebar"></aside>
+
+        <main class="main-content">
+            <!-- Header Section -->
+            <header class="career-hero">
+                <div class="career-hero-title">
+                    <h1>
+                        <span>🎯</span> Goal carrer Focus Company
+                        <span class="career-hero-badge">Direct Career Portals</span>
+                    </h1>
+                    <p class="career-hero-desc">
+                        Direct one-click career pages for leading MNCs and high-growth top startups. Paste any company career URL or track companies in your Company Tracker, and they will automatically show up here.
+                    </p>
+                </div>
+                <div class="career-hero-actions">
+                    <a href="companies.html" class="btn btn-outline" id="gotoCompanyTrackerBtn">
+                        🏢 Open Company Tracker
+                    </a>
+                    <button class="btn btn-primary" id="openAddCareerModalBtn">
+                        ＋ Add Goal Company
+                    </button>
+                </div>
+            </header>
+
+            <!-- Quick URL Paste Banner -->
+            <section class="url-paste-banner" aria-label="Quick career page URL importer">
+                <div class="url-paste-left">
+                    <span class="url-paste-icon" aria-hidden="true">⚡</span>
+                    <div class="url-paste-text">
+                        <h2>Paste Any Career Portal URL</h2>
+                        <p>Paste a company career page or job listing link to instantly pin it and sync with your Company Tracker.</p>
+                    </div>
+                </div>
+                <form class="url-paste-form" id="quickPasteForm">
+                    <label for="quickCareerUrl" class="visually-hidden">Paste career URL</label>
+                    <input type="url" id="quickCareerUrl" class="form-control url-paste-input" placeholder="https://careers.company.com..." required>
+                    <button type="submit" class="btn btn-primary" id="quickPasteSubmitBtn">
+                        Save & Track
+                    </button>
+                </form>
+            </section>
+
+            <!-- Metrics Overview -->
+            <section class="career-stats-grid" aria-label="Focus company statistics">
+                <article class="career-stat-card">
+                    <div class="career-stat-icon stat-icon-all" aria-hidden="true">🌐</div>
+                    <div class="career-stat-info">
+                        <p>Total Career Portals</p>
+                        <strong id="statTotalCompanies">0</strong>
+                    </div>
+                </article>
+                <article class="career-stat-card">
+                    <div class="career-stat-icon stat-icon-mnc" aria-hidden="true">🏢</div>
+                    <div class="career-stat-info">
+                        <p>MNC Career Pages</p>
+                        <strong id="statMncCount">0</strong>
+                    </div>
+                </article>
+                <article class="career-stat-card">
+                    <div class="career-stat-icon stat-icon-startup" aria-hidden="true">🚀</div>
+                    <div class="career-stat-info">
+                        <p>Top Startup Portals</p>
+                        <strong id="statStartupCount">0</strong>
+                    </div>
+                </article>
+                <article class="career-stat-card">
+                    <div class="career-stat-icon stat-icon-tracker" aria-hidden="true">📋</div>
+                    <div class="career-stat-info">
+                        <p>Tracked in Tracker</p>
+                        <strong id="statTrackedCount">0</strong>
+                    </div>
+                </article>
+            </section>
+
+            <!-- Search, Filters, and Tag Chips -->
+            <section class="career-controls" aria-label="Filter and search focus companies">
+                <div class="career-filter-row">
+                    <div class="career-search-box">
+                        <span class="career-search-icon" aria-hidden="true">🔍</span>
+                        <label for="careerSearch" class="visually-hidden">Search focus companies</label>
+                        <input type="search" id="careerSearch" class="form-control career-search-input" placeholder="Search company name, domain, tags, or role...">
+                    </div>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <label for="careerSort" class="visually-hidden">Sort companies</label>
+                        <select id="careerSort" class="form-control career-sort-select">
+                            <option value="recommended" selected>Recommended</option>
+                            <option value="name">Company Name (A–Z)</option>
+                            <option value="tracked">Tracked in Tracker First</option>
+                            <option value="category">Category (MNC / Startup)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tag Chips -->
+                <nav class="career-tag-chips" id="careerTagChips" aria-label="Company category tags">
+                    <button type="button" class="career-chip active" data-tag="all" id="filterAll">
+                        <span>All Portals</span>
+                        <span class="career-chip-count">0</span>
+                    </button>
+                    <button type="button" class="career-chip" data-tag="mnc" id="filterMnc">
+                        <span>🏢 MNC</span>
+                        <span class="career-chip-count">0</span>
+                    </button>
+                    <button type="button" class="career-chip" data-tag="startup" id="filterStartup">
+                        <span>🚀 Top startup</span>
+                        <span class="career-chip-count">0</span>
+                    </button>
+                    <button type="button" class="career-chip" data-tag="faang" id="filterFaang">
+                        <span>⭐ FAANG</span>
+                        <span class="career-chip-count">0</span>
+                    </button>
+                    <button type="button" class="career-chip" data-tag="tracker" id="filterTracker">
+                        <span>📋 From Company Tracker</span>
+                        <span class="career-chip-count">0</span>
+                    </button>
+                    <button type="button" class="career-chip" data-tag="pinned" id="filterPinned">
+                        <span>📌 Pinned Goals</span>
+                        <span class="career-chip-count">0</span>
+                    </button>
+                </nav>
+            </section>
+
+            <!-- Company Grid -->
+            <section id="careerGrid" class="career-grid" aria-live="polite" aria-label="Goal career focus companies"></section>
+        </main>
+    </div>
+
+    <!-- Modal for Adding / Editing Focus Company & Tracker Entry -->
+    <div class="modal" id="careerFocusModal" role="dialog" aria-modal="true" aria-labelledby="careerModalTitle">
+        <div class="modal-content company-modal-content career-modal-content">
+            <div class="modal-header">
+                <h2 id="careerModalTitle">Add Goal Career Focus Company</h2>
+                <button type="button" class="close-modal" id="closeCareerModal" aria-label="Close">&times;</button>
+            </div>
+            <form id="careerFocusForm">
+                <input type="hidden" id="careerModalCompanyId">
+                <div class="form-grid">
+                    <div class="field-group">
+                        <label for="modalCompanyName">Company Name *</label>
+                        <input class="form-control" id="modalCompanyName" required maxlength="100" placeholder="e.g. OpenAI, Stripe, Google">
+                    </div>
+                    <div class="field-group">
+                        <label for="modalCompanyType">Company Category *</label>
+                        <select class="form-control" id="modalCompanyType" required>
+                            <option value="MNC">MNC</option>
+                            <option value="Top startup">Top startup</option>
+                            <option value="FAANG">FAANG</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="field-group full-width">
+                        <label for="modalCareerUrl">Direct Career Page URL</label>
+                        <input class="form-control" id="modalCareerUrl" type="url" maxlength="2048" placeholder="https://careers.company.com">
+                    </div>
+                    <div class="field-group full-width">
+                        <label for="modalJobUrl">Specific Job Posting URL (Optional)</label>
+                        <input class="form-control" id="modalJobUrl" type="url" maxlength="2048" placeholder="https://job-board.com/posting/123">
+                    </div>
+                    <div class="field-group">
+                        <label for="modalJobRole">Target Role</label>
+                        <input class="form-control" id="modalJobRole" maxlength="100" placeholder="e.g. Full Stack Engineer">
+                    </div>
+                    <div class="field-group">
+                        <label for="modalApplicationStatus">Tracker Stage</label>
+                        <select class="form-control" id="modalApplicationStatus">
+                            <option value="Interested" selected>Interested (Goal)</option>
+                            <option value="Applied">Applied</option>
+                            <option value="Interviewing">Interviewing</option>
+                            <option value="Offer">Offer</option>
+                            <option value="Rejected">Rejected</option>
+                            <option value="Withdrawn">Withdrawn</option>
+                        </select>
+                    </div>
+                    <div class="field-group full-width">
+                        <label class="company-pin-field" for="modalCompanyPinned">
+                            <input id="modalCompanyPinned" type="checkbox">
+                            <span>Pin this company for quick access</span>
+                        </label>
+                    </div>
+                    <div class="field-group full-width">
+                        <label for="modalCompanyNotes">Notes / Preparation Checklist</label>
+                        <textarea class="form-control" id="modalCompanyNotes" rows="3" maxlength="2000" placeholder="Interview prep, recruiter info, skills needed..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline" id="cancelCareerEdit">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveCareerFocusBtn">Save & Sync Tracker</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="js/career-focus.js"></script>
+</body>
+</html>
