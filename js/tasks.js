@@ -11,6 +11,10 @@ const taskForm = document.getElementById('taskForm');
 
 document.addEventListener('DOMContentLoaded', () => {
     Utils.renderSidebar('tasks');
+    Utils.renderBreadcrumbs('.main-content', [
+        { label: 'Dashboard', url: 'dashboard.html' },
+        { label: 'Tasks' }
+    ]);
     initTabs();
     loadTasks();
     initEventListeners();
@@ -107,7 +111,7 @@ function initEventListeners() {
     }
 
     // Filters
-    document.getElementById('taskSearch').addEventListener('input', applyFilters);
+    document.getElementById('taskSearch').addEventListener('input', Utils.debounce(applyFilters, 300));
     document.getElementById('statusFilter').addEventListener('change', applyFilters);
     document.getElementById('priorityFilter').addEventListener('change', applyFilters);
     document.getElementById('sortBy').addEventListener('change', applyFilters);
@@ -155,7 +159,17 @@ function renderTasks(tasks) {
     });
 
     if (tasks.length === 0) {
-        if (emptyState) emptyState.style.display = 'block';
+        if (emptyState) {
+            emptyState.style.display = 'block';
+            Utils.renderEmptyState(emptyState, {
+                icon: '📝',
+                title: 'No tasks found',
+                description: 'You have no tasks matching your filters. Create a task or adjust your search.',
+                actionText: '+ Add New Task',
+                actionId: 'emptyAddTaskBtn',
+                actionCallback: () => openModal()
+            });
+        }
         Object.values(sections).forEach(s => {
             if (s) s.style.display = 'none';
         });
@@ -163,6 +177,13 @@ function renderTasks(tasks) {
     }
 
     if (emptyState) emptyState.style.display = 'none';
+
+    const htmlBuckets = {
+        overdue: [],
+        today: [],
+        upcoming: [],
+        history: []
+    };
 
     tasks.forEach(task => {
         const isCompleted = task.status === 'Completed';
@@ -211,13 +232,19 @@ function renderTasks(tasks) {
         `;
 
         if (isCompleted) {
-            containers.history.innerHTML += taskHTML;
+            htmlBuckets.history.push(taskHTML);
         } else if (isOverdue) {
-            containers.overdue.innerHTML += taskHTML;
+            htmlBuckets.overdue.push(taskHTML);
         } else if (isToday) {
-            containers.today.innerHTML += taskHTML;
+            htmlBuckets.today.push(taskHTML);
         } else {
-            containers.upcoming.innerHTML += taskHTML;
+            htmlBuckets.upcoming.push(taskHTML);
+        }
+    });
+
+    Object.keys(containers).forEach(key => {
+        if (containers[key]) {
+            containers[key].innerHTML = htmlBuckets[key].join('');
         }
     });
 
@@ -238,11 +265,20 @@ window.toggleComplete = (taskId) => {
 };
 
 window.deleteTask = (taskId) => {
-    if (confirm('Are you sure you want to delete this task?')) {
-        Storage.deleteTask(taskId);
-        loadTasks();
-        Utils.showToast('Task deleted successfully');
-    }
+    const taskToDelete = currentTasks.find(t => t.id === taskId);
+    if (!taskToDelete) return;
+
+    Storage.deleteTask(taskId);
+    loadTasks();
+
+    Utils.showToast('Task deleted', 'undo', {
+        label: 'Undo',
+        callback: () => {
+            Storage.saveTask(taskToDelete);
+            loadTasks();
+            Utils.showToast('Task restored!', 'success');
+        }
+    });
 };
 
 window.editTask = (taskId) => {
@@ -251,6 +287,8 @@ window.editTask = (taskId) => {
         openModal(task);
     }
 };
+
+let releaseTaskModalFocus = null;
 
 function openModal(task = null, prefilledDate = null) {
     const modalTitle = document.getElementById('modalTitle');
@@ -275,10 +313,15 @@ function openModal(task = null, prefilledDate = null) {
     }
 
     modal.style.display = 'block';
-    document.getElementById('title').focus();
+    if (releaseTaskModalFocus) releaseTaskModalFocus();
+    releaseTaskModalFocus = Utils.trapModalFocus(modal);
 }
 
 function closeModal() {
+    if (releaseTaskModalFocus) {
+        releaseTaskModalFocus();
+        releaseTaskModalFocus = null;
+    }
     modal.style.display = 'none';
 }
 

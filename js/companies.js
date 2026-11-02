@@ -9,6 +9,10 @@ let currentPrepTasks = [];
 
 document.addEventListener('DOMContentLoaded', () => {
     Utils.renderSidebar('companies');
+    Utils.renderBreadcrumbs('.main-content', [
+        { label: 'Dashboard', url: 'dashboard.html' },
+        { label: 'Company & Tracker' }
+    ]);
     initTabs();
     loadApplications();
     loadPrepTasks();
@@ -67,11 +71,11 @@ function checkUrlState() {
    ══════════════════════════════════════════════ */
 function initCompanyEventListeners() {
     document.getElementById('addCompanyBtn').addEventListener('click', () => openCompanyModal());
-    document.getElementById('emptyAddCompanyBtn').addEventListener('click', () => openCompanyModal());
+    document.getElementById('emptyAddCompanyBtn')?.addEventListener('click', () => openCompanyModal());
     document.getElementById('companyForm').addEventListener('submit', saveApplication);
     document.getElementById('closeCompanyModal').addEventListener('click', closeCompanyModal);
     document.getElementById('cancelCompanyEdit').addEventListener('click', closeCompanyModal);
-    document.getElementById('companySearch').addEventListener('input', renderApplications);
+    document.getElementById('companySearch').addEventListener('input', Utils.debounce(renderApplications, 300));
     document.getElementById('companyStatusFilter').addEventListener('change', renderApplications);
     document.getElementById('companyPinnedFilter').addEventListener('change', renderApplications);
     document.getElementById('companySort').addEventListener('change', renderApplications);
@@ -128,7 +132,20 @@ function renderApplications() {
     });
 
     document.getElementById('companyList').innerHTML = visibleApplications.map(renderCard).join('');
-    document.getElementById('companyEmpty').hidden = applications.length > 0;
+    const emptyContainer = document.getElementById('companyEmpty');
+    if (emptyContainer && applications.length === 0) {
+        emptyContainer.hidden = false;
+        Utils.renderEmptyState(emptyContainer, {
+            icon: '🏢',
+            title: 'No companies tracked yet',
+            description: 'Start tracking job applications, interviews, salary details, and follow-ups.',
+            actionText: '+ Add Company',
+            actionId: 'emptyAddCompanyBtn',
+            actionCallback: () => openCompanyModal()
+        });
+    } else if (emptyContainer) {
+        emptyContainer.hidden = true;
+    }
     document.getElementById('noCompanyMatches').hidden = applications.length === 0 || visibleApplications.length > 0;
 
     document.getElementById('totalCompanies').textContent = String(applications.length);
@@ -180,6 +197,8 @@ function renderCard(application) {
     `;
 }
 
+let releaseCompanyModalFocus = null;
+
 function openCompanyModal(application = null) {
     const form = document.getElementById('companyForm');
     form.reset();
@@ -197,11 +216,17 @@ function openCompanyModal(application = null) {
     document.getElementById('companyUrl').value = application ? application.companyUrl || '' : '';
     document.getElementById('jobUrl').value = application ? application.jobUrl || '' : '';
     document.getElementById('companyNotes').value = application ? application.notes || '' : '';
-    document.getElementById('companyModal').style.display = 'flex';
-    document.getElementById('companyName').focus();
+    const modalEl = document.getElementById('companyModal');
+    modalEl.style.display = 'flex';
+    if (releaseCompanyModalFocus) releaseCompanyModalFocus();
+    releaseCompanyModalFocus = Utils.trapModalFocus(modalEl);
 }
 
 function closeCompanyModal() {
+    if (releaseCompanyModalFocus) {
+        releaseCompanyModalFocus();
+        releaseCompanyModalFocus = null;
+    }
     document.getElementById('companyModal').style.display = 'none';
 }
 
@@ -259,11 +284,18 @@ function handleCardAction(event) {
 
     if (button.dataset.action === 'edit') {
         openCompanyModal(application);
-    } else if (button.dataset.action === 'delete' &&
-        window.confirm(`Delete ${application.company} from your tracker?`)) {
-        Storage.deleteCompanyApplication(currentUserId(), application.id);
+    } else if (button.dataset.action === 'delete') {
+        const compToDelete = application;
+        Storage.deleteCompanyApplication(currentUserId(), compToDelete.id);
         loadApplications();
-        Utils.showToast('Company removed.');
+        Utils.showToast(`${compToDelete.company} removed`, 'undo', {
+            label: 'Undo',
+            callback: () => {
+                Storage.upsertCompanyApplication(currentUserId(), compToDelete);
+                loadApplications();
+                Utils.showToast(`${compToDelete.company} restored!`, 'success');
+            }
+        });
     }
 }
 

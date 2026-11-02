@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const user = Storage.getCurrentUser() || Storage.getGuestUser();
 
     Utils.renderSidebar('calendar');
+    Utils.renderBreadcrumbs('.main-content', [
+        { label: 'Dashboard', url: 'dashboard.html' },
+        { label: 'Calendar' }
+    ]);
     renderCalendar();
 
     document.getElementById('prevMonth').addEventListener('click', () => {
@@ -115,20 +119,24 @@ function showDayTasks(dateStr, tasks) {
     title.innerText = `Tasks for ${Utils.formatDate(dateStr)}`;
 
     if (tasks.length === 0) {
-        list.innerHTML = `
-            <div class="empty-state" style="padding: 20px 0;">
-                <p style="margin-bottom: 12px;">No tasks for this day.</p>
-                <button class="btn btn-outline btn-sm" onclick="document.getElementById('addFromCalendar').click()">
-                    ✨ Create a Task
-                </button>
-            </div>
-        `;
+        Utils.renderEmptyState(list, {
+            icon: '📅',
+            title: 'No tasks scheduled',
+            description: 'Enjoy your free day or schedule a new task for this date.',
+            actionText: '+ Schedule Task',
+            actionId: 'createTaskForDayBtn',
+            actionCallback: () => {
+                window.location.href = `tasks.html?action=new&date=${dateStr}`;
+            }
+        });
     } else {
         list.innerHTML = tasks.map(t => `
-            <div class="task-mini-item">
-                <div style="flex-grow: 1;">
-                    <div style="font-weight: 600;">${Utils.escapeHtml(t.title)}</div>
-                    <div style="font-size: 12px; color: var(--text-muted);">${Utils.escapeHtml(t.status)} | ${Utils.escapeHtml(t.priority)}</div>
+            <div class="task-mini-item" style="padding: 12px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <div style="font-weight: 600; font-size: 14px; color: var(--text-main);">${Utils.escapeHtml(t.title)}</div>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+                        <span class="status-badge status-${t.status.toLowerCase().replace(' ', '-')}">${Utils.escapeHtml(t.status)}</span> · ${Utils.escapeHtml(t.priority)} Priority
+                    </div>
                 </div>
             </div>
         `).join('');

@@ -19,18 +19,31 @@ const Storage = {
         COMPANY_APPLICATIONS: 'smarttask_company_applications'
     },
 
-    // Generic get/set
+    _cache: {},
+
+    // Generic get/set with in-memory caching
     get(key) {
+        if (Object.prototype.hasOwnProperty.call(this._cache, key)) {
+            return this._cache[key];
+        }
         const data = localStorage.getItem(key);
-        return data ? JSON.parse(data) : null;
+        const parsed = data ? JSON.parse(data) : null;
+        this._cache[key] = parsed;
+        return parsed;
     },
 
     set(key, value) {
+        this._cache[key] = value;
         localStorage.setItem(key, JSON.stringify(value));
     },
 
     remove(key) {
+        delete this._cache[key];
         localStorage.removeItem(key);
+    },
+
+    clearCache() {
+        this._cache = {};
     },
 
     // User Methods

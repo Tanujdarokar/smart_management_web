@@ -19,9 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const forgotPasswordBtn = document.getElementById('forgotPasswordBtn');
+    if (forgotPasswordBtn) {
+        forgotPasswordBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            Utils.showForgotPasswordModal();
+        });
+    }
+
     // Handle Registration
     if (registerForm) {
-        registerForm.addEventListener('submit', (e) => {
+        registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const fullName = document.getElementById('fullName').value.trim();
@@ -55,11 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            const hashedPassword = await Utils.hashPassword(password);
             const newUser = {
                 id: Utils.generateId(),
                 name: fullName,
                 email: email,
-                password: btoa(password)
+                password: hashedPassword
             };
 
             Storage.saveUser(newUser);
@@ -73,16 +82,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle Login
     if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const email = Storage.normalizeEmail(document.getElementById('email').value);
             const password = document.getElementById('password').value;
 
             const users = Storage.getUsers();
-            const user = users.find(u => Storage.normalizeEmail(u.email) === email && u.password === btoa(password));
+            const hashedPassword = await Utils.hashPassword(password);
+
+            const user = users.find(u => {
+                if (Storage.normalizeEmail(u.email) !== email) return false;
+                return u.password === hashedPassword || u.password === btoa(password) || u.password === password;
+            });
 
             if (user) {
+                if (user.password !== hashedPassword) {
+                    user.password = hashedPassword;
+                    const updatedUsers = users.map(u => u.id === user.id ? user : u);
+                    Storage.set(Storage.KEYS.USERS, updatedUsers);
+                }
+
                 Storage.setCurrentUser(user);
                 Utils.showToast('Login successful!', 'success');
 

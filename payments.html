@@ -12,12 +12,13 @@
     <script type="module" src="js/privacy.js"></script>
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div id="toast-container"></div>
     <div class="app-container">
         <!-- Sidebar injected by JS -->
         <aside class="sidebar"></aside>
 
-        <main class="main-content">
+        <main class="main-content" id="main-content" tabindex="-1">
             <!-- Header with Quick Controls -->
             <header class="header money-header">
                 <div>
@@ -51,6 +52,11 @@
                     </button>
                 </div>
             </header>
+
+            <div class="storage-info-banner">
+                <span>💡 <strong>Demo Mode:</strong> All transaction records and budgets are stored locally in your browser. No real payment processing or banking credentials required.</span>
+                <a href="settings.html" class="btn btn-outline btn-sm">Backup JSON</a>
+            </div>
 
             <!-- Timeframe Filter Toolbar -->
             <div class="timeframe-bar">

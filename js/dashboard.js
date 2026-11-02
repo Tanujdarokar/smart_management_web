@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Sidebar Navigation
     Utils.renderSidebar('dashboard');
+    Utils.renderBreadcrumbs('.main-content', [
+        { label: 'Dashboard' }
+    ]);
 
     // Update Header Welcome, Date, and Pulse Status
     updateDashboardHeader(user);

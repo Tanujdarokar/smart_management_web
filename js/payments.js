@@ -1263,6 +1263,10 @@ function updateAllViews() {
 // ─── Setup & Event Listeners ───────────────────────────────────────────────
 function init() {
     Utils.renderSidebar('payments');
+    Utils.renderBreadcrumbs('.main-content', [
+        { label: 'Dashboard', url: 'dashboard.html' },
+        { label: 'Money Manager' }
+    ]);
 
     // 1. Currency selector initialization
     const currencySelector = document.getElementById('currencySelector');
@@ -1319,10 +1323,10 @@ function init() {
         });
     });
 
-    document.getElementById('searchPayment').addEventListener('input', (e) => {
+    document.getElementById('searchPayment').addEventListener('input', Utils.debounce((e) => {
         searchQuery = e.target.value;
         renderTransactions();
-    });
+    }, 300));
 
     document.getElementById('filterCategory').addEventListener('change', (e) => {
         activeCategory = e.target.value;
