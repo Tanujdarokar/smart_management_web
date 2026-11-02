@@ -214,9 +214,101 @@ export const CURATED_COMPANIES = [
         tags: ['MNC', 'Data & AI', 'Enterprise'],
         description: 'Building software that empowers organizations to effectively integrate their data, decisions, and operations.'
     },
+    {
+        name: 'Tesla',
+        careerUrl: 'https://www.tesla.com/careers',
+        type: 'MNC',
+        domain: 'Automotive AI, Robotics & Energy',
+        tags: ['MNC', 'AI & Hardware'],
+        description: 'Pioneering electric vehicles, autonomous driving neural networks, Optimus humanoid robotics, and clean energy.'
+    },
+    {
+        name: 'Samsung',
+        careerUrl: 'https://www.samsung.com/us/careers/',
+        type: 'MNC',
+        domain: 'Consumer Tech & Semiconductor',
+        tags: ['MNC', 'Hardware'],
+        description: 'Global electronics powerhouse leading mobile displays, memory technology, and consumer devices.'
+    },
+    {
+        name: 'TSMC',
+        careerUrl: 'https://www.tsmc.com/english/careers',
+        type: 'MNC',
+        domain: 'Semiconductor Foundry & Advanced Chips',
+        tags: ['MNC', 'Hardware'],
+        description: 'World’s largest dedicated semiconductor foundry manufacturing chips for leading tech giants.'
+    },
+    {
+        name: 'DeepMind',
+        careerUrl: 'https://www.google.com/about/careers/applications/jobs/results/?q=DeepMind',
+        type: 'MNC',
+        domain: 'Artificial General Intelligence Research',
+        tags: ['MNC', 'FAANG', 'AI Research'],
+        description: 'Pioneering fundamental AI breakthroughs including AlphaFold, Gemini, and reinforcement learning systems.'
+    },
 
     // ══════════════════════════════════════════════
-    // Premier Financial Tech & Banking MNCs
+    // Cybersecurity, Cloud & Infrastructure MNCs
+    // ══════════════════════════════════════════════
+    {
+        name: 'Cloudflare',
+        careerUrl: 'https://www.cloudflare.com/careers',
+        type: 'MNC',
+        domain: 'Edge Cloud & Internet Security',
+        tags: ['MNC', 'Cloud & Security'],
+        description: 'Building a better internet with global edge networks, DDoS mitigation, and serverless Workers.'
+    },
+    {
+        name: 'CrowdStrike',
+        careerUrl: 'https://www.crowdstrike.com/careers',
+        type: 'MNC',
+        domain: 'Endpoint Protection & Cyber Intelligence',
+        tags: ['MNC', 'Security'],
+        description: 'Cloud-native endpoint cybersecurity platform defending enterprises against modern breaches.'
+    },
+    {
+        name: 'Palo Alto Networks',
+        careerUrl: 'https://www.paloaltonetworks.com/careers',
+        type: 'MNC',
+        domain: 'Enterprise Security & SASE',
+        tags: ['MNC', 'Security'],
+        description: 'Global cybersecurity leader pioneering next-generation firewalls, cloud security, and AI SOC.'
+    },
+    {
+        name: 'Datadog',
+        careerUrl: 'https://www.datadoghq.com/careers',
+        type: 'MNC',
+        domain: 'Cloud Observability & Performance APM',
+        tags: ['MNC', 'Cloud'],
+        description: 'Monitoring and analytics platform for cloud-scale infrastructure, application logs, and security.'
+    },
+    {
+        name: 'MongoDB',
+        careerUrl: 'https://www.mongodb.com/careers',
+        type: 'MNC',
+        domain: 'Multi-Cloud Developer Data Platform',
+        tags: ['MNC', 'Database'],
+        description: 'Leading document-based NoSQL database platform powering modern scalable web and mobile applications.'
+    },
+    {
+        name: 'HashiCorp',
+        careerUrl: 'https://www.hashicorp.com/careers',
+        type: 'MNC',
+        domain: 'Multi-Cloud Infrastructure Automation',
+        tags: ['MNC', 'Cloud'],
+        description: 'Enabling cloud infrastructure automation with Terraform, Vault, Consul, and Nomad.'
+    },
+    {
+        name: 'Elastic',
+        careerUrl: 'https://www.elastic.co/careers',
+        type: 'MNC',
+        domain: 'Search AI, Analytics & Elasticsearch',
+        tags: ['MNC', 'Search & Data'],
+        description: 'Creators of Elasticsearch powering real-time search, vector database, and security analytics.'
+    },
+
+    // ══════════════════════════════════════════════
+    // Premier Financial Tech, Banking & Quant Trading
     // ══════════════════════════════════════════════
     {
         name: 'Goldman Sachs',
@@ -241,6 +333,38 @@ export const CURATED_COMPANIES = [
         domain: 'Wealth Tech & Investment Banking',
         tags: ['MNC', 'Fintech'],
         description: 'Global financial services leader advising, originating, and managing capital worldwide.'
+    },
+    {
+        name: 'Citadel',
+        careerUrl: 'https://www.citadel.com/careers',
+        type: 'MNC',
+        domain: 'Quantitative Trading & Hedge Fund Tech',
+        tags: ['MNC', 'Fintech & Trading'],
+        description: 'Premier global market maker and quantitative trading platform leveraging ultra-low latency technology.'
+    },
+    {
+        name: 'Jane Street',
+        careerUrl: 'https://www.janestreet.com/join-jane-street',
+        type: 'MNC',
+        domain: 'Proprietary Quantitative Trading & OCaml',
+        tags: ['MNC', 'Fintech & Trading'],
+        description: 'Quantitative trading firm operating at scale globally using functional programming and deep tech.'
+    },
+    {
+        name: 'Two Sigma',
+        careerUrl: 'https://www.twosigma.com/careers',
+        type: 'MNC',
+        domain: 'Financial Data Science & Algorithmic Trading',
+        tags: ['MNC', 'Fintech & Trading'],
+        description: 'Applying machine learning, big data analytics, and distributed computing to systematic investing.'
+    },
+    {
+        name: 'Capital One',
+        careerUrl: 'https://www.capitalonecareers.com',
+        type: 'MNC',
+        domain: 'Digital Banking & Cloud Architecture',
+        tags: ['MNC', 'Fintech'],
+        description: 'Cloud-first financial institution leveraging machine learning and microservices for consumer banking.'
     },
     {
         name: 'Bloomberg',
@@ -339,6 +463,78 @@ export const CURATED_COMPANIES = [
         description: 'AI safety and research company building the Claude family of intelligent models.'
     },
     {
+        name: 'Cursor',
+        careerUrl: 'https://cursor.com/careers',
+        type: 'Top startup',
+        domain: 'AI-First Code Editor & Developer Tools',
+        tags: ['Top startup', 'AI Tools'],
+        description: 'Building the world’s most productive AI-powered code editor and intelligent development environment.'
+    },
+    {
+        name: 'Midjourney',
+        careerUrl: 'https://www.midjourney.com/jobs',
+        type: 'Top startup',
+        domain: 'Generative Image & Visual Synthesis',
+        tags: ['Top startup', 'AI Research'],
+        description: 'Independent research lab expanding human imaginative powers with generative text-to-image models.'
+    },
+    {
+        name: 'Runway',
+        careerUrl: 'https://runwayml.com/careers',
+        type: 'Top startup',
+        domain: 'Generative Video & Multimodal AI',
+        tags: ['Top startup', 'AI Research'],
+        description: 'Applied AI research company pioneering text-to-video generation and creative tools.'
+    },
+    {
+        name: 'Groq',
+        careerUrl: 'https://groq.com/careers',
+        type: 'Top startup',
+        domain: 'LPU AI Inference Engine & Hardware',
+        tags: ['Top startup', 'AI Infrastructure'],
+        description: 'Creator of the Language Processing Unit (LPU) offering ultra-low-latency LLM inference.'
+    },
+    {
+        name: 'ElevenLabs',
+        careerUrl: 'https://elevenlabs.io/careers',
+        type: 'Top startup',
+        domain: 'Voice AI & Audio Synthesis',
+        tags: ['Top startup', 'AI Audio'],
+        description: 'Industry leader in realistic AI voice generation, speech synthesis, and dubbing.'
+    },
+    {
+        name: 'Cognition AI',
+        careerUrl: 'https://www.cognition.ai/careers',
+        type: 'Top startup',
+        domain: 'Autonomous AI Software Engineers',
+        tags: ['Top startup', 'AI Code'],
+        description: 'Applied AI lab building Devin, the first autonomous AI software engineer.'
+    },
+    {
+        name: 'Pinecone',
+        careerUrl: 'https://www.pinecone.io/careers',
+        type: 'Top startup',
+        domain: 'Vector Database for AI Applications',
+        tags: ['Top startup', 'AI Infrastructure'],
+        description: 'High-performance vector database infrastructure for vector search and RAG applications.'
+    },
+    {
+        name: 'LangChain',
+        careerUrl: 'https://www.langchain.com/careers',
+        type: 'Top startup',
+        domain: 'LLM Application Framework & LangGraph',
+        tags: ['Top startup', 'AI Tools'],
+        description: 'Open source framework empowering developers to build agentic, stateful LLM applications.'
+    },
+    {
+        name: 'Character.ai',
+        careerUrl: 'https://character.ai/careers',
+        type: 'Top startup',
+        domain: 'Conversational Neural Agents',
+        tags: ['Top startup', 'AI Research'],
+        description: 'Building full-stack conversational LLMs for interactive, personalized AI character experiences.'
+    },
+    {
         name: 'Scale AI',
         careerUrl: 'https://scale.com/careers',
         type: 'Top startup',
@@ -388,7 +584,7 @@ export const CURATED_COMPANIES = [
     },
 
     // ══════════════════════════════════════════════
-    // High-Growth Global Unicorns & SaaS
+    // High-Growth Global Unicorns, DevTools & SaaS
     // ══════════════════════════════════════════════
     {
         name: 'Stripe',
@@ -421,6 +617,54 @@ export const CURATED_COMPANIES = [
         domain: 'Connected Workspace & Docs',
         tags: ['Top startup', 'Productivity & AI'],
         description: 'All-in-one productivity workspace for notes, projects, wikis, and team collaboration.'
+    },
+    {
+        name: 'Docker',
+        careerUrl: 'https://www.docker.com/careers',
+        type: 'Top startup',
+        domain: 'Container Platform & Dev Tooling',
+        tags: ['Top startup', 'Developer Tools'],
+        description: 'Industry standard containerization platform simplifying application deployment and development.'
+    },
+    {
+        name: 'Sentry',
+        careerUrl: 'https://sentry.io/careers',
+        type: 'Top startup',
+        domain: 'Code Error Monitoring & APM',
+        tags: ['Top startup', 'Developer Tools'],
+        description: 'Real-time code error tracking and application performance monitoring platform.'
+    },
+    {
+        name: 'Webflow',
+        careerUrl: 'https://webflow.com/careers',
+        type: 'Top startup',
+        domain: 'Visual Web Development & CMS',
+        tags: ['Top startup', 'Design & Web'],
+        description: 'Empowering creators and teams to build custom production websites visually.'
+    },
+    {
+        name: 'Reddit',
+        careerUrl: 'https://www.redditinc.com/careers',
+        type: 'Top startup',
+        domain: 'Global Community & Social Platform',
+        tags: ['Top startup', 'Social Tech'],
+        description: 'Home to thousands of online communities discussing news, tech, hobbies, and ideas.'
+    },
+    {
+        name: 'Epic Games',
+        careerUrl: 'https://www.epicgames.com/site/en-US/careers',
+        type: 'Top startup',
+        domain: 'Unreal Engine & Interactive Gaming',
+        tags: ['Top startup', 'Gaming'],
+        description: 'Creators of Unreal Engine, Fortnite, and real-time 3D graphics technology.'
+    },
+    {
+        name: 'Roblox',
+        careerUrl: 'https://careers.roblox.com',
+        type: 'Top startup',
+        domain: '3D Metaverse & Immersive Platform',
+        tags: ['Top startup', 'Gaming'],
+        description: 'Global 3D immersive platform connecting tens of millions of daily active creators and users.'
     },
     {
         name: 'Airbnb',
@@ -601,6 +845,46 @@ export const CURATED_COMPANIES = [
         domain: 'Fintech & High-Trust Ecosystem',
         tags: ['Top startup', 'Fintech'],
         description: 'Rewarding creditworthy individuals with premium lifestyle and financial products.'
+    },
+    {
+        name: 'Paytm',
+        careerUrl: 'https://paytm.com/careers',
+        type: 'Top startup',
+        domain: 'Payments, Soundbox & Digital Banking',
+        tags: ['Top startup', 'Fintech'],
+        description: 'Pioneer of mobile QR payments, Soundbox, and digital financial services.'
+    },
+    {
+        name: 'Freshworks',
+        careerUrl: 'https://www.freshworks.com/company/careers/',
+        type: 'Top startup',
+        domain: 'Customer Service & ITSM Cloud SaaS',
+        tags: ['Top startup', 'SaaS'],
+        description: 'Modern customer engagement and IT service management software for businesses worldwide.'
+    },
+    {
+        name: 'Groww',
+        careerUrl: 'https://groww.in/careers',
+        type: 'Top startup',
+        domain: 'Investment & Wealth Tech Platform',
+        tags: ['Top startup', 'Fintech'],
+        description: 'Leading digital investment platform simplifying direct mutual funds, stocks, and trading.'
+    },
+    {
+        name: 'Urban Company',
+        careerUrl: 'https://www.urbancompany.com/careers',
+        type: 'Top startup',
+        domain: 'On-Demand Home Services Marketplace',
+        tags: ['Top startup', 'Consumer Tech'],
+        description: 'Asia’s largest home services platform connecting skilled professionals with households.'
+    },
+    {
+        name: 'Ola',
+        careerUrl: 'https://www.olacabs.com/careers',
+        type: 'Top startup',
+        domain: 'Ride-Hailing & Electric Mobility',
+        tags: ['Top startup', 'Mobility'],
+        description: 'Transforming urban mobility with ride-hailing and EV manufacturing.'
     },
     {
         name: 'Flipkart',

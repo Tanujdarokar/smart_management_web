@@ -1,7 +1,11 @@
+/* ══════════════════════════════════════════════
+   companies.css — Modern Company Tracker & Directory
+   ══════════════════════════════════════════════ */
+
 .company-stats {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 16px;
+    gap: 18px;
     margin-bottom: 24px;
 }
 
@@ -9,50 +13,83 @@
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 20px;
+    padding: 22px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    transition: var(--transition-bounce);
+}
+
+.company-stat:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-hover);
 }
 
 .company-stat-icon {
-    width: 46px;
-    height: 46px;
+    width: 48px;
+    height: 48px;
     display: grid;
     place-items: center;
     border-radius: 14px;
     background: var(--primary-gradient-subtle);
+    color: var(--primary-color);
     font-size: 22px;
+    flex-shrink: 0;
 }
 
 .company-stat p {
     color: var(--text-muted);
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
 .company-stat strong {
     color: var(--text-main);
-    font-size: 24px;
-    line-height: 1.3;
+    font-size: 26px;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
 }
 
 .company-filters {
     display: grid;
     grid-template-columns: minmax(220px, 1fr) repeat(3, minmax(150px, 190px));
-    gap: 12px;
-    margin-bottom: 24px;
-    padding: 16px;
+    gap: 14px;
+    margin-bottom: 28px;
+    padding: 20px 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
 }
 
 .company-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 22px;
 }
 
 .company-card {
     display: flex;
     flex-direction: column;
     min-width: 0;
-    padding: 22px;
+    padding: 24px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow);
+    transition: var(--transition-bounce);
+    position: relative;
+}
+
+.company-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
 }
 
 .company-card-top {
@@ -60,7 +97,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 12px;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
 }
 
 .company-card-badges {
@@ -72,13 +109,13 @@
 }
 
 .company-pin-badge {
-    padding: 5px 9px;
-    border: 1px solid var(--border-hover);
+    padding: 4px 10px;
+    border: 1px solid rgba(var(--primary-rgb), 0.25);
     border-radius: 999px;
     background: var(--primary-gradient-subtle);
     color: var(--primary-color);
     font-size: 11px;
-    font-weight: 700;
+    font-weight: 800;
 }
 
 .company-pin-field {
@@ -89,15 +126,15 @@
 }
 
 .company-pin-field input {
-    width: 17px;
-    height: 17px;
+    width: 18px;
+    height: 18px;
     margin: 0;
     accent-color: var(--primary-color);
 }
 
 .company-avatar {
-    width: 46px;
-    height: 46px;
+    width: 48px;
+    height: 48px;
     display: grid;
     place-items: center;
     border-radius: 14px;
@@ -105,32 +142,36 @@
     background: var(--primary-gradient);
     font-size: 20px;
     font-weight: 800;
+    box-shadow: var(--shadow-glow);
+    flex-shrink: 0;
 }
 
 .company-status {
-    padding: 5px 10px;
+    padding: 4px 12px;
     border: 1px solid var(--border-color);
     border-radius: 999px;
     font-size: 11px;
     font-weight: 800;
+    letter-spacing: 0.02em;
 }
 
-.status-interested { color: var(--primary-color); background: var(--primary-gradient-subtle); }
-.status-applied { color: var(--in-progress); background: var(--in-progress-bg); }
-.status-interviewing { color: var(--primary-color); background: var(--primary-gradient-subtle); }
-.status-offer { color: var(--success); background: var(--success-bg); }
-.status-rejected { color: var(--overdue); background: var(--overdue-bg); }
+.status-interested { color: var(--primary-color); background: var(--primary-gradient-subtle); border-color: rgba(var(--primary-rgb), 0.25); }
+.status-applied { color: var(--in-progress); background: var(--in-progress-bg); border-color: var(--in-progress-border); }
+.status-interviewing { color: var(--primary-color); background: var(--primary-gradient-subtle); border-color: rgba(var(--primary-rgb), 0.25); }
+.status-offer { color: var(--success); background: var(--success-bg); border-color: var(--success-border); }
+.status-rejected { color: var(--overdue); background: var(--overdue-bg); border-color: var(--overdue-border); }
 .status-withdrawn { color: var(--text-muted); background: rgba(148, 163, 184, .12); }
 
 .company-card h2 {
     color: var(--text-main);
-    font-size: 18px;
+    font-size: 19px;
     font-weight: 800;
+    letter-spacing: -0.02em;
     overflow-wrap: anywhere;
 }
 
 .company-role {
-    margin-top: 2px;
+    margin-top: 4px;
     color: var(--primary-color);
     font-size: 14px;
     font-weight: 700;
@@ -140,7 +181,7 @@
 .company-location,
 .company-date {
     color: var(--text-muted);
-    font-size: 12px;
+    font-size: 12.5px;
 }
 
 .company-location {
@@ -157,7 +198,7 @@
     display: -webkit-box;
     margin-top: 12px;
     color: var(--text-muted);
-    font-size: 12px;
+    font-size: 12.5px;
     line-height: 1.5;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
@@ -175,7 +216,7 @@
 }
 
 .company-card-actions .btn {
-    min-height: 34px;
+    min-height: 36px;
 }
 
 .company-delete {

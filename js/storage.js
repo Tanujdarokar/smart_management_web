@@ -553,7 +553,122 @@ const Storage = {
     // Company Application Methods
     getCompanyApplications(userId) {
         const applications = this.get(this.KEYS.COMPANY_APPLICATIONS) || {};
-        return applications[userId] || [];
+        const userApplications = applications[userId] || [];
+
+        // Populate sample company applications for guest preview if empty
+        if (userApplications.length === 0 && userId === 'guest') {
+            const today = new Date().toISOString().split('T')[0];
+            const threeDaysAgo = new Date(Date.now() - 3 * 86400000).toISOString().split('T')[0];
+            const tenDaysAgo = new Date(Date.now() - 10 * 86400000).toISOString().split('T')[0];
+            const twentyDaysAgo = new Date(Date.now() - 20 * 86400000).toISOString().split('T')[0];
+            const thirtyDaysAgo = new Date(Date.now() - 30 * 86400000).toISOString().split('T')[0];
+            const inTwoDays = new Date(Date.now() + 2 * 86400000).toISOString().split('T')[0];
+            const inFiveDays = new Date(Date.now() + 5 * 86400000).toISOString().split('T')[0];
+
+            const sampleApplications = [
+                {
+                    id: '_company_app_1',
+                    company: 'Google',
+                    role: 'Senior Software Engineer',
+                    companyType: 'MNC',
+                    status: 'Interviewing',
+                    pinned: true,
+                    location: 'Mountain View, CA (Hybrid)',
+                    expectedSalary: '$195,000 / year',
+                    appliedDate: tenDaysAgo,
+                    followUpDate: inTwoDays,
+                    companyUrl: 'https://careers.google.com',
+                    jobUrl: 'https://careers.google.com/jobs/results/12345',
+                    notes: 'Technical phone screen completed with principal engineer. Onsite interview scheduled for next week.',
+                    createdAt: new Date(Date.now() - 10 * 86400000).toISOString()
+                },
+                {
+                    id: '_company_app_2',
+                    company: 'OpenAI',
+                    role: 'Full Stack AI Engineer',
+                    companyType: 'Top startup',
+                    status: 'Applied',
+                    pinned: true,
+                    location: 'San Francisco, CA / Remote',
+                    expectedSalary: '$220,000 / year',
+                    appliedDate: threeDaysAgo,
+                    followUpDate: inFiveDays,
+                    companyUrl: 'https://openai.com/careers',
+                    jobUrl: 'https://openai.com/careers/full-stack-engineer',
+                    notes: 'Submitted application with portfolio link and custom cover letter highlighting LLM integrations.',
+                    createdAt: new Date(Date.now() - 3 * 86400000).toISOString()
+                },
+                {
+                    id: '_company_app_3',
+                    company: 'Stripe',
+                    role: 'Product Engineer (Payments)',
+                    companyType: 'Top startup',
+                    status: 'Offer',
+                    pinned: true,
+                    location: 'Remote',
+                    expectedSalary: '$185,000 / year',
+                    appliedDate: twentyDaysAgo,
+                    followUpDate: inTwoDays,
+                    companyUrl: 'https://stripe.com/jobs',
+                    jobUrl: 'https://stripe.com/jobs/product-engineer',
+                    notes: 'Official offer received! Benefits packet includes equity package and home office stipend. Decision due end of week.',
+                    createdAt: new Date(Date.now() - 20 * 86400000).toISOString()
+                },
+                {
+                    id: '_company_app_4',
+                    company: 'Tesla',
+                    role: 'Autopilot Software Engineer',
+                    companyType: 'MNC',
+                    status: 'Applied',
+                    pinned: false,
+                    location: 'Austin, TX',
+                    expectedSalary: '$175,000 / year',
+                    appliedDate: threeDaysAgo,
+                    followUpDate: inFiveDays,
+                    companyUrl: 'https://www.tesla.com/careers',
+                    jobUrl: 'https://www.tesla.com/careers/autopilot-engineer',
+                    notes: 'Applied via Tesla engineering portal for C++ & computer vision role.',
+                    createdAt: new Date(Date.now() - 3 * 86400000).toISOString()
+                },
+                {
+                    id: '_company_app_5',
+                    company: 'Razorpay',
+                    role: 'Tech Lead - Frontend',
+                    companyType: 'Top startup',
+                    status: 'Interested',
+                    pinned: false,
+                    location: 'Bengaluru, India',
+                    expectedSalary: '₹4,500,000 / year',
+                    appliedDate: today,
+                    followUpDate: inFiveDays,
+                    companyUrl: 'https://razorpay.com/jobs',
+                    jobUrl: 'https://razorpay.com/jobs/tech-lead',
+                    notes: 'Bookmarked targeted role in payment checkout UI team.',
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: '_company_app_6',
+                    company: 'Microsoft',
+                    role: 'Senior Cloud Architect',
+                    companyType: 'MNC',
+                    status: 'Rejected',
+                    pinned: false,
+                    location: 'Redmond, WA',
+                    expectedSalary: '$180,000 / year',
+                    appliedDate: thirtyDaysAgo,
+                    followUpDate: '',
+                    companyUrl: 'https://careers.microsoft.com',
+                    jobUrl: 'https://careers.microsoft.com/us/en/job/98765',
+                    notes: 'Application closed for autumn cycle. Re-apply next quarter.',
+                    createdAt: new Date(Date.now() - 30 * 86400000).toISOString()
+                }
+            ];
+            applications['guest'] = sampleApplications;
+            this.set(this.KEYS.COMPANY_APPLICATIONS, applications);
+            return sampleApplications;
+        }
+
+        return userApplications;
     },
 
     saveCompanyApplications(userId, applications) {
