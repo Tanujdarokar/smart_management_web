@@ -425,6 +425,11 @@
     font-size: 12px;
 }
 
+.career-application-edit {
+    align-self: flex-start;
+    margin-top: 4px;
+}
+
 .career-card-actions {
     display: flex;
     flex-wrap: wrap;

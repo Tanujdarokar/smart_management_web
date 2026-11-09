@@ -998,6 +998,23 @@ function initEventListeners() {
         grid.addEventListener('click', handleGridAction);
     }
 
+    const applicationDetailsForm = document.getElementById('applicationDetailsForm');
+    if (applicationDetailsForm) {
+        applicationDetailsForm.addEventListener('submit', handleSaveApplicationDetails);
+    }
+
+    const closeApplicationDetails = document.getElementById('closeApplicationDetails');
+    const cancelApplicationDetails = document.getElementById('cancelApplicationDetails');
+    if (closeApplicationDetails) closeApplicationDetails.addEventListener('click', closeApplicationDetailsModal);
+    if (cancelApplicationDetails) cancelApplicationDetails.addEventListener('click', closeApplicationDetailsModal);
+
+    const applicationDetailsModal = document.getElementById('applicationDetailsModal');
+    if (applicationDetailsModal) {
+        applicationDetailsModal.addEventListener('click', (e) => {
+            if (e.target.id === 'applicationDetailsModal') closeApplicationDetailsModal();
+        });
+    }
+
     // Close on Escape or backdrop click
     const modal = document.getElementById('careerFocusModal');
     if (modal) {
@@ -1006,7 +1023,10 @@ function initEventListeners() {
         });
     }
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeTrackModal();
+        if (e.key === 'Escape') {
+            closeTrackModal();
+            closeApplicationDetailsModal();
+        }
     });
 }
 
@@ -1036,10 +1056,13 @@ export function buildUnifiedCompanies(curatedList, trackedList) {
         [...trackedByName].map(([key, applications]) => [key, mergeTrackedApplications(applications)])
     );
     const matchedTrackedNames = new Set();
+    const curatedNames = new Set();
 
     // 1. Process Curated List & check if user has tracked them
     for (const item of curatedList) {
         const itemKey = normalizeCompanyName(item.name);
+        if (!itemKey || curatedNames.has(itemKey)) continue;
+        curatedNames.add(itemKey);
         const tracked = mergedTracked.get(itemKey);
 
         if (tracked) {
@@ -1054,6 +1077,7 @@ export function buildUnifiedCompanies(curatedList, trackedList) {
                 role: tracked.role || '',
                 location: tracked.location || '',
                 notes: tracked.notes || '',
+                applications: tracked.applications,
                 trackedId: tracked.id,
                 appliedDate: tracked.appliedDate || '',
                 updatedAt: tracked.updatedAt || tracked.createdAt || '',
@@ -1069,6 +1093,7 @@ export function buildUnifiedCompanies(curatedList, trackedList) {
                 role: '',
                 location: '',
                 notes: '',
+                applications: [],
                 trackedId: null,
                 appliedDate: '',
                 updatedAt: '',
@@ -1103,6 +1128,7 @@ export function buildUnifiedCompanies(curatedList, trackedList) {
                 role: app.role || '',
                 location: app.location || '',
                 notes: app.notes || '',
+                applications: app.applications,
                 trackedId: app.id,
                 appliedDate: app.appliedDate || '',
                 updatedAt: app.updatedAt || app.createdAt || '',
@@ -1137,6 +1163,7 @@ function mergeTrackedApplications(applications) {
     merged.pinned = sorted.some(application => application.pinned === true);
     merged.notes = [...new Set(sorted.map(application => String(application.notes || '').trim()).filter(Boolean))]
         .join('\n');
+    merged.applications = sorted;
     return merged;
 }
 
@@ -1316,13 +1343,20 @@ function renderCompanyCard(company) {
                 ${Utils.escapeHtml(company.description || '')}
             </p>
 
-            ${company.isTracked ? `
+            ${company.isTracked ? (company.applications || [company]).map(application => `
                 <div class="career-tracked-note">
-                    <strong>🎯 Role: ${Utils.escapeHtml(company.role || 'Not set')}</strong>
-                    ${company.location ? `<span>Location: ${Utils.escapeHtml(company.location)}</span>` : ''}
-                    <span>📅 Applied: ${company.appliedDate ? Utils.escapeHtml(Utils.formatDate(company.appliedDate)) : 'Date not set'}</span>
+                    <strong>🎯 Role: ${Utils.escapeHtml(application.role || 'Not set')}</strong>
+                    ${application.location ? `<span>Location: ${Utils.escapeHtml(application.location)}</span>` : ''}
+                    <span>📅 Applied: ${application.appliedDate ? Utils.escapeHtml(Utils.formatDate(application.appliedDate)) : 'Date not set'}</span>
+                    ${application.status ? `<span>Stage: ${Utils.escapeHtml(application.status)}</span>` : ''}
+                    ${application.id ? `
+                        <button class="btn btn-outline btn-sm career-application-edit" type="button"
+                            data-action="edit-application" data-application-id="${Utils.escapeHtml(application.id)}">
+                            ✏️ Edit role & date
+                        </button>
+                    ` : ''}
                 </div>
-            ` : ''}
+            `).join('') : ''}
 
             ${safeCareerUrl ? `
                 <div class="career-url-snippet" title="${Utils.escapeHtml(safeCareerUrl)}">
@@ -1347,9 +1381,11 @@ function renderCompanyCard(company) {
                     </a>
                 ` : ''}
 
-                <button class="btn btn-track-action" type="button" data-action="track" data-company="${Utils.escapeHtml(company.name)}">
-                    ${company.isTracked ? '✏️ Edit Role & Date' : '＋ Track Company'}
-                </button>
+                ${!company.isTracked ? `
+                    <button class="btn btn-track-action" type="button" data-action="track" data-company="${Utils.escapeHtml(company.name)}">
+                        ＋ Track Company
+                    </button>
+                ` : ''}
             </div>
         </article>
     `;
@@ -1361,6 +1397,11 @@ function handleGridAction(event) {
 
     const action = button.dataset.action;
     const companyName = button.dataset.company;
+    if (action === 'edit-application') {
+        openApplicationDetailsModal(button.dataset.applicationId);
+        return;
+    }
+
     const company = state.unifiedCompanies.find(c => c.name === companyName);
     if (!company) return;
 
@@ -1452,6 +1493,48 @@ function openTrackModal(prefill = null) {
 function closeTrackModal() {
     const modal = document.getElementById('careerFocusModal');
     if (modal) modal.style.display = 'none';
+}
+
+function openApplicationDetailsModal(applicationId) {
+    const application = state.trackedApplications.find(item => item.id === applicationId);
+    if (!application) {
+        Utils.showToast('This tracked application could not be found.', 'error');
+        return;
+    }
+
+    document.getElementById('applicationDetailsId').value = application.id;
+    document.getElementById('applicationDetailsCompany').textContent = application.company;
+    document.getElementById('applicationDetailsRole').value = application.role || '';
+    document.getElementById('applicationDetailsDate').value = application.appliedDate || '';
+    document.getElementById('applicationDetailsModal').style.display = 'flex';
+    document.getElementById('applicationDetailsRole').focus();
+}
+
+function closeApplicationDetailsModal() {
+    const modal = document.getElementById('applicationDetailsModal');
+    if (modal) modal.style.display = 'none';
+}
+
+function handleSaveApplicationDetails(event) {
+    event.preventDefault();
+    const userId = currentUserId();
+    const applicationId = document.getElementById('applicationDetailsId').value;
+    const application = state.trackedApplications.find(item => item.id === applicationId);
+    if (!application) {
+        Utils.showToast('This tracked application could not be found.', 'error');
+        closeApplicationDetailsModal();
+        return;
+    }
+
+    Storage.upsertCompanyApplication(userId, {
+        ...application,
+        role: document.getElementById('applicationDetailsRole').value.trim(),
+        appliedDate: document.getElementById('applicationDetailsDate').value,
+        updatedAt: new Date().toISOString()
+    });
+    closeApplicationDetailsModal();
+    refreshData();
+    Utils.showToast(`${application.company} role and application date updated.`);
 }
 
 function handleSaveCompany(event) {

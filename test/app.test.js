@@ -442,6 +442,39 @@ test('Goal carrer Focus Company: curated MNC and top startups, and synchronizes 
   assert.equal(deduplicated[0].appliedDate, '2026-08-12');
   assert.equal(deduplicated[0].status, 'Interviewing');
   assert.equal(deduplicated[0].pinned, true);
+  assert.equal(deduplicated[0].applications.length, 2);
+  assert.deepEqual(
+    deduplicated[0].applications.map(application => [application.role || '', application.appliedDate || '']),
+    [['', ''], ['Backend Engineer', '2026-08-12']]
+  );
+
+  const amazonEntries = buildUnifiedCompanies([
+    { name: 'Amazon', careerUrl: 'https://amazon.jobs', type: 'MNC', tags: ['MNC'] },
+    { name: ' amazon ', careerUrl: 'https://amazon.jobs/careers', type: 'MNC', tags: ['MNC'] }
+  ], [
+    {
+      id: 'amazon_one',
+      company: 'Amazon',
+      role: 'SDE I',
+      appliedDate: '2026-10-04',
+      companyUrl: 'https://amazon.jobs',
+      updatedAt: '2026-10-04T10:00:00.000Z'
+    },
+    {
+      id: 'amazon_two',
+      company: ' amazon ',
+      role: 'SDE I Talent University',
+      appliedDate: '2026-10-05',
+      companyUrl: 'https://amazon.jobs',
+      updatedAt: '2026-10-05T10:00:00.000Z'
+    }
+  ]);
+  assert.equal(amazonEntries.length, 1, 'Same-name curated and tracked companies should render as one card');
+  assert.equal(amazonEntries[0].applications.length, 2, 'The merged company should retain every application');
+  assert.deepEqual(
+    amazonEntries[0].applications.map(application => [application.role, application.appliedDate]),
+    [['SDE I Talent University', '2026-10-05'], ['SDE I', '2026-10-04']]
+  );
 });
 
 test('Tasks & Import Hub: supports seamless bulk task importing and imported task tagging', () => {
@@ -528,4 +561,3 @@ test('Company & Interview Tracker: supports company applications and interview p
   assert.equal(interviewTasks.length, 1);
   assert.equal(interviewTasks[0].title, 'Implement LRU Cache in O(1)');
 });
-
