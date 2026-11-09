@@ -1019,23 +1019,31 @@ export function refreshData() {
 }
 
 /**
- * Merges curated companies with user-tracked applications from Company Tracker.
- * If user pasted a URL in Company Tracker, it shows up here seamlessly.
+ * Merges curated companies with linked tracker entries and combines duplicate names.
  */
 export function buildUnifiedCompanies(curatedList, trackedList) {
     const result = [];
-    const matchedTrackedIds = new Set();
+    const trackedByName = new Map();
+    for (const app of trackedList) {
+        const key = normalizeCompanyName(app.company);
+        if (!key) continue;
+        const group = trackedByName.get(key) || [];
+        group.push(app);
+        trackedByName.set(key, group);
+    }
+
+    const mergedTracked = new Map(
+        [...trackedByName].map(([key, applications]) => [key, mergeTrackedApplications(applications)])
+    );
+    const matchedTrackedNames = new Set();
 
     // 1. Process Curated List & check if user has tracked them
     for (const item of curatedList) {
-        const itemLower = item.name.trim().toLowerCase();
-        const tracked = trackedList.find(app => {
-            const appName = String(app.company || '').trim().toLowerCase();
-            return appName === itemLower;
-        });
+        const itemKey = normalizeCompanyName(item.name);
+        const tracked = mergedTracked.get(itemKey);
 
         if (tracked) {
-            matchedTrackedIds.add(tracked.id);
+            matchedTrackedNames.add(itemKey);
             result.push({
                 ...item,
                 careerUrl: tracked.companyUrl || item.careerUrl,
@@ -1069,11 +1077,9 @@ export function buildUnifiedCompanies(curatedList, trackedList) {
         }
     }
 
-    // 2. Add ANY company from Company Tracker that was NOT in the curated list!
-    // This directly fulfills: "and if user also paste the URl in company tracker it will also show into this"
-    for (const app of trackedList) {
-        if (!matchedTrackedIds.has(app.id)) {
-            const hasUrl = Boolean(app.companyUrl || app.jobUrl);
+    // 2. Add linked companies from Company Tracker that are not in the curated list.
+    for (const [key, app] of mergedTracked) {
+        if (!matchedTrackedNames.has(key) && app.companyUrl) {
             const appType = app.companyType || 'MNC'; // default or custom
             const tags = ['From Company Tracker'];
             if (app.companyType) {
@@ -1085,10 +1091,10 @@ export function buildUnifiedCompanies(curatedList, trackedList) {
 
             result.push({
                 name: app.company,
-                careerUrl: app.companyUrl || app.jobUrl || '',
+                careerUrl: app.companyUrl,
                 jobUrl: app.jobUrl || '',
                 type: appType,
-                domain: app.location || (hasUrl ? 'Pasted Career URL' : 'Tracked Company'),
+                domain: app.location || 'Pasted Career URL',
                 tags,
                 description: app.notes || (app.role ? `Tracked role: ${app.role}` : 'Added via Company Tracker.'),
                 isTracked: true,
@@ -1106,6 +1112,32 @@ export function buildUnifiedCompanies(curatedList, trackedList) {
     }
 
     return result;
+}
+
+function normalizeCompanyName(name) {
+    return String(name || '').trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+function mergeTrackedApplications(applications) {
+    const sorted = [...applications].sort((a, b) =>
+        String(b.updatedAt || b.createdAt || '').localeCompare(String(a.updatedAt || a.createdAt || ''))
+    );
+    const merged = { ...sorted[0] };
+    const fields = [
+        'company', 'role', 'companyType', 'status', 'location', 'expectedSalary',
+        'followUpDate', 'companyUrl', 'jobUrl', 'appliedDate'
+    ];
+
+    for (const field of fields) {
+        const value = sorted.find(application => String(application[field] || '').trim())?.[field];
+        if (value) merged[field] = value;
+    }
+
+    merged.company = String(merged.company || '').trim().replace(/\s+/g, ' ');
+    merged.pinned = sorted.some(application => application.pinned === true);
+    merged.notes = [...new Set(sorted.map(application => String(application.notes || '').trim()).filter(Boolean))]
+        .join('\n');
+    return merged;
 }
 
 function updateStats() {
@@ -1284,11 +1316,11 @@ function renderCompanyCard(company) {
                 ${Utils.escapeHtml(company.description || '')}
             </p>
 
-            ${company.isTracked && company.role ? `
+            ${company.isTracked ? `
                 <div class="career-tracked-note">
-                    <strong>🎯 Tracked Role: ${Utils.escapeHtml(company.role)}</strong>
+                    <strong>🎯 Role: ${Utils.escapeHtml(company.role || 'Not set')}</strong>
                     ${company.location ? `<span>Location: ${Utils.escapeHtml(company.location)}</span>` : ''}
-                    ${company.appliedDate ? `<span>Applied: ${Utils.escapeHtml(Utils.formatDate(company.appliedDate))}</span>` : ''}
+                    <span>📅 Applied: ${company.appliedDate ? Utils.escapeHtml(Utils.formatDate(company.appliedDate)) : 'Date not set'}</span>
                 </div>
             ` : ''}
 
@@ -1316,7 +1348,7 @@ function renderCompanyCard(company) {
                 ` : ''}
 
                 <button class="btn btn-track-action" type="button" data-action="track" data-company="${Utils.escapeHtml(company.name)}">
-                    ${company.isTracked ? '✏️ Edit in Tracker' : '＋ Track Company'}
+                    ${company.isTracked ? '✏️ Edit Role & Date' : '＋ Track Company'}
                 </button>
             </div>
         </article>
@@ -1382,6 +1414,7 @@ function openTrackModal(prefill = null) {
     const urlInput = document.getElementById('modalCareerUrl');
     const jobUrlInput = document.getElementById('modalJobUrl');
     const roleInput = document.getElementById('modalJobRole');
+    const appliedDateInput = document.getElementById('modalAppliedDate');
     const statusInput = document.getElementById('modalApplicationStatus');
     const pinnedInput = document.getElementById('modalCompanyPinned');
     const notesInput = document.getElementById('modalCompanyNotes');
@@ -1393,7 +1426,8 @@ function openTrackModal(prefill = null) {
         typeInput.value = prefill.type || 'MNC';
         urlInput.value = prefill.careerUrl || '';
         jobUrlInput.value = prefill.jobUrl || '';
-        roleInput.value = prefill.role || 'Software Engineer';
+        roleInput.value = prefill.role || '';
+        appliedDateInput.value = prefill.appliedDate || '';
         statusInput.value = prefill.status || 'Interested';
         pinnedInput.checked = prefill.pinned === true;
         notesInput.value = prefill.notes || '';
@@ -1405,6 +1439,7 @@ function openTrackModal(prefill = null) {
         urlInput.value = '';
         jobUrlInput.value = '';
         roleInput.value = '';
+        appliedDateInput.value = '';
         statusInput.value = 'Interested';
         pinnedInput.checked = false;
         notesInput.value = '';
@@ -1427,7 +1462,8 @@ function handleSaveCompany(event) {
     const companyType = document.getElementById('modalCompanyType').value;
     const careerUrlInput = document.getElementById('modalCareerUrl').value.trim();
     const jobUrlInput = document.getElementById('modalJobUrl').value.trim();
-    const role = document.getElementById('modalJobRole').value.trim() || 'Software Engineer';
+    const role = document.getElementById('modalJobRole').value.trim();
+    const appliedDateInput = document.getElementById('modalAppliedDate').value;
     const status = document.getElementById('modalApplicationStatus').value;
     const pinned = document.getElementById('modalCompanyPinned').checked;
     const notes = document.getElementById('modalCompanyNotes').value.trim();
@@ -1444,14 +1480,14 @@ function handleSaveCompany(event) {
         return;
     }
 
-    // Check if an existing application exists by id or company name
-    const existing = state.trackedApplications.find(a => 
-        (id && a.id === id) || (String(a.company || '').trim().toLowerCase() === name.toLowerCase())
+    const matchingApplications = state.trackedApplications.filter(application =>
+        (id && application.id === id) || normalizeCompanyName(application.company) === normalizeCompanyName(name)
     );
+    const existing = matchingApplications.length ? mergeTrackedApplications(matchingApplications) : null;
 
     const timestamp = new Date().toISOString();
     const application = {
-        id: existing ? existing.id : (id || Utils.generateId()),
+        id: id || (existing ? existing.id : Utils.generateId()),
         userId,
         company: name,
         role,
@@ -1460,7 +1496,7 @@ function handleSaveCompany(event) {
         pinned,
         location: existing ? existing.location || '' : 'Remote / Hybrid',
         expectedSalary: existing ? existing.expectedSalary || '' : '',
-        appliedDate: existing ? existing.appliedDate || (status === 'Applied' ? timestamp.split('T')[0] : '') : (status === 'Applied' ? timestamp.split('T')[0] : ''),
+        appliedDate: appliedDateInput || (existing ? '' : (status === 'Applied' ? timestamp.split('T')[0] : '')),
         followUpDate: existing ? existing.followUpDate || '' : '',
         companyUrl: companyUrl || (existing ? existing.companyUrl : ''),
         jobUrl: jobUrl || (existing ? existing.jobUrl : ''),
@@ -1469,7 +1505,9 @@ function handleSaveCompany(event) {
         updatedAt: timestamp
     };
 
-    Storage.upsertCompanyApplication(userId, application);
+    const matchingIds = new Set(matchingApplications.map(item => item.id));
+    const remainingApplications = state.trackedApplications.filter(item => !matchingIds.has(item.id));
+    Storage.saveCompanyApplications(userId, [...remainingApplications, application]);
     closeTrackModal();
     refreshData();
     Utils.showToast(`${name} saved! Synced with Company Tracker.`);

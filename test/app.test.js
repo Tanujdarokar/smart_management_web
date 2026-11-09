@@ -410,6 +410,38 @@ test('Goal carrer Focus Company: curated MNC and top startups, and synchronizes 
   assert.equal(custom.status, 'Applied');
   assert.equal(custom.careerUrl, 'https://customunicorn.example/careers');
   assert.ok(custom.tags.includes('From Company Tracker'));
+
+  const deduplicated = buildUnifiedCompanies([], [
+    {
+      id: 'acme_old',
+      company: 'Acme   Labs',
+      role: 'Backend Engineer',
+      appliedDate: '2026-08-12',
+      companyUrl: 'https://acme.example/careers',
+      updatedAt: '2026-08-12T10:00:00.000Z'
+    },
+    {
+      id: 'acme_new',
+      company: ' acme labs ',
+      companyType: 'Top startup',
+      status: 'Interviewing',
+      pinned: true,
+      notes: 'Recruiter screen completed.',
+      updatedAt: '2026-08-20T10:00:00.000Z'
+    },
+    {
+      id: 'no_career_link',
+      company: 'Linkless Company',
+      jobUrl: 'https://jobs.example/role',
+      updatedAt: '2026-08-20T10:00:00.000Z'
+    }
+  ]);
+  assert.equal(deduplicated.length, 1, 'Same-name companies should merge and unlinked tracker entries should be hidden');
+  assert.equal(deduplicated[0].name, 'acme labs');
+  assert.equal(deduplicated[0].role, 'Backend Engineer');
+  assert.equal(deduplicated[0].appliedDate, '2026-08-12');
+  assert.equal(deduplicated[0].status, 'Interviewing');
+  assert.equal(deduplicated[0].pinned, true);
 });
 
 test('Tasks & Import Hub: supports seamless bulk task importing and imported task tagging', () => {
@@ -496,5 +528,4 @@ test('Company & Interview Tracker: supports company applications and interview p
   assert.equal(interviewTasks.length, 1);
   assert.equal(interviewTasks[0].title, 'Implement LRU Cache in O(1)');
 });
-
 
